@@ -7,10 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.pet.att.pickapet.R;
 
-/**
- * Created by mizrahi on 06/03/2018.
- */
-
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
     private Color[] mColorSet;
 
@@ -26,7 +22,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             return imageView;
         }
     }
-
 
     public CustomAdapter(Color[] colorSet) {
         mColorSet = colorSet;
