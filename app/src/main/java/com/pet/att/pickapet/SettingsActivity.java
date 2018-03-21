@@ -10,6 +10,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -21,6 +22,8 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import java.util.List;
+
+import static com.pet.att.pickapet.R.xml.pref_sign_out;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -132,24 +135,35 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            startActivity(new Intent(this, SettingsActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
             return true;
-        }
-        if (id == R.id.sign_out_button ){
-            SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
-            SharedPreferences.Editor editor=sharedPreferences.edit();
-            editor.putString("UserName",null );
-            editor.putString("Password",null);
-            editor.commit();
-
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-
-
         }
         return super.onOptionsItemSelected(item);
     }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == android.R.id.home) {
+//            startActivity(new Intent(this, SettingsActivity.class));
+//            return true;
+//        }
+////        if (id == R.id.sign_out_button ){
+////            SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
+////            SharedPreferences.Editor editor=sharedPreferences.edit();
+////            editor.putString("UserName",null );
+////            editor.putString("Password",null);
+////            editor.commit();
+////
+////            Intent intent = new Intent(this, LoginActivity.class);
+////            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+////            startActivity(intent);
+////
+////
+////        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
@@ -187,7 +201,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
                 || DataSyncPreferenceFragment.class.getName().equals(fragmentName)
-                || NotificationPreferenceFragment.class.getName().equals(fragmentName);
+                || NotificationPreferenceFragment.class.getName().equals(fragmentName)
+                || AboutPreferenceFragment.class.getName().equals(fragmentName)
+                || SignOutPreferenceFragment.class.getName().equals((fragmentName));
     }
 
     /**
@@ -214,7 +230,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                startActivity(new Intent(getActivity(), MainActivity.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -244,7 +260,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                startActivity(new Intent(getActivity(), MainActivity.class));
                 return true;
             }
             return super.onOptionsItemSelected(item);
@@ -282,29 +298,29 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
 
-    /**
-     * This fragment shows general preferences only. It is used when the
-     * activity is showing a two-pane settings UI.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class AboutPreferenceFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_about);
-            setHasOptionsMenu(true);
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            int id = item.getItemId();
-            if (id == android.R.id.home) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
-                return true;
-            }
-            return super.onOptionsItemSelected(item);
-        }
-    }
+//    /**
+//     * This fragment shows general preferences only. It is used when the
+//     * activity is showing a two-pane settings UI.
+//     */
+//    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+//    public static class AboutPreferenceFragment extends PreferenceFragment {
+//        @Override
+//        public void onCreate(Bundle savedInstanceState) {
+//            super.onCreate(savedInstanceState);
+//            addPreferencesFromResource(R.xml.pref_about);
+//            setHasOptionsMenu(true);
+//        }
+//
+//        @Override
+//        public boolean onOptionsItemSelected(MenuItem item) {
+//            int id = item.getItemId();
+//            if (id == android.R.id.home) {
+//                startActivity(new Intent(getActivity(), MainActivity.class));
+//                return true;
+//            }
+//            return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     /**
      * This fragment shows general preferences only. It is used when the
@@ -321,9 +337,67 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_sign_out);
+            setHasOptionsMenu(true);
 
+
+           Preference preference = (Preference) findPreference("action_sign_out_user_name");
+            SharedPreferences sp1=mContext.getSharedPreferences("Login", MODE_PRIVATE);
+            String userName=sp1.getString("UserName", null);
+            if (userName != null);
+//                preference.setSummary(userName);
+
+//            Preference customPref = (Preference) findPreference("updates_interval");<-- your preferences key
+//            customPref.setSummary("desired string");
+
+//            bindPreferenceSummaryToValue(findPreference("action_sign_out_key"));
         }
 
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), MainActivity.class));
+                return true;
+            }
+
+            if (id == R.id.sign_out_item) {
+
+                SharedPreferences sharedPreferences = mContext.getSharedPreferences("Login", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("UserName", null);
+                editor.putString("Password", null);
+                editor.commit();
+
+                Intent intent = new Intent(mContext, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+
+    /**
+     * This fragment shows general preferences only. It is used when the
+     * activity is showing a two-pane settings UI.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class AboutPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_about);
+            setHasOptionsMenu(true);
+
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+//            bindPreferenceSummaryToValue(findPreference("pref_about"));
+        }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
@@ -331,19 +405,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             if (id == android.R.id.home) {
                 startActivity(new Intent(getActivity(), SettingsActivity.class));
                 return true;
-            }
-            if (id == R.id.sign_out_button ){
-                SharedPreferences sharedPreferences = mContext.getSharedPreferences("Login", MODE_PRIVATE);
-                SharedPreferences.Editor editor=sharedPreferences.edit();
-                editor.putString("UserName",null );
-                editor.putString("Password",null);
-                editor.commit();
-
-                Intent intent = new Intent(mContext, LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-
-
             }
             return super.onOptionsItemSelected(item);
         }

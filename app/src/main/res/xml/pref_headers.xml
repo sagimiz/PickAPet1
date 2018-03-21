@@ -8,8 +8,8 @@
         android:title="@string/pref_header_about" />
 
     <header
+        android:fragment="com.pet.att.pickapet.SettingsActivity$SignOutPreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
-        android:id="@+id/sign_out_button"
         android:title="@string/action_sign_out_short" />
 
     <header

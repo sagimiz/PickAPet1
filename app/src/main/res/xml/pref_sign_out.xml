@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:id="@+id/sign_out_user_name"
+        android:capitalize="words"
+        android:defaultValue="@string/pref_default_display_name"
+        android:inputType="textCapWords"
+        android:maxLines="1"
+        android:key="@string/action_sign_out_user_name"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/pref_default_display_name"
+        android:gravity="center"
+        android:summary="Would you like to Sign Out?"/>
+
+    <Preference
+        android:id="@+id/sign_out_item"
+        android:capitalize="words"
+        android:inputType="textCapWords"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:key="@string/action_sign_out_key"
+        android:title="@string/action_sign_out_short"
+        android:gravity="center"/>
+
+</PreferenceScreen>
