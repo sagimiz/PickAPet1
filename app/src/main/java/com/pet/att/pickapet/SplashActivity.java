@@ -3,7 +3,6 @@ package com.pet.att.pickapet;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
@@ -20,16 +19,9 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferences sp1=this.getSharedPreferences("Login", MODE_PRIVATE);
         String userName=sp1.getString("UserName", null);
         String password= sp1.getString("Password", null);
-
-        if (userName==null || password == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }else{
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
+        Intent intent = (userName==null || password == null)? new Intent(this, LoginActivity.class) :new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
 
     }
 }
