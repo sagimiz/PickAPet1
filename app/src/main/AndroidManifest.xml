@@ -34,7 +34,7 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" />
-        <activity android:name=".BackgroundTask" />
+        <activity android:name=".HTTP.AllPetsImages" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"></activity>

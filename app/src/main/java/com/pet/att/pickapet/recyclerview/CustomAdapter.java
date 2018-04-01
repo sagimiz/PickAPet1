@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import com.pet.att.pickapet.R;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
-    private Color[] mColorSet;
+    private AnimalsPics[] mAnimalsPics;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
@@ -23,8 +23,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         }
     }
 
-    public CustomAdapter(Color[] colorSet) {
-        mColorSet = colorSet;
+    public CustomAdapter(AnimalsPics[] animalSet) {
+        mAnimalsPics = animalSet;
     }
 
 
@@ -43,12 +43,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        viewHolder.getImageView().setBackgroundColor(mColorSet[position].getRGB());
+//        viewHolder.getImageView().setBackgroundColor(mColorSet[position].getRGB());
+            viewHolder.getImageView().setImageBitmap(mAnimalsPics[position].getMyImage());
     }
 
     @Override
     public int getItemCount() {
-        return mColorSet.length;
+        return mAnimalsPics.length;
     }
 
 }

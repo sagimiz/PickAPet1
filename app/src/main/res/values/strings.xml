@@ -98,6 +98,8 @@
 
 
     <!-- Connections URL-->
-    <string name="base_url">http://10.0.0.27:3000</string>
+    <string name="base_url">http://10.0.0.30:3000</string>
+    <string name="animals_request">animals</string>
+    <string name="animals_pic_request">animalpic</string>
 
 </resources>

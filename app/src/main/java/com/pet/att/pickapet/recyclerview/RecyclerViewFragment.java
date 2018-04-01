@@ -5,50 +5,45 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
 
 import com.pet.att.pickapet.R;
 
-import java.util.Random;
-
-/**
- * Created by mizrahi on 06/03/2018.
- */
-
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 public class RecyclerViewFragment extends Fragment {
 
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
-    private static final int SPAN_COUNT = 2;
-    private static final int DATASET_COUNT = 60;
-
+    private static final int SPAN_COUNT = 3;
     private enum LayoutManagerType { GRID_LAYOUT_MANAGER }
-
     protected LayoutManagerType mCurrentLayoutManagerType;
-
-    protected RadioButton mLinearLayoutRadioButton;
-    protected RadioButton mGridLayoutRadioButton;
-
+    protected String myJsonString;
     protected RecyclerView mRecyclerView;
     protected CustomAdapter mAdapter;
-//    protected RecyclerView.LayoutManager mLayoutManager;
-    protected Color[] mColor;
+    protected AnimalsPics[] animalsPics;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Initialize dataset, this data would usually come from a local content provider or
-        // remote server.
-        initDataset();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        String jsonValue = getArguments().getString("animal_pic_json");
+        Log.d (TAG,"The JSON String is " + jsonValue);
+        myJsonString = jsonValue;
+
+
+        this.initDataset();
+
+
         View rootView = inflater.inflate(R.layout.recycler_view_frag, container, false);
         rootView.setTag(TAG);
 
@@ -69,7 +64,7 @@ public class RecyclerViewFragment extends Fragment {
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mAdapter = new CustomAdapter(mColor);
+        mAdapter = new CustomAdapter(animalsPics);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
         // END_INCLUDE(initializeRecyclerView)
@@ -92,7 +87,6 @@ public class RecyclerViewFragment extends Fragment {
         }
 
         mCurrentLayoutManagerType = LayoutManagerType.GRID_LAYOUT_MANAGER;
-
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), SPAN_COUNT));
         mRecyclerView.scrollToPosition(scrollPosition);
     }
@@ -105,12 +99,19 @@ public class RecyclerViewFragment extends Fragment {
     }
 
     private void initDataset() {
-        mColor = new Color[DATASET_COUNT];
-        Random rand = new Random();
-        for (int i = 0; i < DATASET_COUNT; i++) {
-            mColor[i]= new Color((int)rand.nextInt(255),
-                                 (int)rand.nextInt(255),
-                                 (int)rand.nextInt(255));
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = new JSONArray(myJsonString);
+            animalsPics = new AnimalsPics[jsonArray.length()];
+            for(int i=0; i<jsonArray.length();i++){
+                String imageStr = jsonArray.get(i).toString();
+                JSONObject jsonObject = new JSONObject(imageStr );
+                String animalId = jsonObject.get("picid").toString();
+                animalsPics[i] = new AnimalsPics(imageStr,animalId);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

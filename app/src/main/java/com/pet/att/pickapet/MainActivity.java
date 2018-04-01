@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -12,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.pet.att.pickapet.recyclerview.RecyclerViewFragment;
+import com.pet.att.pickapet.HTTP.AllPetsImages;
 
 import java.io.IOException;
 
@@ -21,6 +20,8 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import static com.android.volley.Request.Method.GET;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -34,10 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            RecyclerViewFragment fragment = new RecyclerViewFragment();
-            transaction.replace(R.id.sample_content_fragment, fragment);
-            transaction.commit();
+            new AllPetsImages(MainActivity.this,this, GET).execute(this.getString(R.string.animals_pic_request));
         }
 
 
@@ -50,11 +48,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        try {
-            run();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        AllPetsImages httpRequest = (AllPetsImages) new AllPetsImages(this, GET).execute(this.getString(R.string.animals_request));
+//        JSONObject jsonObject = httpRequest.getJson();
+//        Log.d(TAG,"got JSON" + jsonObject);
+//        new AllPetsImages(this, GET).execute(this.getString(R.string.animals_request));
+
+
     }
 
     @Override
