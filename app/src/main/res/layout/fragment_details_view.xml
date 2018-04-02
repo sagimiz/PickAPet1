@@ -1,0 +1,112 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.pet.att.pickapet.AuxiliaryClasses.DetailsViewFragment">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <!--<include layout="@layout/content_main" />-->
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/pets_main_layout">
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/details_animal_text_vertical_margin"
+                    android:id="@+id/animal_name_text"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/details_image_horizontal_margin"
+                    android:id="@+id/animal_big_image"/>
+
+                <!--<include layout="@layout/content_main" />-->
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="190dp"
+                                android:layout_height="@dimen/details_animal_text_vertical_margin"
+                                android:id="@+id/animal_bdate_text"/>
+                            <TextView
+                                android:layout_width="190dp"
+                                android:layout_height="@dimen/details_animal_text_vertical_margin"
+                                android:id="@+id/animal_type_text"/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="190dp"
+                                android:layout_height="@dimen/details_animal_text_vertical_margin"
+                                android:id="@+id/owner_name_text"/>
+                            <TextView
+                                android:layout_width="190dp"
+                                android:layout_height="@dimen/details_animal_text_vertical_margin"
+                                android:id="@+id/owner_city_text"/>
+
+                        </LinearLayout>
+                        <LinearLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <Button
+                                android:layout_width="90dp"
+                                android:layout_height="@dimen/details_animal_text_vertical_margin"
+                                android:id="@+id/call_btn"
+                                android:text="@string/call_button_text"/>
+                            <TextView
+                                android:layout_width="190dp"
+                                android:layout_height="@dimen/details_animal_text_vertical_margin"
+                                android:id="@+id/owner_phone_text"/>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</FrameLayout>

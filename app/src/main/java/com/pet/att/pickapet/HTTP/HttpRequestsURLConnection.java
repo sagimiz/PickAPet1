@@ -20,7 +20,7 @@ import java.util.zip.GZIPInputStream;
 public class HttpRequestsURLConnection {
     private static final String TAG = "HttpClient";
 
-    public static JSONObject SendHttpPost(String URL, JSONObject jsonObjSend) {
+    public static String SendHttpPost(String URL, String jsonObjSend) {
 
         try {
             DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -30,9 +30,12 @@ public class HttpRequestsURLConnection {
             se = new StringEntity(jsonObjSend.toString());
 
             httpPostRequest.setEntity(se);
-            httpPostRequest.setHeader("Accept", "application/json");
-            httpPostRequest.setHeader("Content-type", "application/json");
-            httpPostRequest.setHeader("Accept-Encoding", "gzip");
+            httpPostRequest.setHeader("Accept", "*/*");
+            httpPostRequest.setHeader("Content-type", "application/x-www-form-urlencoded");
+            httpPostRequest.setHeader("Accept-Encoding", "gzip, deflate, br");
+            httpPostRequest.setHeader("Accept-Language","he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7");
+//            httpPostRequest.addHeader("Accept-Encoding", "deflate");
+//            httpPostRequest.addHeader("Accept-Encoding", "br");
 
             long t = System.currentTimeMillis();
             HttpResponse response = (HttpResponse) httpclient.execute(httpPostRequest);
@@ -49,12 +52,12 @@ public class HttpRequestsURLConnection {
 
                 String resultString= convertStreamToString(instream);
                 instream.close();
-                resultString = resultString.substring(0,resultString.length()-1);
+//                resultString = resultString.substring(0,resultString.length()-1);
+//
+//                JSONObject jsonObjRecv = new JSONObject(resultString);
+//                Log.i(TAG,"<JSONObject>\n"+jsonObjRecv.toString()+"\n</JSONObject>");
 
-                JSONObject jsonObjRecv = new JSONObject(resultString);
-                Log.i(TAG,"<JSONObject>\n"+jsonObjRecv.toString()+"\n</JSONObject>");
-
-                return jsonObjRecv;
+                return resultString;
             }
 
         }

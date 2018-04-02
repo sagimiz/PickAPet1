@@ -3,27 +3,27 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="com.pet.att.pickapet.SettingsActivity$AboutPreferenceFragment"
+        android:fragment="com.pet.att.pickapet.AppActivities.SettingsActivity$AboutPreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/pref_header_about" />
 
     <header
-        android:fragment="com.pet.att.pickapet.SettingsActivity$SignOutPreferenceFragment"
+        android:fragment="com.pet.att.pickapet.AppActivities.SettingsActivity$SignOutPreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/action_sign_out_short" />
 
     <header
-        android:fragment="com.pet.att.pickapet.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="com.pet.att.pickapet.AppActivities.SettingsActivity$GeneralPreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/pref_header_general" />
 
     <!--<header-->
-        <!--android:fragment="com.pet.att.pickapet.SettingsActivity$NotificationPreferenceFragment"-->
+        <!--android:fragmecom.pet.att.pickapet.AppActivities.SettingsActivityvity$NotificationPreferenceFragment"-->
         <!--android:icon="@drawable/ic_notifications_black_24dp"-->
         <!--android:title="@string/pref_header_notifications" />-->
 
     <!--<header-->
-        <!--android:fragment="com.pet.att.pickapet.SettingsActivity$DataSyncPreferenceFragment"-->
+        <!--android:fragmecom.pet.att.pickapet.AppActivities.SettingsActivityvity$DataSyncPreferenceFragment"-->
         <!--android:icon="@drawable/ic_sync_black_24dp"-->
         <!--android:title="@string/pref_header_data_sync" />-->
 

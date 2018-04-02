@@ -1,4 +1,4 @@
-package com.pet.att.pickapet;
+package com.pet.att.pickapet.AppActivities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

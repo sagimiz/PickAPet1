@@ -1,4 +1,4 @@
-package com.pet.att.pickapet.recyclerview;
+package com.pet.att.pickapet.AuxiliaryClasses;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,11 +15,13 @@ import com.pet.att.pickapet.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 public class RecyclerViewFragment extends Fragment {
 
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 3;
+
     private enum LayoutManagerType { GRID_LAYOUT_MANAGER }
     protected LayoutManagerType mCurrentLayoutManagerType;
     protected String myJsonString;
@@ -39,10 +41,7 @@ public class RecyclerViewFragment extends Fragment {
         String jsonValue = getArguments().getString("animal_pic_json");
         Log.d (TAG,"The JSON String is " + jsonValue);
         myJsonString = jsonValue;
-
-
         this.initDataset();
-
 
         View rootView = inflater.inflate(R.layout.recycler_view_frag, container, false);
         rootView.setTag(TAG);
@@ -53,8 +52,6 @@ public class RecyclerViewFragment extends Fragment {
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion
         // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
         // elements are laid out.
-//        mLayoutManager = new LinearLayoutManager(getActivity());
-
         mCurrentLayoutManagerType = LayoutManagerType.GRID_LAYOUT_MANAGER;
 
         if (savedInstanceState != null) {
@@ -67,7 +64,6 @@ public class RecyclerViewFragment extends Fragment {
         mAdapter = new CustomAdapter(animalsPics);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
-        // END_INCLUDE(initializeRecyclerView)
 
         return rootView;
     }
@@ -87,6 +83,7 @@ public class RecyclerViewFragment extends Fragment {
         }
 
         mCurrentLayoutManagerType = LayoutManagerType.GRID_LAYOUT_MANAGER;
+
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), SPAN_COUNT));
         mRecyclerView.scrollToPosition(scrollPosition);
     }
@@ -107,7 +104,7 @@ public class RecyclerViewFragment extends Fragment {
                 String imageStr = jsonArray.get(i).toString();
                 JSONObject jsonObject = new JSONObject(imageStr );
                 String animalId = jsonObject.get("picid").toString();
-                animalsPics[i] = new AnimalsPics(imageStr,animalId);
+                animalsPics[i] = new AnimalsPics(imageStr);
             }
 
         } catch (JSONException e) {

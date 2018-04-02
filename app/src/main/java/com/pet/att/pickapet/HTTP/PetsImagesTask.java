@@ -9,11 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.pet.att.pickapet.R;
-import com.pet.att.pickapet.recyclerview.RecyclerViewFragment;
+import com.pet.att.pickapet.AuxiliaryClasses.RecyclerViewFragment;
 
 
-public class AllPetsImages extends AsyncTask<String, Void, String> {
-    private static final String TAG = "CallRequest";
+public class PetsImagesTask extends AsyncTask<String, Void, String> {
+    private static final String TAG = "PetsImagesCallRequest";
     private final int mMethod;
     private String json= null;
 
@@ -22,23 +22,22 @@ public class AllPetsImages extends AsyncTask<String, Void, String> {
     private final Context mContext;
     private final AppCompatActivity  mActivity;
 
-    public AllPetsImages(AppCompatActivity activity, Context context, int method){
+    public PetsImagesTask(AppCompatActivity activity, Context context, int method){
         this.mContext = context;
         this.baseURL =   mContext.getString(R.string.base_url);
         this.mMethod =  method;
         mActivity = activity;
     }
 
-//    @Override
-//    protected void onPreExecute() {
-//        mDialog = new ProgressDialog(mContext);
-//        mDialog.setMessage("Please wait...");
-//        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//        mDialog.setIndeterminate(true);
-//        mDialog.setCancelable(false);
-//        mDialog.show();
-//
-//    }
+    @Override
+    protected void onPreExecute() {
+        mDialog = new ProgressDialog(mContext);
+        mDialog.setMessage("Please wait...");
+        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mDialog.setIndeterminate(true);
+        mDialog.setCancelable(false);
+        mDialog.show();
+    }
 
     @Override
     protected String doInBackground(String... strings) {
@@ -63,8 +62,9 @@ public class AllPetsImages extends AsyncTask<String, Void, String> {
         RecyclerViewFragment fragment = new RecyclerViewFragment();
         fragment.setArguments(args);
 
-        transaction.replace(R.id.sample_content_fragment, fragment);
+        transaction.replace(R.id.pets_content_fragment, fragment);
         transaction.commit();
+        mDialog.dismiss();
     }
 
     public String getJson() {

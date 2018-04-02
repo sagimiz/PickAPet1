@@ -1,4 +1,4 @@
-package com.pet.att.pickapet;
+package com.pet.att.pickapet.AppActivities;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -10,7 +10,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -21,9 +20,9 @@ import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
 
-import java.util.List;
+import com.pet.att.pickapet.R;
 
-import static com.pet.att.pickapet.R.xml.pref_sign_out;
+import java.util.List;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
