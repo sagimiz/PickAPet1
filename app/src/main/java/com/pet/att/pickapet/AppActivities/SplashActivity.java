@@ -19,7 +19,8 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferences sp1=this.getSharedPreferences("Login", MODE_PRIVATE);
         String userName=sp1.getString("UserName", null);
         String password= sp1.getString("Password", null);
-        Intent intent = (userName==null || password == null)? new Intent(this, LoginActivity.class) :new Intent(this, MainActivity.class);
+        Intent intent = (userName==null || password == null)?
+                new Intent(this, LoginActivity.class) :new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
 

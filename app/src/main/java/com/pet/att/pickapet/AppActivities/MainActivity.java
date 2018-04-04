@@ -61,6 +61,12 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.action_add_pet) {
+            Intent intent = new Intent(this, AddNewPetActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }
