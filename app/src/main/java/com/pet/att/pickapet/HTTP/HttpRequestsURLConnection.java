@@ -34,8 +34,6 @@ public class HttpRequestsURLConnection {
             httpPostRequest.setHeader("Content-type", "application/x-www-form-urlencoded");
             httpPostRequest.setHeader("Accept-Encoding", "gzip, deflate, br");
             httpPostRequest.setHeader("Accept-Language","he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7");
-//            httpPostRequest.addHeader("Accept-Encoding", "deflate");
-//            httpPostRequest.addHeader("Accept-Encoding", "br");
 
             long t = System.currentTimeMillis();
             HttpResponse response = (HttpResponse) httpclient.execute(httpPostRequest);

@@ -14,13 +14,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.pet.att.pickapet.AuxiliaryClasses.FileUtil;
 import com.pet.att.pickapet.R;
-
 import java.io.File;
 import java.io.IOException;
-
 import id.zelory.compressor.Compressor;
 
 public class AddNewPetActivity extends AppCompatActivity {
@@ -29,7 +26,6 @@ public class AddNewPetActivity extends AppCompatActivity {
     private static final int QUALITY =40 ;
     private static final int MAX_WIDTH = 640;
     private static final int MAX_HEIGHT = 480;
-    Button imgButton;
     private ImageView actualImageView;
 
     private File actualImage;

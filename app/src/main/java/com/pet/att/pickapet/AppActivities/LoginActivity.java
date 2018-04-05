@@ -20,6 +20,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,7 +31,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.pet.att.pickapet.HTTP.HttpRequestsURLConnection;
 import com.pet.att.pickapet.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,22 +46,24 @@ import static android.Manifest.permission.READ_CONTACTS;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
-    String url= "http://localhost:3000/";
     /**
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "Sagi@gmail.com:121212", "Shlomi@gmail.com:123456"
-    };
+//    /**
+//     * A dummy authentication store containing known user names and passwords.
+//     * TODO: remove after connecting to a real authentication system.
+//     */
+//    private static final String[] DUMMY_CREDENTIALS = new String[]{
+//            "Sagi@gmail.com:121212", "Shlomi@gmail.com:123456"
+//    };
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
+
+
+
     private UserLoginTask mAuthTask = null;
 
     // UI references.
@@ -64,6 +71,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+
+//    public LoginActivity(AppCompatActivity activity, Context context, SharedPreferences sp1,String userEmail, String password) {
+//        new UserLoginTask(activity,this ,sp1)
+//                .execute(context.getString(R.string.user_request), userEmail,password,context.getString(R.string.curent_user_details_json));
+//    }
+
+    public LoginActivity() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,9 +203,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(this,email, password);
+            mAuthTask = new UserLoginTask(LoginActivity.this,this,null);
 
-            mAuthTask.execute((Void) null);
+            mAuthTask.execute(getString(R.string.user_login_request),email,password,getString(R.string.curent_user_details_json));
         }
     }
 
@@ -298,47 +313,92 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
         private static final String TAG = "UserLoginTask";
+        private final AppCompatActivity mActivity;
+        private final SharedPreferences mSpl;
+        private final String baseURL;
+        private Context mContext;
+        private String mPutText;
+        private String mPassword;
+        private String mUserDetailsJson;
+        private String mEmail;
 
-        private final String mEmail;
-        private final String mPassword;
-        private final Context mcontext;
-
-        UserLoginTask(Context context,String email, String password) {
-            mcontext=context;
-            mEmail = email;
-            mPassword = password;
+        public UserLoginTask(AppCompatActivity activity, Context context, SharedPreferences sp1){
+            this.mContext = context;
+            this.baseURL =   mContext.getString(R.string.base_url);
+            this.mActivity = activity;
+            this.mSpl = sp1;
         }
 
+//        @Override
+//        protected Boolean doInBackground(Void... params) {
+//            // TODO: attempt authentication against a network service.
+//
+//            try {
+//                // Simulate network access.
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                return false;
+//            }
+//
+//
+//            boolean isCorrect = false;
+////            for (String credential : DUMMY_CREDENTIALS) {
+////                String[] pieces = credential.split(":");
+////                if (pieces[0].equalsIgnoreCase(mEmail)&& pieces[1].equalsIgnoreCase(mPassword)) {
+////                    SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
+////                    SharedPreferences.Editor editor=sharedPreferences.edit();
+////                    editor.putString("UserName",mEmail );
+////                    editor.putString("Password",mPassword);
+////                    editor.commit();
+////                    isCorrect=true;
+////                    break;
+////                }
+////            }
+////            // TODO: register the new account here.
+//            return isCorrect;
+//
+//        }
+
+                                                                                      /*The First arg is  request name
+                                                                                       The Second arg is  email for json
+                                                                                       The Third arg is entered password for json
+                                                                                       The Forth arg is the putString value
+                                                                                      */
+
+
         @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+        protected Boolean doInBackground(String... strings) {
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
+            String requestName = strings[0];
+            this.setEmail(strings[1]);
+            this.setPassword(strings[2]);
 
             boolean isCorrect = false;
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equalsIgnoreCase(mEmail)&& pieces[1].equalsIgnoreCase(mPassword)) {
-                    SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
-                    SharedPreferences.Editor editor=sharedPreferences.edit();
-                    editor.putString("UserName",mEmail );
-                    editor.putString("Password",mPassword);
-                    editor.commit();
-                    isCorrect=true;
-                    break;
-                }
-            }
-            // TODO: register the new account here.
-            return isCorrect;
+            try {
+                Log.d(TAG, "Fetching data for "+ requestName);
+                String  jsonStr = HttpRequestsURLConnection.SendHttpPost(baseURL + "/"+ requestName,"email="+mEmail);
+                if (jsonStr != null) {
+                    Log.d(TAG, "JSON data for " + requestName  +" is "+ jsonStr);
+                    jsonStr = this.setStringToJsonFormat(jsonStr);
 
+                    JSONObject jsonObject = new JSONObject(jsonStr);
+
+                    if (jsonObject.getString("password").equals(this.getPassword())){
+                        jsonStr = HttpRequestsURLConnection.SendHttpPost(baseURL + "/"+ mContext.getString(R.string.user_request),"email="+mEmail);
+                        if (jsonStr != null) {
+                            this.setUserDetailsJson(this.setStringToJsonFormat(jsonStr));
+                            setPutText(strings[3]);
+                            isCorrect =true;
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return isCorrect;
         }
 
         @Override
@@ -347,7 +407,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                Intent intent = new Intent(mcontext, MainActivity.class);
+                if(mSpl==null) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("UserEmail", this.getEmail());
+                    editor.putString("Password", this.getPassword());
+                    editor.commit();
+                }
+
+                Intent intent = new Intent(mContext, MainActivity.class);
+                intent.putExtra(getPutText(),this.getUserDetailsJson());
                 startActivity(intent);
                 finish();
             } else {
@@ -360,6 +429,42 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+        }
+
+        private String getEmail() {
+            return mEmail;
+        }
+
+        private void setEmail(String mEmail) {
+            this.mEmail = mEmail;
+        }
+
+        private String getPassword() {
+            return mPassword;
+        }
+
+        private void setPassword(String mPassword) {
+            this.mPassword = mPassword;
+        }
+
+        private String setStringToJsonFormat (String currentJsonString){
+            return currentJsonString.substring(1,currentJsonString.length());
+        }
+
+        private String getUserDetailsJson() {
+            return mUserDetailsJson;
+        }
+
+        private void setUserDetailsJson(String ownerDetailsJson) {
+            this.mUserDetailsJson = ownerDetailsJson;
+        }
+
+        private String getPutText() {
+            return mPutText;
+        }
+
+        private void setPutText(String putText) {
+            this.mPutText = putText;
         }
     }
 }

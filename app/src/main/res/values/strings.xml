@@ -110,13 +110,14 @@
 
 
     <!-- Connections URL-->
-    <string name="base_url">http://10.0.0.18:3000</string>
+    <string name="base_url">http://10.0.0.16:3000</string>
     <string name="animals_request">animals</string>
     <string name="animals_pic_request">animalpic</string>
     <string name="animals_owner_request_id">animalownerid</string>
     <string name="animals_owner_request_aid">animalowneraid</string>
     <string name="user_request">user</string>
     <string name="user_request_id">userid</string>
+    <string name="user_login_request">userlogin</string>
 
 
     <string name="title_activity_animal_details">AnimalDetailsActivity</string>
@@ -128,5 +129,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_add_new_pet">AddNewPetActivity</string>
+
+
+    <!-- Put/Get extra values strings-->
+    <string name="curent_user_details_json">current_user_details</string>
 
 </resources>
