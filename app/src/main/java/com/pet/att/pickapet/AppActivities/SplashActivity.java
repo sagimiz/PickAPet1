@@ -40,7 +40,7 @@ public class SplashActivity extends AppCompatActivity {
                                                                The Forth arg is the putString value
                                                               */
              new UserLoginTask(SplashActivity.this,this ,sp1)
-                     .execute(this.getString(R.string.user_login_request), userEmail,password,this.getString(R.string.curent_user_details_json));
+                     .execute(this.getString(R.string.user_request_login), userEmail,password,this.getString(R.string.current_user_details_json));
 
 
 

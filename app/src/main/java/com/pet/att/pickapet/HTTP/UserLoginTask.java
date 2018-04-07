@@ -298,15 +298,16 @@ public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
     }
 
     private boolean isValidJsonResult(String jsonStr){
+        if (jsonStr == null){
+            return false;
+        }
         if (jsonStr.contains("Error")){
             return false;
         }
         if (jsonStr.contains("something")){
             return false;
         }
-        if (jsonStr == null){
-            return false;
-        }
+
         return true;
     }
 }

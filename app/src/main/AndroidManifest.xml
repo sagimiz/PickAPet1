@@ -44,6 +44,10 @@
         <activity
             android:name=".AppActivities.AddNewPetActivity"
             android:label="@string/title_activity_add_new_pet"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AppActivities.AddNewUserActivity"
+            android:label="@string/title_activity_add_new_user"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
