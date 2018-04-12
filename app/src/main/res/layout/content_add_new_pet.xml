@@ -69,6 +69,7 @@
             android:orientation="horizontal">
 
             <Spinner
+                android:id="@+id/animal_type_spinner"
                 android:layout_width="282dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -121,7 +122,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/add_bdate"
+                android:id="@+id/animal_bdate"
                 android:layout_width="273dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -142,6 +143,7 @@
                 android:text="@string/add_animal_bdate" />
         </LinearLayout>
         <Button
+            android:id="@+id/animal_add_all"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_animal_all"/>

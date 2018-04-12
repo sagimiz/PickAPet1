@@ -114,30 +114,30 @@ public class AddNewUserTask extends AsyncTask<String, Void, Boolean> {
         this.setFirstRequestName( strings[0]);
         this.setSecondRequestName(strings[1]);
 
-        this.setId("id=" + strings[2]);
-        this.jsonBodyArrayForUser.add(this.getId());
+        this.setId(strings[2]);
+        this.jsonBodyArrayForUser.add("id=" +this.getId());
 
-        this.setFirstName("fname=" + strings[3]);
-        this.jsonBodyArrayForUser.add(this.getFirstName());
+        this.setFirstName(strings[3]);
+        this.jsonBodyArrayForUser.add("fname=" + this.getFirstName());
 
-        this.setLastName("lname=" + strings[4]);
-        this.jsonBodyArrayForUser.add(this.getLastName());
+        this.setLastName(strings[4]);
+        this.jsonBodyArrayForUser.add("lname=" + this.getLastName());
 
-        this.setEmail("email=" + strings[5]);
-        this.jsonBodyArrayForUser.add(this.getEmail());
-        this.jsonBodyArrayForUserLogin.add(this.getEmail());
+        this.setEmail(strings[5]);
+        this.jsonBodyArrayForUser.add("email=" + this.getEmail());
+        this.jsonBodyArrayForUserLogin.add("email=" + this.getEmail());
 
-        this.setPhone("phone=" + strings[6]);
-        this.jsonBodyArrayForUser.add(this.getPhone());
+        this.setPhone(strings[6]);
+        this.jsonBodyArrayForUser.add("phone=" + this.getPhone());
 
-        this.setAddress("address=" + strings[7]);
-        this.jsonBodyArrayForUser.add(this.getAddress());
+        this.setAddress(strings[7]);
+        this.jsonBodyArrayForUser.add("address=" + this.getAddress());
 
-        this.setCity("city=" + strings[8]);
-        this.jsonBodyArrayForUser.add(this.getCity());
+        this.setCity(strings[8]);
+        this.jsonBodyArrayForUser.add("city=" + this.getCity());
 
-        this.setPassword("password=" + strings[9]);
-        this.jsonBodyArrayForUserLogin.add(this.getPassword());
+        this.setPassword(strings[9]);
+        this.jsonBodyArrayForUserLogin.add("password=" + this.getPassword());
 
         this.setFirstPutString(strings[10]);
         this.setSecondPutString(strings[11]);

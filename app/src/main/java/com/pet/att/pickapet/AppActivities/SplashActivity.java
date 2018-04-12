@@ -20,6 +20,7 @@ public class SplashActivity extends AppCompatActivity {
          if (userEmail==null || password == null){
              Intent intent = new Intent(this, LoginActivity.class);
              startActivity(intent);
+             finish();
          }else{
 
 
@@ -45,7 +46,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
          }
-        finish();
+
     }
 }
 

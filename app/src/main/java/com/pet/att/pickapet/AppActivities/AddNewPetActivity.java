@@ -9,15 +9,27 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
+
 import com.pet.att.pickapet.AuxiliaryClasses.FileUtil;
 import com.pet.att.pickapet.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
+
 import id.zelory.compressor.Compressor;
 
 public class AddNewPetActivity extends AppCompatActivity {
@@ -27,10 +39,16 @@ public class AddNewPetActivity extends AppCompatActivity {
     private static final int MAX_WIDTH = 640;
     private static final int MAX_HEIGHT = 480;
     private ImageView actualImageView;
-
     private File actualImage;
     private File compressedImage;
+    private String mTypeStringJson;
 
+    private EditText mAnimalName;
+    private Spinner mAnimalTypeSpinner;
+    private EditText mAnimalBirthDate;
+
+    String [] mTypeNameArray;
+    String [] mTypeIdArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +59,8 @@ public class AddNewPetActivity extends AppCompatActivity {
 
         Button imgButton = (Button) findViewById(R.id.add_image_button);
         actualImageView = (ImageView) findViewById(R.id.add_pet_image) ;
+        mAnimalName = (EditText)  findViewById(R.id.animal_text_name);
+        mAnimalBirthDate = (EditText) findViewById(R.id.animal_bdate);
 
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,8 +69,89 @@ public class AddNewPetActivity extends AppCompatActivity {
                 startActivityForResult(intent, PICK_IMAGE);
             }
         });
+
+        mAnimalTypeSpinner = (Spinner) (findViewById(R.id.animal_type_spinner));
+        setSpinnerWithAnimalsTypes();
+
+        mAnimalTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+                // TODO Auto-generated method stub
+                Toast.makeText(getBaseContext(), mTypeNameArray[position], Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        Button addButton = (Button) findViewById(R.id.animal_add_all);
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (attemptPutData()){
+
+                }
+            }
+        });
+
+
+
     }
 
+    private boolean attemptPutData() {
+        // Reset errors.
+        View focusView = null;
+        mAnimalName.setError(null);
+        String name = mAnimalName.getText().toString();
+
+        if (TextUtils.isEmpty(name)) {
+            mAnimalName.setError(getString(R.string.error_field_required));
+            focusView = mAnimalName;
+            focusView.requestFocus();
+            return false;
+        }
+
+        mAnimalBirthDate.setError(null);
+        String date = mAnimalBirthDate.getText().toString();
+
+        if (TextUtils.isEmpty(date)) {
+            mAnimalBirthDate.setError(getString(R.string.error_field_required));
+            focusView = mAnimalBirthDate;
+            focusView.requestFocus();
+            return false;
+        }
+
+
+        return true;
+    }
+
+    private void setSpinnerWithAnimalsTypes() {
+        mTypeStringJson = getIntent().getStringExtra(getString(R.string.all_type_json));
+        try {
+            JSONArray jsonArray = new JSONArray(mTypeStringJson);
+            mTypeNameArray = new String[jsonArray.length()];
+            mTypeIdArray = new String[jsonArray.length()];
+            for (int i=0; i<jsonArray.length();i++){
+                String typeStr = jsonArray.get(i).toString();
+                JSONObject jsonObject = new JSONObject(typeStr );
+                mTypeNameArray[i]= jsonObject.getString("type_name");
+                mTypeIdArray[i] = jsonObject.getString("type_id");
+            }
+
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_spinner_item, mTypeNameArray);
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mAnimalTypeSpinner.setAdapter(arrayAdapter);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     @Override
@@ -65,7 +166,6 @@ public class AddNewPetActivity extends AppCompatActivity {
                 e.printStackTrace();
                 showError("fail to read picture data");
             }
-
         }
     }
 

@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.pet.att.pickapet.HTTP.GetAnimalTypeTask;
 import com.pet.att.pickapet.HTTP.PetsImagesTask;
 import com.pet.att.pickapet.R;
 
@@ -62,8 +63,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_add_pet) {
-            Intent intent = new Intent(this, AddNewPetActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(this, AddNewPetActivity.class);
+//            startActivity(intent);
+            new GetAnimalTypeTask(MainActivity.this,this).execute(getString(R.string.animal_type_request),getString(R.string.all_type_json));
             return true;
         }
 

@@ -95,7 +95,7 @@ public class AddNewUserActivity extends AppCompatActivity {
         String firstName = mFirstName.getText().toString();
 
         if (TextUtils.isEmpty(firstName)){
-            mId.setError(getString(R.string.error_field_required));
+            mFirstName.setError(getString(R.string.error_field_required));
             focusView = mFirstName;
             focusView.requestFocus();
             return false;
@@ -105,7 +105,7 @@ public class AddNewUserActivity extends AppCompatActivity {
         String lastName = mLastName.getText().toString();
 
         if (TextUtils.isEmpty(lastName)){
-            mId.setError(getString(R.string.error_field_required));
+            mLastName.setError(getString(R.string.error_field_required));
             focusView = mLastName;
             focusView.requestFocus();
             return false;
