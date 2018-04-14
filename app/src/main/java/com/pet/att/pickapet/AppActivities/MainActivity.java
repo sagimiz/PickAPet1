@@ -9,12 +9,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import com.pet.att.pickapet.HTTP.GetAnimalTypeTask;
+import com.pet.att.pickapet.HTTP.GetAnimalPreLoadPageTask;
 import com.pet.att.pickapet.HTTP.PetsImagesTask;
 import com.pet.att.pickapet.R;
-
-import static com.android.volley.Request.Method.GET;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -28,7 +25,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
-            new PetsImagesTask(MainActivity.this,this, GET).execute(this.getString(R.string.animals_pic_request));
+            new PetsImagesTask(MainActivity.this,this)
+                    .execute(this.getString(R.string.animals_owner_active_request),
+                            this.getString(R.string.animals_pic_request),
+                            this.getString(R.string.all_active_animal_pic_json));
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -65,7 +65,11 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_add_pet) {
 //            Intent intent = new Intent(this, AddNewPetActivity.class);
 //            startActivity(intent);
-            new GetAnimalTypeTask(MainActivity.this,this).execute(getString(R.string.animal_type_request),getString(R.string.all_type_json));
+            new GetAnimalPreLoadPageTask(MainActivity.this,this)
+                    .execute(getString(R.string.animal_type_request),
+                            getString(R.string.animal_kind_request),
+                            getString(R.string.all_type_json),
+                            getString(R.string.all_kind_json));
             return true;
         }
 

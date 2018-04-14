@@ -24,7 +24,7 @@ public class RecyclerViewFragment extends Fragment {
 
     private enum LayoutManagerType { GRID_LAYOUT_MANAGER }
     protected LayoutManagerType mCurrentLayoutManagerType;
-    protected String myJsonString;
+    protected String animalJsonString;
     protected RecyclerView mRecyclerView;
     protected CustomAdapter mAdapter;
     protected AnimalsPics[] animalsPics;
@@ -38,9 +38,9 @@ public class RecyclerViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        String jsonValue = getArguments().getString("animal_pic_json");
+        String jsonValue = getArguments().getString(getString(R.string.all_active_animal_pic_json));
         Log.d (TAG,"The JSON String is " + jsonValue);
-        myJsonString = jsonValue;
+        animalJsonString = jsonValue;
         this.initDataset();
 
         View rootView = inflater.inflate(R.layout.recycler_view_frag, container, false);
@@ -98,7 +98,7 @@ public class RecyclerViewFragment extends Fragment {
     private void initDataset() {
         JSONArray jsonArray = null;
         try {
-            jsonArray = new JSONArray(myJsonString);
+            jsonArray = new JSONArray(animalJsonString);
             animalsPics = new AnimalsPics[jsonArray.length()];
             for(int i=0; i<jsonArray.length();i++){
                 String imageStr = jsonArray.get(i).toString();

@@ -21,9 +21,15 @@
     <!-- Strings related to Add Animal -->
     <string name="add_animal_title">הוסף חיה חדשה</string>
     <string name="add_animal_name">שם החיה</string>
-    <string name="add_animal_type">סוג החיה</string>
+    <string name="add_animal_type">גזע החיה</string>
+    <string name="add_animal_kind">סוג החיה</string>
+    <string name="add_animal_gender">מין החיה</string>
     <string name="add_animal_image">הוסף תמונה</string>
-    <string name="add_animal_bdate">תאריך לידה</string>
+    <string name="add_animal_birth_date_text">תאריך לידה</string>
+    <string name="add_animal_birth_date_day">יום</string>
+    <string name="add_animal_birth_date_month">חודש</string>
+    <string name="add_animal_birth_date_year">שנה</string>
+
     <string name="add_animal_all">הוסף חיה</string>
     <string name="add_hint_name">מה השם שלי</string>
     <string name="add_hint_bdate">01/01/1990</string>
@@ -141,20 +147,24 @@
 
 
     <!-- Connections URL-->
-    <string name="base_url">http://10.0.0.23:3000</string>
+    <string name="base_url">http://10.0.0.3:3000</string>
     <string name="animals_request">animals</string>
     <string name="animals_pic_request">animalpic</string>
     <string name="animals_owner_request_id">animalownerid</string>
+    <string name="animals_owner_active_request">animalowner_active</string>
     <string name="animals_owner_request_aid">animalowneraid</string>
     <string name="user_request">user</string>
     <string name="user_request_id">userid</string>animaltype
     <string name="user_request_login">userlogin</string>
     <string name="animal_type_request">animaltype</string>
+    <string name="animal_kind_request">animalkind</string>
 
     <!-- Put/Get extra values strings-->
     <string name="current_user_details_json">current_user_details</string>
     <string name="current_user_login_json">current_user_login</string>
     <string name="all_type_json">all_animals_type</string>
+    <string name="all_kind_json">all_animals_kind</string>
+    <string name="all_active_animal_pic_json">animal_pic_json</string>
 
 
     <string name="title_activity_animal_details">AnimalDetailsActivity</string>

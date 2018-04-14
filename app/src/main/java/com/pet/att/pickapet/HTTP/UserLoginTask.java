@@ -113,6 +113,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -241,7 +242,7 @@ public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
                 editor.putString("Password", this.getPassword());
                 editor.commit();
             }
-
+            Bundle bundle = mActivity.getIntent().getExtras();
             Intent intent = new Intent(mContext, MainActivity.class);
             intent.putExtra(getPutText(),this.getUserDetailsJson());
             mActivity.startActivity(intent);
@@ -278,7 +279,7 @@ public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
     }
 
     private String setStringToJsonFormat (String currentJsonString){
-        return currentJsonString.substring(1,currentJsonString.length());
+        return currentJsonString.substring(currentJsonString.indexOf("{"), currentJsonString.lastIndexOf("}") + 1);
     }
 
     private String getUserDetailsJson() {

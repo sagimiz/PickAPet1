@@ -8,147 +8,265 @@
     tools:context="com.pet.att.pickapet.AppActivities.AddNewPetActivity"
     tools:showIn="@layout/activity_add_new_pet">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        tools:layout_editor_absoluteX="5dp"
-        tools:layout_editor_absoluteY="5dp"
-        tools:ignore="MissingConstraints">
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="31dp"
-            android:text="@string/add_animal_title"
-            android:textAlignment="center" />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            tools:layout_editor_absoluteX="5dp"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/animal_text_name"
-                android:layout_width="273dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="textPersonName"
-                android:textDirection="anyRtl"
-                android:gravity="right"
-                android:hint="@string/add_hint_name" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                tools:layout_editor_absoluteX="5dp"
-                android:layout_weight="1"
-                android:text="@string/add_animal_name" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            tools:layout_editor_absoluteX="5dp"
-            android:orientation="horizontal">
-
-            <Spinner
-                android:id="@+id/animal_type_spinner"
-                android:layout_width="282dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:inputType="textPersonName"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                tools:layout_editor_absoluteX="5dp"
-                android:layout_weight="1"
-                android:text="@string/add_animal_type" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="256dp"
+            android:layout_height="match_parent"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:orientation="vertical"
-            tools:layout_editor_absoluteX="5dp">
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="5dp"
+            tools:layout_editor_absoluteY="5dp">
 
-            <ImageView
-                android:id="@+id/add_pet_image"
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="31dp"
+                android:text="@string/add_animal_title"
                 android:textAlignment="center" />
 
-            <Button
-                android:id="@+id/add_image_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add_animal_image"/>
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                tools:layout_editor_absoluteX="5dp">
+
+                <EditText
+                    android:id="@+id/animal_text_name"
+                    android:layout_width="273dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:hint="@string/add_hint_name"
+                    android:inputType="textPersonName"
+                    android:textDirection="anyRtl" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:text="@string/add_animal_name"
+                    tools:layout_editor_absoluteX="5dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                tools:layout_editor_absoluteX="5dp">
+
+                <Spinner
+                    android:id="@+id/animal_kind_spinner"
+                    android:layout_width="282dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:text="@string/add_animal_kind"
+                    tools:layout_editor_absoluteX="5dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                tools:layout_editor_absoluteX="5dp">
+
+                <Spinner
+                    android:id="@+id/animal_type_spinner"
+                    android:layout_width="282dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:text="@string/add_animal_type"
+                    tools:layout_editor_absoluteX="5dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                tools:layout_editor_absoluteX="5dp">
+
+                <Spinner
+                    android:id="@+id/animal_gender_spinner"
+                    android:layout_width="282dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:text="@string/add_animal_gender"
+                    tools:layout_editor_absoluteX="5dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="256dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical"
+                tools:layout_editor_absoluteX="5dp">
+
+                <ImageView
+                    android:id="@+id/add_pet_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:textAlignment="center" />
+
+                <Button
+                    android:id="@+id/add_image_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_animal_image" />
+            </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            tools:layout_editor_absoluteX="5dp"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/animal_bdate"
-                android:layout_width="273dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textDirection="anyRtl"
-                android:gravity="right"
-                android:hint="@string/add_hint_bdate"
-                />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="right"
+            tools:layout_editor_absoluteX="5dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/add_animal_birth_date_text" />
+
+        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="5dp"
-                tools:layout_editor_absoluteX="5dp"
-                android:layout_weight="1"
-                android:text="@string/add_animal_bdate" />
-        </LinearLayout>
-        <Button
-            android:id="@+id/animal_add_all"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/add_animal_all"/>
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                tools:layout_editor_absoluteX="5dp">
 
-    </LinearLayout>
+                <Spinner
+                    android:id="@+id/animal_birth_date_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:text="@string/add_animal_birth_date_year"
+                    tools:layout_editor_absoluteX="5dp" />
+                <Spinner
+                    android:id="@+id/animal_birth_date_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:text="@string/add_animal_birth_date_month"
+                    tools:layout_editor_absoluteX="5dp" />
+                <Spinner
+                    android:id="@+id/animal_birth_date_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:inputType="textPersonName" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:text="@string/add_animal_birth_date_day"
+                    tools:layout_editor_absoluteX="5dp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/animal_add_all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/add_animal_all" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>
