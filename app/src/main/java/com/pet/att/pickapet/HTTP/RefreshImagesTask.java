@@ -7,42 +7,37 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import com.pet.att.pickapet.R;
+
+import com.pet.att.pickapet.AuxiliaryClasses.OnTaskCompleted;
 import com.pet.att.pickapet.AuxiliaryClasses.RecyclerViewFragment;
+import com.pet.att.pickapet.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PetsImagesTask extends AsyncTask<String, Void, Boolean> {
+public class RefreshImagesTask extends AsyncTask<String, Void, Boolean> {
     private static final String TAG = "PetsImagesCallRequest";
-    private String json= null;
-    private String  baseURL;
+    private String json = null;
+    private String baseURL;
     private ProgressDialog mDialog;
     private final Context mContext;
-    private final AppCompatActivity  mActivity;
-    private  String mActiveAnimalPicsJsonResult =null;
+    private final AppCompatActivity mActivity;
+    private final  Bundle mArgs;
+    private String mActiveAnimalPicsJsonResult = null;
     private String mCheckoutValue;
     private String mFirstRequestName;
     private String mSecondRequestName;
     private String mPutExtraString;
+    private OnTaskCompleted listener;
 
-
-    public PetsImagesTask(AppCompatActivity activity, Context context){
+    public RefreshImagesTask(AppCompatActivity activity, Context context,Bundle mArgs,OnTaskCompleted listener) {
         this.mContext = context;
-        this.baseURL =   mContext.getString(R.string.base_url);
+        this.baseURL = mContext.getString(R.string.base_url);
         mActivity = activity;
+        this.listener=listener;
+        this.mArgs = mArgs;
     }
-
-    @Override
-    protected void onPreExecute() {
-        mDialog = new ProgressDialog(mContext);
-        mDialog.setMessage("Please wait...");
-        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mDialog.setIndeterminate(true);
-        mDialog.setCancelable(false);
-        mDialog.show();
-    }
-
 
     /*
      * The First arg is animals_owner_active request name
@@ -53,41 +48,38 @@ public class PetsImagesTask extends AsyncTask<String, Void, Boolean> {
     protected Boolean doInBackground(String... strings) {
         boolean isCorrect = false;
         this.initStringsItems(strings);
-        Log.d(TAG, "Fetching the all active animals for "+ this.getFirstRequestName());
+        Log.d(TAG, "Fetching the all active animals for " + this.getFirstRequestName());
         //Need to send request to get all active animals
-        String json = HttpRequestsURLConnection.SendHttpPost(baseURL + "/"+ this.getFirstRequestName(),this.getCheckoutValue());
-        if (isValidJsonResult(json)){
-            Log.d(TAG, "JSON data for active animals" + this.getFirstRequestName()+ " is " + json.toString());
+        String json = HttpRequestsURLConnection.SendHttpPost(baseURL + "/" + this.getFirstRequestName(), this.getCheckoutValue());
+        if (isValidJsonResult(json)) {
+            Log.d(TAG, "JSON data for active animals" + this.getFirstRequestName() + " is " + json.toString());
             String allAnimalsId = this.getAllAnimalsIdFromJson(json);
             //Need to send request to get all active animals pictures
-            json = HttpRequestsURLConnection.SendHttpPost(baseURL + "/"+ this.getSecondRequestName(),allAnimalsId);
-            if (isValidJsonResult(json)){
-                Log.d(TAG, "JSON data Pics for active animals" + this.getSecondRequestName()+ " is " + json.toString());
+            json = HttpRequestsURLConnection.SendHttpPost(baseURL + "/" + this.getSecondRequestName(), allAnimalsId);
+            if (isValidJsonResult(json)) {
+                Log.d(TAG, "JSON data Pics for active animals" + this.getSecondRequestName() + " is " + json.toString());
                 this.setActiveAnimalPicsJsonResult(json);
-                isCorrect=true;
+                isCorrect = true;
             }
         }
         return isCorrect;
     }
 
+
+
     @Override
     protected void onPostExecute(final Boolean result) {
         if (result) {
-            Bundle args = new Bundle();
-//            args.putString("animal_pic_json", json.toString());
-            args.putString(this.getPutExtraString(), this.getActiveAnimalPicsJsonResult());
-
-            FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
-            RecyclerViewFragment fragment = new RecyclerViewFragment();
-            fragment.setArguments(args);
-
-            transaction.replace(R.id.pets_content_fragment, fragment);
-            transaction.commit();
+            mArgs.putString(this.getPutExtraString(), this.getActiveAnimalPicsJsonResult());
+            listener.onTaskCompleted();
         }
-        mDialog.dismiss();
     }
 
-
+    /*
+     * The First arg is animals_owner_active request name
+     * The Second arg is animal_pic IN request name
+     * The Third arg is putExtra String for json
+     * */
     private void initStringsItems(String[] strings) {
         this.setFirstRequestName(strings[0]);
         this.setSecondRequestName(strings[1]);
@@ -96,10 +88,10 @@ public class PetsImagesTask extends AsyncTask<String, Void, Boolean> {
     }
 
     private String getAllAnimalsIdFromJson(String json) {
-        String allIdStringResult ="";
+        String allIdStringResult = "";
         try {
             JSONArray jsonArray = new JSONArray(json);
-            for (int i=0; i<jsonArray.length(); i++){
+            for (int i = 0; i < jsonArray.length(); i++) {
                 String animalStr = jsonArray.get(i).toString();
                 JSONObject jsonObject = new JSONObject(animalStr);
                 allIdStringResult = allIdStringResult + "," + jsonObject.getString("aid");
@@ -107,17 +99,17 @@ public class PetsImagesTask extends AsyncTask<String, Void, Boolean> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return "aid="+allIdStringResult.substring(1,allIdStringResult.length());
+        return "aid=" + allIdStringResult.substring(1, allIdStringResult.length());
     }
 
-    private boolean isValidJsonResult(String jsonStr){
-        if (jsonStr == null){
+    private boolean isValidJsonResult(String jsonStr) {
+        if (jsonStr == null) {
             return false;
         }
-        if (jsonStr.contains("Error")){
+        if (jsonStr.contains("Error")) {
             return false;
         }
-        if (jsonStr.contains("something")){
+        if (jsonStr.contains("something")) {
             return false;
         }
 
@@ -164,5 +156,3 @@ public class PetsImagesTask extends AsyncTask<String, Void, Boolean> {
         this.mActiveAnimalPicsJsonResult = mActiveAnimalPicsJsonResult;
     }
 }
-
-

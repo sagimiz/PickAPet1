@@ -41,7 +41,7 @@ public class AnimalDetailsActivity extends AppCompatActivity {
 //            }
 //
 //            ImageView imageView = findViewById(R.id.animal_big_image);
-//            imageView.setImageBitmap(animalsPics.getMyImage());
+//            imageView.setImageBitmap(mAnimalsPics.getMyImage());
 
 
 

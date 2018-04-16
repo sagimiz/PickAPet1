@@ -51,6 +51,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         }
     }
 
+    public void refreshPics(AnimalsPics[] mNewAnimalsPics) {
+        this.mAnimalsPics = mNewAnimalsPics;
+        notifyDataSetChanged();
+    }
+
+
     public CustomAdapter(AnimalsPics[] animalSet) {
         mAnimalsPics = animalSet;
     }

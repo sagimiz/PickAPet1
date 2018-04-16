@@ -147,7 +147,7 @@
 
 
     <!-- Connections URL-->
-    <string name="base_url">http://10.0.0.3:3000</string>
+    <string name="base_url">http://10.0.0.25:3000</string>
     <string name="animals_request">animals</string>
     <string name="animals_pic_request">animalpic</string>
     <string name="animals_owner_request_id">animalownerid</string>

@@ -94,6 +94,7 @@ public class AddNewPetTask extends AsyncTask<Object, Void, Boolean> {
     protected void onPostExecute(final Boolean success) {
 
         if (success){
+
             mActivity.finish();
         }else{
 
