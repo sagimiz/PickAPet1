@@ -87,7 +87,6 @@ public class HttpRequestsURLConnection {
         return null;
     }
 
-
     public static String SendHttpPost(String URL, String jsonObjSend) {
 
         try {

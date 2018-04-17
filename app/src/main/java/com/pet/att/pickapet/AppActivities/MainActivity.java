@@ -1,20 +1,21 @@
 package com.pet.att.pickapet.AppActivities;
 
-import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.pet.att.pickapet.AuxiliaryClasses.AnimalsPics;
+import com.pet.att.pickapet.AuxiliaryClasses.OnTaskCompleted;
 import com.pet.att.pickapet.HTTP.GetAnimalPreLoadPageTask;
+import com.pet.att.pickapet.HTTP.GetUserActiveAnimalsTask;
 import com.pet.att.pickapet.HTTP.PetsImagesTask;
 import com.pet.att.pickapet.R;
 
@@ -24,7 +25,11 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-
+    private Bundle mCurrentBundle;
+    private String mCurrentUserJsonData;
+    private Context mContext;
+    private String [] mAllUserAnimalsName;
+    private String [] mAllUserAnimalsId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mCurrentBundle =savedInstanceState;
+        mContext=this;
+
+        mCurrentUserJsonData =this.getIntent().getStringExtra(getString(R.string.current_user_details_json));
 
         if (savedInstanceState == null) {
             new PetsImagesTask(MainActivity.this,this)
@@ -48,11 +57,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-
-
-
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -86,10 +92,58 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
 
-        if (id == R.id.action_refresh) {
+        if (id == R.id.action_remove_pet) {
+            String currentUserId=null;
+            try {
+                JSONObject jsonObject = new JSONObject(mCurrentUserJsonData);
+                currentUserId= jsonObject.getString("id");
 
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            GetUserActiveAnimalsTask getUserActiveAnimalsTask = new GetUserActiveAnimalsTask(MainActivity.this, mContext, mCurrentBundle, new OnTaskCompleted() {
+                @Override
+                public void onTaskCompleted() {
+                    try {
+                        String allAnimalsJson = getIntent().getStringExtra(mContext.getString(R.string.current_user_active_animals_json));
+                        JSONArray jsonArray = new JSONArray(allAnimalsJson);
+                        int size = jsonArray.length();
+                        mAllUserAnimalsName = new String[size];
+                        mAllUserAnimalsId = new String[size];
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            String animalJsonStr = jsonArray.get(i).toString();
+                            JSONObject jsonObject = new JSONObject(animalJsonStr);
+                            mAllUserAnimalsId[i] = jsonObject.getString("aid");
+                            mAllUserAnimalsName[i] = jsonObject.getString("name");
+                        }
+                    } catch(JSONException e){
+                        e.printStackTrace();
+                    }
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle(getString(R.string.dialog_remove_animals_title_text));
+                    builder.setItems(mAllUserAnimalsName, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int position) {
+
+                            dialog.dismiss();
+                        }
+
+                    });
+
+                    builder.show();
+
+                }
+            });
+            getUserActiveAnimalsTask.execute(this.getString(R.string.animals_owner_all_active_animals_request),
+                    currentUserId,
+                    this.getString(R.string.current_user_active_animals_json));
         }
-
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
 }

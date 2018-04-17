@@ -1,18 +1,18 @@
 <resources>
     <string name="app_name">PickAPet</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_add_pet">Add New Pet</string>
-    <string name="action_remove_pet">Remove My Pet</string>
-    <string name="action_refresh">Refresh</string>
+    <string name="action_settings">הגדרות</string>
+    <string name="action_add_pet">הוסף חיה חדשה</string>
+    <string name="action_remove_pet">הסר את החיות שלי</string>
+    <string name="action_refresh">רענן</string>
     <string name="element_text">Element</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">User Sign In</string>
-    <string name="action_register">Register New User</string>
-    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_sign_in">כניסת משתמש קיים</string>
+    <string name="action_register">כניסת משתמש חדש</string>
+    <string name="action_sign_in_short">הירשם</string>
     <string name="action_sign_out_short">Sing Out</string>
     <string name="action_sign_out_key">Sing Out</string>
     <string name="action_sign_out_user_name"></string>
@@ -55,16 +55,18 @@
     <string name="add_user_hint_address">עזרא 45</string>
 
 
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="error_invalid_id">Id length is not 9 digits</string>
-    <string name="error_invalid_phone">This phone number is incorrect</string>
-    <string name="error_incorrect_password_match">The passwords are not match</string>
-    <string name="error_put_data">Look Like there was a problem please try again</string>
+    <string name="error_invalid_email">כתובת האימייל אינה תקינה</string>
+    <string name="error_invalid_password">סיסמא זו קצרה מידי</string>
+    <string name="error_incorrect_password">סיסמא זו אינה תקינה</string>
+    <string name="error_field_required">שדה זה הינו שדה חובה</string>
+    <string name="error_invalid_id">תעודת הזהות אינה בת 9 ספרות</string>
+    <string name="error_invalid_phone">מס הטלפון אינו תקין</string>
+    <string name="error_incorrect_password_match">אין התאמה בין הסיסמאות</string>
+    <string name="error_put_data">כנראה קרתה טעות, נסה שוב בבקשה</string>
 
-
+    <!-- Strings related to Dialogs -->
+    <string name="dialog_remove_animals_message_text">בחר את החיה אשר ברצונך למחוק</string>
+    <string name="dialog_remove_animals_title_text">מחיקת חיה מהמאגר</string>
 
 
     <string name="permission_rationale">"Contacts permissions are needed for providing email
@@ -152,6 +154,7 @@
     <string name="animals_pic_request">animalpic</string>
     <string name="animals_owner_request_id">animalownerid</string>
     <string name="animals_owner_active_request">animalowner_active</string>
+    <string name="animals_owner_all_active_animals_request">user_all_animals</string>
     <string name="animals_owner_request_aid">animalowneraid</string>
     <string name="user_request">user</string>
     <string name="user_request_id">userid</string>animaltype
@@ -161,6 +164,7 @@
 
     <!-- Put/Get extra values strings-->
     <string name="current_user_details_json">current_user_details</string>
+    <string name="current_user_active_animals_json">current_user_details</string>
     <string name="current_user_login_json">current_user_login</string>
     <string name="all_type_json">all_animals_type</string>
     <string name="all_kind_json">all_animals_kind</string>

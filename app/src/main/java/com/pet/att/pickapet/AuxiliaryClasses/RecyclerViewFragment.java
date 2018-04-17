@@ -56,9 +56,6 @@ public class RecyclerViewFragment extends Fragment {
                     @Override
                     public void onRefresh() {
                         Log.d(TAG, "onRefresh called from SwipeRefreshLayout");
-
-                        // This method performs the actual data-refresh operation.
-                        // The method calls setRefreshing(false) when it's finished.
                         new RefreshImagesTask((AppCompatActivity) mCurrentActivity, mCurrentContext,args, new OnTaskCompleted() {
                             @Override
                             public void onTaskCompleted() {
@@ -172,6 +169,15 @@ public class RecyclerViewFragment extends Fragment {
             e.printStackTrace();
         }
         return animalsPics;
+    }
+
+
+    public AnimalsPics[] getAnimalsPics() {
+        return mAnimalsPics;
+    }
+
+    public void setAnimalsPics(AnimalsPics[] mAnimalsPics) {
+        this.mAnimalsPics = mAnimalsPics;
     }
 
 }

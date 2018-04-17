@@ -41,9 +41,9 @@ public class AddNewPetActivity extends AppCompatActivity {
     private static final int QUALITY =35 ;
     private static final int MAX_WIDTH = 640;
     private static final int MAX_HEIGHT = 480;
-    private static final int MAX_YEAR = 15;
-    private static final int MAX_MONTH = 15;
-    private static final int MAX_DAY = 15;
+    private static final int MAX_YEAR = 16;
+    private static final int MAX_MONTH = 12;
+    private static final int MAX_DAY = 31;
     private ImageView actualImageView;
     private File actualImage;
     private File compressedImage;
