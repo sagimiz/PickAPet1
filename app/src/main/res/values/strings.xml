@@ -67,6 +67,13 @@
     <!-- Strings related to Dialogs -->
     <string name="dialog_remove_animals_message_text">בחר את החיה אשר ברצונך למחוק</string>
     <string name="dialog_remove_animals_title_text">מחיקת חיה מהמאגר</string>
+    <string name="dialog_remove_animals_success_text2">שיהיה בהצלחה בביתך החדש</string>
+    <string name="dialog_remove_animals_success_text1">להתראות</string>
+    <string name="dialog_remove_animals_error_text">קרתה טעות בתהליך, ניתן לנסות שוב</string>
+    <string name="dialog_filter_animals_title_text">בצע סינון לחיות לפי:</string>
+    <string name="dialog_filter_animals_gender_text">לפי מין</string>
+    <string name="dialog_filter_animals_kind_text">לפי סוג</string>
+    <string name="dialog_filter_animals_type_text">לפי גזע</string>
 
 
     <string name="permission_rationale">"Contacts permissions are needed for providing email
@@ -149,12 +156,13 @@
 
 
     <!-- Connections URL-->
-    <string name="base_url">http://10.0.0.25:3000</string>
+    <string name="base_url">http://10.0.0.3:3000</string>
     <string name="animals_request">animals</string>
     <string name="animals_pic_request">animalpic</string>
     <string name="animals_owner_request_id">animalownerid</string>
     <string name="animals_owner_active_request">animalowner_active</string>
     <string name="animals_owner_all_active_animals_request">user_all_animals</string>
+    <string name="animals_owner_deactivate_animals_request">user_deactivate_animal</string>
     <string name="animals_owner_request_aid">animalowneraid</string>
     <string name="user_request">user</string>
     <string name="user_request_id">userid</string>animaltype

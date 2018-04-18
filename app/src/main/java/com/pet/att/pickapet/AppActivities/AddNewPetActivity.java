@@ -239,7 +239,7 @@ public class AddNewPetActivity extends AppCompatActivity {
 
 
         arrayMonthSpinner = new String[MAX_MONTH];
-        for(int i = 0; i<arrayYearSpinner.length;i++){
+        for(int i = 0; i<arrayMonthSpinner.length;i++){
             arrayMonthSpinner[i] = String.valueOf(i+1);
         }
         mAnimalBirthDateMonth = (Spinner) findViewById(R.id.animal_birth_date_month);
@@ -250,7 +250,7 @@ public class AddNewPetActivity extends AppCompatActivity {
 
 
         arrayDaySpinner = new String[MAX_DAY];
-        for(int i = 0; i<arrayYearSpinner.length;i++){
+        for(int i = 0; i<arrayDaySpinner.length;i++){
             arrayDaySpinner[i] = String.valueOf(i+1);
         }
         mAnimalBirthDateDay = (Spinner) findViewById(R.id.animal_birth_date_day);

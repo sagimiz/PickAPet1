@@ -65,6 +65,15 @@ public class RecyclerViewFragment extends Fragment {
                                 mAdapter.refreshPics(mAnimalsPics);
                                 mSwipeLayout.setRefreshing(false);
                             }
+
+                            @Override
+                            public void onTaskCompleted(String result) {
+
+                            }
+                            @Override
+                            public void onTaskCompleted(Boolean result) {
+
+                            }
                         }).execute(mCurrentContext.getString(R.string.animals_owner_active_request),
                                         mCurrentContext.getString(R.string.animals_pic_request),
                                         mCurrentContext.getString(R.string.all_active_animal_pic_json));
