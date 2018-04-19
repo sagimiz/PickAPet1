@@ -18,8 +18,7 @@ import java.util.ArrayList;
 
 public class SpinnerDialog extends Dialog {
     private final String mKindJson;
-    private final String mTyperJson;
-    private final String mGenderJson;
+    private final String mTypeJson;
     private Context mContext;
     private Spinner mGenderSpinner;
     private Spinner mKindSpinner;
@@ -28,8 +27,6 @@ public class SpinnerDialog extends Dialog {
     private String[][] mKindArray=null;
     private String[][] mTypeArray=null;
 
-
-
     public interface DialogListener {
         public void ready(String mGender,String mKind,String mType);
         public void cancelled();
@@ -37,13 +34,12 @@ public class SpinnerDialog extends Dialog {
 
     private DialogListener mReadyListener;
 
-    public SpinnerDialog(Context context, String mGenderJson,String mKindJson,String mTypeJson, DialogListener readyListener) {
+    public SpinnerDialog(Context context,String mKindJson,String mTypeJson, DialogListener readyListener) {
         super(context);
         mReadyListener = readyListener;
         mContext = context;
-        this.mGenderJson = mGenderJson;
         this.mKindJson = mKindJson;
-        this.mTyperJson = mTypeJson;
+        this.mTypeJson = mTypeJson;
     }
 
     @Override
@@ -68,7 +64,7 @@ public class SpinnerDialog extends Dialog {
 
 
         mTypeSpinner = (Spinner) findViewById (R.id.dialog_spinner_type);
-        mTypeArray = this.getArrayFromJSON(this.mTyperJson,"type_name","type_id");
+        mTypeArray = this.getArrayFromJSON(this.mTypeJson,"type_name","type_id");
         ArrayAdapter<String> mTypeAdapter = new ArrayAdapter<String> (mContext, android.R.layout.simple_spinner_dropdown_item, this.getArrayListNameValueFromArray(mTypeArray));
         mTypeSpinner.setAdapter(mTypeAdapter);
 
@@ -115,6 +111,7 @@ public class SpinnerDialog extends Dialog {
         }
         return array;
     }
+
     private ArrayList<String> getArrayListNameValueFromArray (String[][] array) {
         ArrayList<String>  arrayList= new ArrayList<String>();
         for(int i=0; i<array.length;i++){

@@ -1,7 +1,9 @@
 package com.pet.att.pickapet.AuxiliaryClasses;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -29,9 +31,6 @@ public class RecyclerViewFragment extends Fragment {
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 3;
     protected Bundle args;
-
-
-
     private enum LayoutManagerType { GRID_LAYOUT_MANAGER }
     protected LayoutManagerType mCurrentLayoutManagerType;
     protected String animalJsonString;
@@ -40,14 +39,15 @@ public class RecyclerViewFragment extends Fragment {
     protected AnimalsPics[] mAnimalsPics;
     protected SwipeRefreshLayout mSwipeLayout;
     protected Activity mCurrentActivity;
+    protected Activity mActivity;
     protected Context mCurrentContext;
+    OnTaskCompleted listener;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        mCurrentActivity = this.getActivity().getParent();
+        mCurrentActivity = this.getActivity();
         mCurrentContext= this.getContext();
         args  = getArguments();
         mSwipeLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipe_refresh);
@@ -55,29 +55,47 @@ public class RecyclerViewFragment extends Fragment {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        Log.d(TAG, "onRefresh called from SwipeRefreshLayout");
-                        new RefreshImagesTask((AppCompatActivity) mCurrentActivity, mCurrentContext,args, new OnTaskCompleted() {
+                        String mGender = getPutExtraValue(R.string.filter_gender_id);
+                        String mKind = getPutExtraValue(R.string.filter_kind_id);
+                        String mType =getPutExtraValue(R.string.filter_type_id);
+                        new PetsImagesTask(mCurrentActivity, mCurrentContext, new OnTaskCompleted() {
                             @Override
                             public void onTaskCompleted() {
-                                String jsonValue = getArguments().getString(getString(R.string.all_active_animal_pic_json));
-                                Log.d (TAG,"The JSON String is " + jsonValue);
-                                mAnimalsPics=getAnimalsPicsDataset(jsonValue);
+
+                            }
+
+                            @Override
+                            public void onTaskCompleted(String result) {
+                                Log.d (TAG,"The JSON String is " + result);
+                                mAnimalsPics=getAnimalsPicsDataset(result);
                                 mAdapter.refreshPics(mAnimalsPics);
                                 mSwipeLayout.setRefreshing(false);
                             }
 
                             @Override
-                            public void onTaskCompleted(String result) {
-
-                            }
-                            @Override
                             public void onTaskCompleted(Boolean result) {
-
+                                if (result){
+                                    String mAllPicsResult = mCurrentActivity.getIntent().getStringExtra(getString(R.string.all_active_animal_pic_json));
+                                    onTaskCompleted(mAllPicsResult);
+                                }else{
+                                    mSwipeLayout.setRefreshing(false);
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(mCurrentContext);
+                                    builder.setMessage(mCurrentContext.getString(R.string.dialog_error_text))
+                                            .setCancelable(false)
+                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                    AlertDialog alert = builder.create();
+                                    alert.show();
+                                }
                             }
-                        }).execute(mCurrentContext.getString(R.string.animals_owner_active_request),
-                                        mCurrentContext.getString(R.string.animals_pic_request),
-                                        mCurrentContext.getString(R.string.all_active_animal_pic_json));
-
+                        }).execute(mCurrentContext.getString(R.string.animals_pic_filter_all_request),
+                                mType,
+                                mGender,
+                                mKind,
+                                mCurrentContext.getString(R.string.all_active_animal_pic_json));
                     }
                 }
         );
@@ -91,7 +109,7 @@ public class RecyclerViewFragment extends Fragment {
         String jsonValue = getArguments().getString(getString(R.string.all_active_animal_pic_json));
         Log.d (TAG,"The JSON String is " + jsonValue);
         animalJsonString = jsonValue;
-        this.initDataset();
+        this.initDataSet();
 
         View rootView = inflater.inflate(R.layout.recycler_view_frag, container, false);
         rootView.setTag(TAG);
@@ -115,6 +133,7 @@ public class RecyclerViewFragment extends Fragment {
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
 
+        listener.onTaskCompleted();
         return rootView;
     }
 
@@ -145,7 +164,7 @@ public class RecyclerViewFragment extends Fragment {
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    private void initDataset() {
+    private void initDataSet() {
         JSONArray jsonArray = null;
         try {
             jsonArray = new JSONArray(animalJsonString);
@@ -162,7 +181,7 @@ public class RecyclerViewFragment extends Fragment {
         }
     }
 
-    private AnimalsPics[] getAnimalsPicsDataset(String mAnimalJsonString) {
+    public AnimalsPics[] getAnimalsPicsDataset(String mAnimalJsonString) {
         JSONArray jsonArray = null;
         AnimalsPics[] animalsPics=null;
         try {
@@ -187,6 +206,25 @@ public class RecyclerViewFragment extends Fragment {
 
     public void setAnimalsPics(AnimalsPics[] mAnimalsPics) {
         this.mAnimalsPics = mAnimalsPics;
+    }
+
+    public CustomAdapter getAdapter() {
+        return mAdapter;
+    }
+
+    public void setListener(OnTaskCompleted listener) {
+        this.listener = listener;
+    }
+
+    private String getPutExtraValue(int value){
+        String mValue=null;
+        Log.d(TAG, "onRefresh called from SwipeRefreshLayout");
+        try {
+            mValue = mCurrentActivity.getIntent().getStringExtra(getString(value));
+        }catch (Exception e){
+            mValue = (mValue==null)? "" : mValue;
+        }
+        return (mValue==null)? "" : mValue;
     }
 
 }

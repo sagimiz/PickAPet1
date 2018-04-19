@@ -23,9 +23,6 @@ public class OwnerDataTask extends AsyncTask<String, Void, String> {
     private final AppCompatActivity mActivity;
     private final Bundle mArgs;
     private String mOwnerDetailsJson;
-
-
-
     private String putText;
 
 
@@ -36,7 +33,6 @@ public class OwnerDataTask extends AsyncTask<String, Void, String> {
         this.mActivity = activity;
         this.mArgs=args;
     }
-
 
     @Override
     protected String doInBackground(String... strings) {
@@ -55,7 +51,6 @@ public class OwnerDataTask extends AsyncTask<String, Void, String> {
         setPutText(strings[2]);
         return jsonStr;
     }
-
 
     @Override
     protected void onPostExecute(String jsonObject) {

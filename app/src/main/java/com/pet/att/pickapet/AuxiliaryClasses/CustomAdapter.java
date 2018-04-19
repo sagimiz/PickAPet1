@@ -1,11 +1,15 @@
 package com.pet.att.pickapet.AuxiliaryClasses;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -31,6 +35,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         public ViewHolder(View v) {
             super(v);
             imageView = (ImageView) v.findViewById(R.id.imageView);
+
+//            WindowManager wm = (WindowManager) v.getContext().getSystemService(Context.WINDOW_SERVICE);
+//            Display display = wm.getDefaultDisplay();
+//            Point size = new Point();
+//            display.getSize(size);
+//            int width = size.x;
+//            int height = size.y;
+//
+//            imageView.setMaxWidth(width/3);
+//            imageView.setMaxHeight(width/3);
             imageView.setOnClickListener(this);
         }
 

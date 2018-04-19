@@ -12,5 +12,6 @@
         android:layout_width="@dimen/image_horizontal_margin"
         android:layout_height="@dimen/image_vertical_margin"
         android:text="@string/element_text"
+        android:scaleType="center"
         />
 </FrameLayout>

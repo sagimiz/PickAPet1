@@ -1,21 +1,26 @@
 package com.pet.att.pickapet.AppActivities;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.pet.att.pickapet.AuxiliaryClasses.AnimalsPics;
+import com.pet.att.pickapet.AuxiliaryClasses.CustomAdapter;
 import com.pet.att.pickapet.AuxiliaryClasses.OnTaskCompleted;
+import com.pet.att.pickapet.AuxiliaryClasses.RecyclerViewFragment;
 import com.pet.att.pickapet.AuxiliaryClasses.SpinnerDialog;
 import com.pet.att.pickapet.HTTP.GetAnimalPreLoadPageTask;
+import com.pet.att.pickapet.HTTP.GetPetsDetailsTask;
 import com.pet.att.pickapet.HTTP.UserActiveAnimalsTask;
 import com.pet.att.pickapet.HTTP.PetsImagesTask;
 import com.pet.att.pickapet.R;
@@ -29,12 +34,14 @@ import static com.android.volley.Request.Method.PUT;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private Bundle mCurrentBundle;
     private String mCurrentUserJsonData;
     private Context mContext;
     private String [] mAllUserAnimalsName;
     protected String currentUserId;
     private String [] mAllUserAnimalsId;
+    protected  ProgressDialog mDialog;
+    protected FragmentTransaction transaction;
+    protected RecyclerViewFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,44 +49,56 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mCurrentBundle =savedInstanceState;
         mContext=this;
-
         mCurrentUserJsonData =this.getIntent().getStringExtra(getString(R.string.current_user_details_json));
 
         if (savedInstanceState == null) {
-            new PetsImagesTask(MainActivity.this,this)
-                    .execute(this.getString(R.string.animals_owner_active_request),
-                            this.getString(R.string.animals_pic_request),
-                            this.getString(R.string.all_active_animal_pic_json));
+            getPetsImageTask(false,"","","");
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-
-                SpinnerDialog mSpinnerDialog = new SpinnerDialog(mContext,",","[{\"kind_id\":1111,\"kind\":\"כלב\"},{\"kind_id\":2222,\"kind\":\"חתול\"}]","[{\"type_id\":1111,\"type_name\":\"רועה גרמני\"},{\"type_id\":1212,\"type_name\":\"פודל\"},{\"type_id\":1478,\"type_name\":\"אמסטף\"},{\"type_id\":6543,\"type_name\":\"פרנץ בולדוג\"},{\"type_id\":9999,\"type_name\":\"לא ידוע\"}]" , new SpinnerDialog.DialogListener() {
+                GetPetsDetailsTask getPetsDetailsTask = new GetPetsDetailsTask(MainActivity.this, mContext, new OnTaskCompleted() {
                     @Override
-                    public void ready(String mGender, String mKind, String mType) {
-
+                    public void onTaskCompleted() {
+                        String mKindJson = getIntent().getStringExtra(getString(R.string.all_kind_json));
+                        String mTypeJson = getIntent().getStringExtra(getString(R.string.all_type_json));
+                        showSpinnerDialog( mKindJson, mTypeJson);
                     }
 
-                    public void cancelled() {
-                        // do your code here
+                    @Override
+                    public void onTaskCompleted(String result) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                        builder.setMessage(result)
+                                .setCancelable(false)
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        AlertDialog alert = builder.create();
+                        alert.show();
+                    }
+
+                    @Override
+                    public void onTaskCompleted(Boolean result) {
+                        if(result){
+                            onTaskCompleted();
+                        }else{
+                            String resultStr = getString(R.string.dialog_error_text);
+                            onTaskCompleted(resultStr );
+                        }
                     }
                 });
-                mSpinnerDialog.show();
-
-
-
-
+                getPetsDetailsTask.execute(getString(R.string.animal_type_request),
+                                            getString(R.string.animal_kind_request),
+                                                getString(R.string.all_type_json),
+                                                    getString(R.string.all_kind_json));
             }
         });
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -162,17 +181,15 @@ public class MainActivity extends AppCompatActivity {
                                             });
                                     AlertDialog alert = builder.create();
                                     alert.show();
-
                                 }
-
                                 @Override
                                 public void onTaskCompleted(Boolean result) {
                                     if (result){
                                         String resultStr = getString(R.string.dialog_remove_animals_success_text2)+ " " +  mAllUserAnimalsName[position]+ " " +getString(R.string.dialog_remove_animals_success_text1);
                                         onTaskCompleted(resultStr );
                                     }else{
-                                        String resultStr = getString(R.string.dialog_remove_animals_error_text);
-                                        onTaskCompleted(resultStr );
+                                        String resultStr = getString(R.string.dialog_error_text);
+                                        onTaskCompleted(resultStr);
                                     }
 
                                 }
@@ -207,7 +224,90 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void getPetsImageTask(final boolean isReload, String mGender, String mKind, String mType){
+        mDialog = new ProgressDialog(mContext);
+        mDialog.setMessage("Please wait...");
+        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mDialog.setIndeterminate(true);
+        mDialog.setCancelable(false);
+        mDialog.show();
+        new PetsImagesTask(MainActivity.this, this, new OnTaskCompleted() {
+            @Override
+            public void onTaskCompleted() {
 
+            }
 
+            @Override
+            public void onTaskCompleted(String result) {
+                Bundle args = new Bundle();
+                args.putString(getString(R.string.all_active_animal_pic_json), result);
+                if(!isReload){
+
+                    transaction = getSupportFragmentManager().beginTransaction();
+                    fragment = new RecyclerViewFragment();
+                    fragment.setArguments(args);
+                    transaction.replace(R.id.pets_content_fragment, fragment);
+                    transaction.commit();
+                    fragment.setListener(new OnTaskCompleted() {
+                        @Override
+                        public void onTaskCompleted() {
+                            mDialog.dismiss();
+                        }
+                        @Override
+                        public void onTaskCompleted(String result) {
+
+                        }
+
+                        @Override
+                        public void onTaskCompleted(Boolean result) {
+
+                        }
+                    });
+                }else{
+                    CustomAdapter customAdapter = fragment.getAdapter();
+                    AnimalsPics[] animalsPics = fragment.getAnimalsPicsDataset(result);
+                    customAdapter.refreshPics(animalsPics);
+                    mDialog.dismiss();
+                }
+            }
+
+            @Override
+            public void onTaskCompleted(Boolean result) {
+                if (result){
+                    String mAllPicsResult = getIntent().getStringExtra(getString(R.string.all_active_animal_pic_json));
+                    onTaskCompleted(mAllPicsResult);
+                }else{
+                    mDialog.dismiss();
+                }
+            }
+        }).execute(this.getString(R.string.animals_pic_filter_all_request),
+                mType,
+                mGender,
+                mKind,
+                this.getString(R.string.all_active_animal_pic_json));
+    }
+
+    public void showSpinnerDialog(String mKindJson,String mTypeJson){
+
+        SpinnerDialog mSpinnerDialog = new SpinnerDialog(mContext,mKindJson,mTypeJson , new SpinnerDialog.DialogListener() {
+            @Override
+            public void ready(String mGender, String mKind, String mType) {
+                if (mGender.equals("זכר")){
+                    mGender="1";
+                }else if(mGender.equals("נקבה")){
+                    mGender="2";
+                }
+                getIntent().putExtra(getString(R.string.filter_gender_id),mGender);
+                getIntent().putExtra(getString(R.string.filter_kind_id),mKind);
+                getIntent().putExtra(getString(R.string.filter_type_id),mType);
+                getPetsImageTask( true,mGender,  mKind,  mType);
+            }
+
+            public void cancelled() {
+                // do your code here
+            }
+        });
+        mSpinnerDialog.show();
+    }
 
 }
