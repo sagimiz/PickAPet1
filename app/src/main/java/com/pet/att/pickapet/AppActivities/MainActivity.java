@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
@@ -220,6 +221,36 @@ public class MainActivity extends AppCompatActivity {
                     .execute(this.getString(R.string.animals_owner_all_active_animals_request),
                                 currentUserId,
                                     this.getString(R.string.current_user_active_animals_json));
+        }
+
+        if (id == R.id.action_sign_out) {
+
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which){
+                        case DialogInterface.BUTTON_POSITIVE:
+                            SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("UserEmail",null);
+                            editor.putString("Password", null);
+                            editor.apply();
+
+                            Intent intent = new Intent(mContext, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                            break;
+
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            break;
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setMessage(mContext.getString(R.string.action_sign_out_dialog)).setPositiveButton("כן", dialogClickListener)
+                    .setNegativeButton("ביטול", dialogClickListener).show();
+
         }
         return super.onOptionsItemSelected(item);
     }

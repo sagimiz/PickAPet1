@@ -15,12 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.pet.att.pickapet.AppActivities.MainActivity;
 import com.pet.att.pickapet.HTTP.PetsImagesTask;
-import com.pet.att.pickapet.HTTP.RefreshImagesTask;
 import com.pet.att.pickapet.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -129,7 +125,7 @@ public class RecyclerViewFragment extends Fragment {
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
-        mAdapter = new CustomAdapter(mAnimalsPics);
+        mAdapter = new CustomAdapter(mAnimalsPics,mCurrentActivity);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
 

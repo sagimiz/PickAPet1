@@ -149,6 +149,4 @@ public class GetAnimalPreLoadPageTask extends AsyncTask<String, Void, Boolean> {
         this.mSecondJSONResult = mSecondJSONResult;
     }
 
-
-
 }

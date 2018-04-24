@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import com.pet.att.pickapet.AppActivities.AddNewPetActivity;
 import com.pet.att.pickapet.AuxiliaryClasses.OnTaskCompleted;
 import com.pet.att.pickapet.R;
 

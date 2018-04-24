@@ -13,8 +13,9 @@
     <string name="action_sign_in">כניסת משתמש קיים</string>
     <string name="action_register">כניסת משתמש חדש</string>
     <string name="action_sign_in_short">הירשם</string>
-    <string name="action_sign_out_short">Sing Out</string>
+    <string name="action_sign_out_short">התנתק</string>
     <string name="action_sign_out_key">Sing Out</string>
+    <string name="action_sign_out_dialog">האם אתה בטוח שברצונך להתנתק?</string>
     <string name="action_sign_out_user_name"></string>
 
 
@@ -33,6 +34,20 @@
     <string name="add_animal_all">הוסף חיה</string>
     <string name="add_hint_name">מה השם שלי</string>
     <string name="add_hint_bdate">01/01/1990</string>
+
+    <!-- Strings related to Animal Image Details -->
+    <string name="animal_details_title">פרטי החיה</string>
+    <string name="animal_details_name">שלום קראים לי </string>
+    <string name="animal_details_birth_date">הגיל שלי הוא </string>
+    <string name="animal_details_type"> הגזע שלי הוא </string>
+    <string name="animal_details_kind"> מסוג </string>
+    <string name="animal_details_gender">מין </string>
+    <string name="animal_details_description">קצת עלי: </string>
+    <string name="animal_details_owner_details">פרטי היקשרות: </string>
+    <string name="animal_details_owner_name">שם בעלים: </string>
+    <string name="animal_details_owner_address">כתובת: </string>
+    <string name="animal_details_owner_phone">טלפון לפרטים: </string>
+
 
 
     <!-- Strings related to Add User -->
@@ -66,7 +81,7 @@
 
     <!-- Strings related to Dialogs -->
     <string name="dialog_remove_animals_message_text">בחר את החיה אשר ברצונך למחוק</string>
-    <string name="dialog_remove_animals_title_text">מחיקת חיה מהמאגר</string>
+    <string name="dialog_remove_animals_title_text">בחר את החיה אשר ברצונך למחוק</string>
     <string name="dialog_remove_animals_success_text2">שיהיה בהצלחה בביתך החדש</string>
     <string name="dialog_remove_animals_success_text1">להתראות</string>
     <string name="dialog_error_text">קרתה טעות בתהליך, ניתן לנסות שוב</string>
@@ -156,10 +171,11 @@
 
 
     <!-- Connections URL-->
-    <string name="base_url">http://10.0.0.3:3000</string>
+    <string name="base_url">http://10.0.0.11:3000</string>
     <string name="animals_request">animals</string>
     <string name="animals_pic_request">animalpic</string>
     <string name="animals_owner_request_id">animalownerid</string>
+    <string name="animals_image_all_data_request">animal_image_all_details</string>
     <string name="animals_owner_active_request">animalowner_active</string>
     <string name="animals_pic_filter_all_request">pics_filter_all_animals</string>
     <string name="animals_owner_all_active_animals_request">user_all_animals</string>
@@ -173,11 +189,13 @@
 
     <!-- Put/Get extra values strings-->
     <string name="current_user_details_json">current_user_details</string>
+    <string name="animal_image_json">animal_data</string>
     <string name="current_user_active_animals_json">current_user_details</string>
     <string name="current_user_login_json">current_user_login</string>
     <string name="all_type_json">all_animals_type</string>
     <string name="all_kind_json">all_animals_kind</string>
     <string name="all_active_animal_pic_json">animal_pic_json</string>
+    <string name="animals_image_all_data_json">image_details_json</string>
     <string name="filter_kind_id">filter_kind_id</string>
     <string name="filter_type_id">filter_type_id</string>
     <string name="filter_gender_id">filter_gender_id</string>

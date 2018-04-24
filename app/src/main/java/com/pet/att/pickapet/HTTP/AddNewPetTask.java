@@ -1,15 +1,13 @@
 package com.pet.att.pickapet.HTTP;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
-import android.view.View;
 
+import com.pet.att.pickapet.AuxiliaryClasses.MainObjectTask;
 import com.pet.att.pickapet.R;
 
 import java.io.ByteArrayOutputStream;
@@ -18,13 +16,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class AddNewPetTask extends AsyncTask<Object, Void, Boolean> {
+public class AddNewPetTask extends MainObjectTask {
     private static final String TAG = "AddNewPetTask";
     private final AppCompatActivity mActivity;
     private final String baseURL;
     private Context mContext;
-    private String mUserDetailsJson;
-    private ProgressDialog mDialog;
     private String mAnimalId;
     private String mOwnerId;
     private String mAnimalName;
@@ -34,15 +30,9 @@ public class AddNewPetTask extends AsyncTask<Object, Void, Boolean> {
     private File mAnimalImage;
     private String mAnimalBirthDate;
 
-
     private ArrayList<String> jsonBodyArrayForAnimals;
     private ArrayList<String> jsonBodyArrayForAnimalsOwner;
     private ArrayList<String> jsonBodyArrayForAnimalsPic;
-    private String mFirstPutString;
-    private String mFirstRequestName;
-    private String mSecondRequestName;
-    private String mThirdRequestName;
-
 
 
     public AddNewPetTask(AppCompatActivity activity, Context context){
@@ -64,24 +54,22 @@ public class AddNewPetTask extends AsyncTask<Object, Void, Boolean> {
        The Fifth arg is animal_birth_date name for json
        The Sixth arg is owner_id for json
     */
-
     @Override
     protected Boolean doInBackground(Object... objects) {
         this.initStringsItems(objects);
 
         boolean isCorrect = false;
-
-        Log.d(TAG, "Sending Put data for "+ this.getFirstRequestName());
-        String  resultStr = HttpRequestsURLConnection.SendHttpPut(baseURL + "/"+ this.getFirstRequestName(), getJsonBodyString(jsonBodyArrayForAnimals));
-        if (isValidJsonResult(resultStr) && (resultStr.equals("Empty")) ) {
-            Log.d(TAG, "Result data for request "+ this.getFirstRequestName() + " is " + resultStr );
-            resultStr = HttpRequestsURLConnection.SendHttpPut(baseURL + "/"+ this.getSecondRequestName(), getJsonBodyString(jsonBodyArrayForAnimalsOwner));
-            if (isValidJsonResult(resultStr) && resultStr.equals("Empty")) {
-                Log.d(TAG, "Result data for request "+ this.getSecondRequestName() + " is " + resultStr );
-                resultStr = HttpRequestsURLConnection.SendObjectsHttpPut(baseURL + "/"+ this.getThirdRequestName(),
+        Log.d(TAG, "Sending Put data for "+ super.getFirstRequestName());
+        String  resultStr = HttpRequestsURLConnection.SendHttpPut(baseURL + "/"+ super.getFirstRequestName(), super.getJsonBodyString(jsonBodyArrayForAnimals));
+        if (super.isValidJsonResult(resultStr) && (resultStr.equals("Empty")) ) {
+            Log.d(TAG, "Result data for request "+ super.getFirstRequestName() + " is " + resultStr );
+            resultStr = HttpRequestsURLConnection.SendHttpPut(baseURL + "/"+ super.getSecondRequestName(), super.getJsonBodyString(jsonBodyArrayForAnimalsOwner));
+            if (super.isValidJsonResult(resultStr) && resultStr.equals("Empty")) {
+                Log.d(TAG, "Result data for request "+ super.getSecondRequestName() + " is " + resultStr );
+                resultStr = HttpRequestsURLConnection.SendObjectsHttpPut(baseURL + "/"+ super.getThirdRequestName(),
                                                                             getJsonBodyString(jsonBodyArrayForAnimalsPic),
                                                                                 this.getAnimalImage());
-                if (isValidJsonResult(resultStr) && resultStr.equals("Empty")){
+                if (super.isValidJsonResult(resultStr) && resultStr.equals("Empty")){
                     Log.d(TAG, "Result data for request "+ this.getThirdRequestName() + " is " + resultStr );
                     isCorrect = true;
                 }
@@ -94,35 +82,12 @@ public class AddNewPetTask extends AsyncTask<Object, Void, Boolean> {
     protected void onPostExecute(final Boolean success) {
 
         if (success){
-
             mActivity.finish();
         }else{
 
         }
 
     }
-
-
-
-
-//
-//    @Override
-//    protected Boolean doInBackground(String... strings) {
-//
-//        jsonBodyArrayForUser = new ArrayList<String>();
-//        this.initStringsItems(strings);
-//        boolean isCorrect = false;
-//
-//        Log.d(TAG, "Sending Put data for "+ this.getFirstRequestName());
-//        String  resultStr = HttpRequestsURLConnection.SendHttpPut(baseURL + "/"+ this.getFirstRequestName(), getJsonBodyString(jsonBodyArrayForUser));
-//        if (isValidJsonResult(resultStr) && (resultStr.equals("Empty")) ) {
-//            resultStr = HttpRequestsURLConnection.SendHttpPut(baseURL + "/"+ this.getSecondRequestName(), getJsonBodyString(jsonBodyArrayForUserLogin));
-//            if (isValidJsonResult(resultStr) && resultStr.equals("Empty")) {
-//                isCorrect = true;
-//            }
-//        }
-//        return isCorrect;
-//    }
 
     /*
     * The First arg is animals request name
@@ -138,9 +103,9 @@ public class AddNewPetTask extends AsyncTask<Object, Void, Boolean> {
     * */
     private void initStringsItems(Object[] objects) {
 
-        this.setFirstRequestName( (String) objects[0]);
-        this.setSecondRequestName((String) objects[1]);
-        this.setThirdRequestName((String) objects[2]);
+        super.setFirstRequestName( (String) objects[0]);
+        super.setSecondRequestName((String) objects[1]);
+        super.setThirdRequestName((String) objects[2]);
 
         this.setId((String) objects[3]);
         jsonBodyArrayForAnimalsOwner.add("id="+this.getId());
@@ -186,153 +151,67 @@ public class AddNewPetTask extends AsyncTask<Object, Void, Boolean> {
 
     }
 
-    private String getJsonBodyString(ArrayList<String> jsonArray){
-        String jsonString="";
-        for (int i =0;i<jsonArray.size();i++){
-            jsonString=jsonString +"&"+jsonArray.get(i);
-        }
-        return (jsonString.length()>0)? jsonString.substring(1,jsonString.length()):"";
-    }
-
-    private String getStringJsonBody(ArrayList<String> jsonArray){
-        String jsonString="";
-        for (int i =0;i<jsonArray.size();i++){
-            jsonString=jsonString +","+jsonArray.get(i);
-        }
-        return (jsonString.length()>0)? "{"+jsonString.substring(1,jsonString.length())+"}":"";
-    }
-
-
-
-    public String getSecondRequestName() {
-        return mSecondRequestName;
-    }
-
-    public void setSecondRequestName(String mSecondRequestName) {
-        this.mSecondRequestName = mSecondRequestName;
-    }
-
-
-    public String getFirstRequestName() {
-        return mFirstRequestName;
-    }
-
-    public void setFirstRequestName(String firstRequestName) {
-        this.mFirstRequestName = firstRequestName;
-    }
-
-    @Override
-    protected void onCancelled() {
-        mDialog.dismiss();
-    }
-
-    public String getFirstPutString() {
-        return mFirstPutString;
-    }
-
-    public void setFirstPutString(String mFirstPutString) {
-        this.mFirstPutString = mFirstPutString;
-    }
-
-
-    private String setStringToJsonFormat (String currentJsonString){
-        return currentJsonString.substring(1,currentJsonString.length());
-    }
-
-    private String getUserDetailsJson() {
-        return mUserDetailsJson;
-    }
-
-    private void setUserDetailsJson(String ownerDetailsJson) {
-        this.mUserDetailsJson = ownerDetailsJson;
-    }
-
-
-    private boolean isValidJsonResult(String jsonStr){
-        if (jsonStr == null){
-            return false;
-        }
-        if (jsonStr.contains("Error")){
-            return false;
-        }
-        if (jsonStr.contains("something")){
-            return false;
-        }
-
-        return true;
-    }
-
-    public String getId() {
+    private String getId() {
         return mOwnerId;
     }
 
-    public void setId(String mId) {
+    private void setId(String mId) {
         this.mOwnerId = mId;
     }
 
-    public String getAnimalName() {
+    private String getAnimalName() {
         return mAnimalName;
     }
 
-    public void setAnimalName(String mFirstName) {
+    private void setAnimalName(String mFirstName) {
         this.mAnimalName = mFirstName;
     }
 
-    public File getAnimalImage() {
+    private File getAnimalImage() {
         return mAnimalImage;
     }
 
-    public void setAnimalImage(File mAnimalImage) {
+    private void setAnimalImage(File mAnimalImage) {
         this.mAnimalImage = mAnimalImage;
     }
 
-    public String getAnimalBirthDate() {
+    private String getAnimalBirthDate() {
         return mAnimalBirthDate;
     }
 
-    public void setAnimalBirthDate(String mAnimalBirthDate) {
+    private void setAnimalBirthDate(String mAnimalBirthDate) {
         this.mAnimalBirthDate = mAnimalBirthDate;
     }
 
-    public String getThirdRequestName() {
-        return mThirdRequestName;
-    }
-
-    public void setThirdRequestName(String mThirdRequestName) {
-        this.mThirdRequestName = mThirdRequestName;
-    }
-
-
-    public String getAnimalType() {
+    private String getAnimalType() {
         return mAnimalType;
     }
 
-    public void setAnimalType(String mAnimalType) {
+    private void setAnimalType(String mAnimalType) {
         this.mAnimalType = mAnimalType;
     }
 
-    public String getAnimalGender() {
+    private String getAnimalGender() {
         return mAnimalGender;
     }
 
-    public void setAnimalGender(String mAnimalGender) {
+    private void setAnimalGender(String mAnimalGender) {
         this.mAnimalGender = mAnimalGender;
     }
 
-
-    public String getAnimalId() {
+    private String getAnimalId() {
         return mAnimalId;
     }
 
-    public void setAnimalId(String mAnimalId) {
+    private void setAnimalId(String mAnimalId) {
         this.mAnimalId = mAnimalId;
     }
 
-    public String getAnimalKind() {
+    private String getAnimalKind() {
         return mAnimalKind;
     }
 
-    public void setAnimalKind(String mAnimalKind) {
+    private void setAnimalKind(String mAnimalKind) {
         this.mAnimalKind = mAnimalKind;
     }
 }

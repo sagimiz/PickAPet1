@@ -9,8 +9,8 @@
 
 
     <!-- Animal Details Activity dimens-->
-    <dimen name="details_image_horizontal_margin">300dp</dimen>
-    <dimen name="details_animal_text_vertical_margin">40dp</dimen>
+    <dimen name="details_image_horizontal_margin">250dp</dimen>
+    <dimen name="details_animal_text_vertical_margin">30dp</dimen>
 
     <!-- Add User Activity dimens-->
     <dimen name="details_user_layout_horizontal">40dp</dimen>

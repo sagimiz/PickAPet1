@@ -2,7 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.pet.att.pickapet.AuxiliaryClasses.DetailsViewFragment">
+    tools:context="com.pet.att.pickapet.AuxiliaryClasses.ImageDetailsViewFragment">
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,17 +25,34 @@
             <LinearLayout
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/details_animal_text_vertical_margin"
-                    android:id="@+id/animal_name_text"/>
+                    android:id="@+id/animal_details_title"
+                    android:text="@string/animal_details_title"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="20dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/details_animal_text_vertical_margin"
+                    android:id="@+id/animal_name_text"
+                    android:gravity="right"
+                    android:textStyle="bold"
+                    android:textSize="16dp"/>
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/details_image_horizontal_margin"
-                    android:id="@+id/animal_big_image"/>
+                    android:id="@+id/animal_big_image"
+                    android:layout_marginBottom="@dimen/details_user_margins"
+                    android:layout_marginLeft="@dimen/details_user_margins"
+                    android:layout_marginRight="@dimen/details_user_margins"
+                    android:layout_marginTop="@dimen/details_user_margins"
+                    android:scaleType="fitXY"/>
 
                 <!--<include layout="@layout/content_main" />-->
                 <LinearLayout
@@ -41,63 +61,116 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <LinearLayout
-                        xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:orientation="vertical"
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="right">
 
-                        <LinearLayout
-                            xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:orientation="horizontal"
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/details_user_margins"
+                            android:layout_marginLeft="@dimen/details_user_margins"
+                            android:layout_marginRight="@dimen/details_user_margins"
+                            android:layout_marginTop="@dimen/details_user_margins"
+                            android:gravity="right"
+                            android:orientation="vertical">
 
                             <TextView
-                                android:layout_width="190dp"
-                                android:layout_height="@dimen/details_animal_text_vertical_margin"
-                                android:id="@+id/animal_bdate_text"/>
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:layout_marginBottom="@dimen/details_user_margins"
+                                android:layout_marginLeft="@dimen/details_user_margins"
+                                android:layout_marginRight="@dimen/details_user_margins"
+                                android:layout_marginTop="@dimen/details_user_margins"
+                                android:text="@string/animal_details_description"
+                                android:textStyle="bold"/>
                             <TextView
-                                android:layout_width="190dp"
-                                android:layout_height="@dimen/details_animal_text_vertical_margin"
-                                android:id="@+id/animal_type_text"/>
+                                android:id="@+id/animal_description_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/details_user_margins"
+                                android:layout_marginLeft="@dimen/details_user_margins"
+                                android:layout_marginRight="@dimen/details_user_margins"
+                                android:layout_marginTop="@dimen/details_user_margins"
+                                android:gravity="right"/>
+
+                            <TextView
+                                android:id="@+id/animal_bdate_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/details_user_margins"
+                                android:layout_marginLeft="@dimen/details_user_margins"
+                                android:layout_marginRight="@dimen/details_user_margins"
+                                android:layout_marginTop="@dimen/details_user_margins"
+                                android:gravity="right" />
+
+                            <TextView
+                                android:id="@+id/animal_data_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/details_user_margins"
+                                android:layout_marginLeft="@dimen/details_user_margins"
+                                android:layout_marginRight="@dimen/details_user_margins"
+                                android:layout_marginTop="@dimen/details_user_margins"
+                                android:gravity="right" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="right"
+                                android:layout_marginBottom="@dimen/details_user_margins"
+                                android:layout_marginLeft="@dimen/details_user_margins"
+                                android:layout_marginRight="@dimen/details_user_margins"
+                                android:layout_marginTop="@dimen/details_user_margins"
+                                android:text="@string/animal_details_owner_details"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/owner_name_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/details_user_margins"
+                                android:layout_marginLeft="@dimen/details_user_margins"
+                                android:layout_marginRight="@dimen/details_user_margins"
+                                android:layout_marginTop="@dimen/details_user_margins"
+                                android:gravity="right" />
+
+                            <TextView
+                                android:id="@+id/owner_city_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/details_user_margins"
+                                android:layout_marginLeft="@dimen/details_user_margins"
+                                android:layout_marginRight="@dimen/details_user_margins"
+                                android:layout_marginTop="@dimen/details_user_margins"
+                                android:gravity="right" />
 
                         </LinearLayout>
-                        <LinearLayout
-                            xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:orientation="horizontal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
 
-                            <TextView
-                                android:layout_width="190dp"
-                                android:layout_height="@dimen/details_animal_text_vertical_margin"
-                                android:id="@+id/owner_name_text"/>
-                            <TextView
-                                android:layout_width="190dp"
-                                android:layout_height="@dimen/details_animal_text_vertical_margin"
-                                android:id="@+id/owner_city_text"/>
-
-                        </LinearLayout>
-                        <LinearLayout
-                            xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:orientation="horizontal"
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
                             <Button
-                                android:layout_width="90dp"
-                                android:layout_height="@dimen/details_animal_text_vertical_margin"
                                 android:id="@+id/call_btn"
-                                android:text="@string/call_button_text"/>
+                                android:layout_width="90dp"
+                                android:layout_height="wrap_content"
+                                android:text="@string/call_button_text" />
+
                             <TextView
-                                android:layout_width="190dp"
-                                android:layout_height="@dimen/details_animal_text_vertical_margin"
-                                android:id="@+id/owner_phone_text"/>
-
+                                android:id="@+id/owner_phone_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/details_user_margins"
+                                android:layout_marginLeft="@dimen/details_user_margins"
+                                android:layout_marginRight="@dimen/details_user_margins"
+                                android:layout_marginTop="@dimen/details_user_margins"
+                                android:gravity="center_vertical" />
                         </LinearLayout>
-
-
                     </LinearLayout>
 
 
@@ -108,5 +181,6 @@
 
     </LinearLayout>
 
+    </ScrollView>
 
 </FrameLayout>

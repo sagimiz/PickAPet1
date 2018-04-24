@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.pet.att.pickapet.AuxiliaryClasses.DetailsViewFragment;
+import com.pet.att.pickapet.AuxiliaryClasses.ImageDetailsViewFragment;
 import com.pet.att.pickapet.R;
 
 import static com.android.volley.Request.Method.GET;
@@ -68,7 +68,7 @@ public class UserDataTask extends AsyncTask<String, Void, String> {
 
 
         FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
-        DetailsViewFragment fragment = new DetailsViewFragment();
+        ImageDetailsViewFragment fragment = new ImageDetailsViewFragment();
         fragment.setArguments(mArgs);
         transaction.replace(R.id.details_content_fragment, fragment);
         transaction.commit();
