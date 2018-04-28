@@ -2,11 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-
-
-
     <LinearLayout
-
         android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
@@ -15,138 +11,134 @@
         android:layout_marginTop="5dp"
         android:orientation="vertical"
         android:gravity="right" >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal">
-
-    <TextView
-        android:id="@+id/dialog_label"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="@string/dialog_filter_animals_title_text"
-        android:gravity="center"
-        android:textSize="@dimen/title_text_size" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/gender_layout"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal"
-        android:gravity="right"
-        android:layout_below="@id/dialog_label" >
-
-    <Spinner
-        android:id="@+id/dialog_spinner_gender"
-        android:layout_height="match_parent"
-        android:layout_width="wrap_content"
-        android:layout_marginRight="5dp"
-        />
-
-        <TextView
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:text="@string/dialog_filter_animals_gender_text"
-            android:gravity="center_vertical"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/kind_layout"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:gravity="right"
-        android:layout_below="@id/type_layout"
-        android:orientation="horizontal">
-
-        <Spinner
-            android:id="@+id/dialog_spinner_kind"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:layout_marginRight="5dp"
-            />
-        <TextView
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:text="@string/dialog_filter_animals_kind_text"
-            android:gravity="center_vertical"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/type_layout"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:gravity="right"
-        android:layout_below="@id/gender_layout"
-        android:orientation="horizontal">
-        <Spinner
-            android:id="@+id/dialog_spinner_type"
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:layout_marginRight="5dp"
-            android:gravity="bottom"
-            />
-        <TextView
-            android:layout_height="match_parent"
-            android:layout_width="wrap_content"
-            android:text="@string/dialog_filter_animals_type_text"
-            android:gravity="center_vertical"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal"
-        android:gravity="right" >
-        <Button
-            android:id="@+id/dialogOK"
-            android:layout_width="60dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="OK"
-            android:layout_below="@id/kind_layout"
-            android:background="@color/colorButton"
-            android:textColor="@color/colorAccent"
-            android:elevation="2dp"
-            />
-        <TextView
-            android:layout_height="match_parent"
-            android:layout_width="60dp"
-            android:layout_below="@id/kind_layout"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
 
-            />
-        <Button
-            android:id="@+id/dialogCancel"
-            android:layout_width="80dp"
+        <TextView
+            android:id="@+id/dialog_label"
             android:layout_height="wrap_content"
-            android:text="Cancel"
+            android:layout_width="wrap_content"
+            android:text="@string/dialog_filter_animals_title_text"
+            android:gravity="center"
+            android:textSize="@dimen/title_text_size" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/kind_layout"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:gravity="right"
+            android:layout_below="@id/dialog_label"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/dialog_spinner_kind"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_marginRight="5dp"
+                />
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:text="@string/dialog_filter_animals_kind_text"
+                android:gravity="center_vertical"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/type_layout"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:gravity="right"
             android:layout_below="@id/kind_layout"
-            android:layout_toRightOf="@id/dialogOK"
-            android:background="@color/colorButton"
-            android:textColor="@color/colorAccent"
-            android:elevation="2dp"
-            />
-    </LinearLayout>
+            android:orientation="horizontal">
+            <Spinner
+                android:id="@+id/dialog_spinner_type"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_marginRight="5dp"
+                android:gravity="bottom"
+                android:clickable="false"
+                />
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:text="@string/dialog_filter_animals_type_text"
+                android:gravity="center_vertical"
+                />
+        </LinearLayout>
+        <LinearLayout
+                android:id="@+id/gender_layout"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:layout_below="@id/type_layout" >
+
+                <Spinner
+                    android:id="@+id/dialog_spinner_gender"
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="5dp"
+                    />
+
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:text="@string/dialog_filter_animals_gender_text"
+                    android:gravity="center_vertical"
+                    />
+            </LinearLayout>
+        <LinearLayout
+
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:gravity="right" >
+            <Button
+                android:id="@+id/dialogOK"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:text="OK"
+                android:layout_below="@id/gender_layout"
+                android:background="@color/colorButton"
+                android:textColor="@color/colorAccent"
+                android:elevation="2dp"
+                />
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="60dp"
+                android:layout_below="@id/gender_layout"
+
+                />
+            <Button
+                android:id="@+id/dialogCancel"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:layout_below="@id/gender_layout"
+                android:layout_toRightOf="@id/dialogOK"
+                android:background="@color/colorButton"
+                android:textColor="@color/colorAccent"
+                android:elevation="2dp"
+                />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

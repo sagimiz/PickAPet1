@@ -5,11 +5,12 @@
     <string name="action_remove_pet">הסר את החיות שלי</string>
     <string name="action_refresh">רענן</string>
     <string name="element_text">Element</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">כניסה למערכת</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
+    <string name="prompt_password">סיסמא</string>
+    <string name="prompt_invalid_data">אחד מהנתונים שהכנסת שגוי</string>
     <string name="action_sign_in">כניסת משתמש קיים</string>
     <string name="action_register">כניסת משתמש חדש</string>
     <string name="action_sign_in_short">הירשם</string>
@@ -21,23 +22,34 @@
 
     <!-- Strings related to Add Animal -->
     <string name="add_animal_title">הוסף חיה חדשה</string>
-    <string name="add_animal_name">שם החיה</string>
-    <string name="add_animal_type">גזע החיה</string>
-    <string name="add_animal_kind">סוג החיה</string>
-    <string name="add_animal_gender">מין החיה</string>
+    <string name="add_animal_name">שם החיה:</string>
+    <string name="add_animal_data">נתוני החיה:</string>
+    <string name="add_animal_type">גזע החיה:</string>
+    <string name="add_animal_kind">סוג החיה:</string>
+    <string name="add_animal_must_image">*חובה תמונה</string>
+    <string name="add_animal_gender">מין החיה:</string>
     <string name="add_animal_image">הוסף תמונה</string>
-    <string name="add_animal_birth_date_text">תאריך לידה</string>
+    <string name="add_animal_birth_date_text">תאריך לידה:</string>
+    <string name="add_animal_description"> תיאור החיה (עד 70 תווים):</string>
+    <string name="add_animal_birth_date">הכנס תאריך</string>
     <string name="add_animal_birth_date_day">יום</string>
     <string name="add_animal_birth_date_month">חודש</string>
     <string name="add_animal_birth_date_year">שנה</string>
 
     <string name="add_animal_all">הוסף חיה</string>
     <string name="add_hint_name">מה השם שלי</string>
+    <string name="add_hint_description">מה יש לך להגיד עלי</string>
     <string name="add_hint_bdate">01/01/1990</string>
+
+    <string name="error_invalid_name">השם אינו תקין</string>
+    <string name="error_invalid_description1">התיאור אינו תקין</string>
+    <string name="error_invalid_description2">התיאור ארוך מידי</string>
+
 
     <!-- Strings related to Animal Image Details -->
     <string name="animal_details_title">פרטי החיה</string>
     <string name="animal_details_name">שלום קראים לי </string>
+    <string name="animal_start_date">זמן במערכת: </string>
     <string name="animal_details_birth_date">הגיל שלי הוא </string>
     <string name="animal_details_type"> הגזע שלי הוא </string>
     <string name="animal_details_kind"> מסוג </string>
@@ -55,6 +67,7 @@
     <string name="add_user_fname">שם פרטי:</string>
     <string name="add_user_lname">שם משפחה:</string>
     <string name="add_user_id">תעודת זהות:</string>
+    <string name="add_user_login_data">הכנס פרטי כניסה למערכת</string>
     <string name="add_user_email">:Email</string>
     <string name="add_user_phone">מס טלפון:</string>
     <string name="add_user_pass">סיסמא:</string>
@@ -210,7 +223,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_add_new_pet">PickAPet</string>
-    <string name="title_activity_add_new_user">PickAPet-AddUser</string>
+    <string name="title_activity_add_new_user">הוספת משתמש חדש</string>
 
 
 

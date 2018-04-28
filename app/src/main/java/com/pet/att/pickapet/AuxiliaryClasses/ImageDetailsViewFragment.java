@@ -44,6 +44,7 @@ public class ImageDetailsViewFragment extends Fragment {
     private static Context mContext;
     private static AppCompatActivity mActivity;
     TextView mNameTextView=null;
+    TextView mStartDateTextView=null;
     TextView mDescriptionTextView=null;
     TextView mBirthDateTextView=null;
     TextView mDataTextView=null;
@@ -107,6 +108,10 @@ public class ImageDetailsViewFragment extends Fragment {
             JSONObject mAnimalDataJson = new JSONObject(mAnimalFullDetailsJson.trim());
             mNameTextView = this.setTextInTextView(view,mNameTextView,R.id.animal_name_text, view.getContext().getString(R.string.animal_details_name)
                                                                                                     + " "+ mAnimalDataJson.getString("name"));
+
+            String mStartDateStr =view.getContext().getString(R.string.animal_start_date)+ " "+ this.calculateAge(mAnimalDataJson.getString("start_date"));
+            mStartDateTextView = this.setTextInTextView(view,mStartDateTextView,R.id.animal_start_date_text, mStartDateStr );
+
 
             mDescriptionTextView = this.setTextInTextView(view,mDescriptionTextView,R.id.animal_description_text,mAnimalDataJson.getString("description"));
             String mAnimalAgeStr =view.getContext().getString(R.string.animal_details_birth_date)+ " "+ this.calculateAge(mAnimalDataJson.getString("bday"));
@@ -187,6 +192,8 @@ public class ImageDetailsViewFragment extends Fragment {
                 if (day2 > day1) {
                     day = day2-day1;
                     year--;
+                }else{
+                    day = day1-day2;
                 }
             }else{
                 month= month1-month2;

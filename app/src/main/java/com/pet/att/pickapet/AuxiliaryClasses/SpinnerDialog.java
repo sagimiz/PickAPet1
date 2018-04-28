@@ -1,31 +1,40 @@
 package com.pet.att.pickapet.AuxiliaryClasses;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.pet.att.pickapet.HTTP.GetAllTypeTask;
 import com.pet.att.pickapet.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 public class SpinnerDialog extends Dialog {
+    private static final String TAG = "SpinnerDialog";
     private final String mKindJson;
-    private final String mTypeJson;
+//    private final String mTypeJson;
     private Context mContext;
     private Spinner mGenderSpinner;
     private Spinner mKindSpinner;
+    private Activity mActivity;
     private Spinner mTypeSpinner;
     private ArrayList<String> mGenderArray=null;
     private String[][] mKindArray=null;
     private String[][] mTypeArray=null;
+
 
     public interface DialogListener {
         public void ready(String mGender,String mKind,String mType);
@@ -34,18 +43,17 @@ public class SpinnerDialog extends Dialog {
 
     private DialogListener mReadyListener;
 
-    public SpinnerDialog(Context context,String mKindJson,String mTypeJson, DialogListener readyListener) {
+    public SpinnerDialog(Context context, Activity mActivity, String mKindJson, DialogListener readyListener) {
         super(context);
         mReadyListener = readyListener;
-        mContext = context;
+        this.mContext = context;
+        this.mActivity=mActivity;
         this.mKindJson = mKindJson;
-        this.mTypeJson = mTypeJson;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.filter_dialog);
         mGenderSpinner = (Spinner) findViewById (R.id.dialog_spinner_gender);
         mGenderArray = new ArrayList<String>();
@@ -56,20 +64,67 @@ public class SpinnerDialog extends Dialog {
         mGenderSpinner.setAdapter(mGenderAdapter);
 
 
-        mKindSpinner = (Spinner) findViewById (R.id.dialog_spinner_kind);
+        mKindSpinner = findViewById (R.id.dialog_spinner_kind);
         mKindArray = this.getArrayFromJSON(this.mKindJson,"kind","kind_id");
         ArrayAdapter<String> mKindAdapter = new ArrayAdapter<String> (mContext, android.R.layout.simple_spinner_dropdown_item, this.getArrayListNameValueFromArray(mKindArray));
         mKindSpinner.setAdapter(mKindAdapter);
 
+        try {
+            mKindSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    mTypeSpinner = (Spinner) findViewById(R.id.dialog_spinner_type);
+                    if (!mKindSpinner.getSelectedItem().toString().equals("")) {
+                        GetAllTypeTask getAllTypeTask = new GetAllTypeTask((AppCompatActivity) mActivity, mContext, new OnTaskCompleted() {
+                            @Override
+                            public void onTaskCompleted() {
+                                String mTypeJson = mActivity.getIntent().getStringExtra(mContext.getString(R.string.all_type_json));
+                                mTypeArray = getArrayFromJSON(mTypeJson, "type_name", "type_id");
+                                ArrayAdapter<String> mTypeAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_dropdown_item, getArrayListNameValueFromArray(mTypeArray));
+                                mTypeSpinner.setAdapter(mTypeAdapter);
+                                mTypeSpinner.setClickable(true);
+                            }
 
+                            @Override
+                            public void onTaskCompleted(String result) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                                builder.setMessage(result)
+                                        .setCancelable(false)
+                                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                AlertDialog alert = builder.create();
+                                alert.show();
+                            }
 
-        mTypeSpinner = (Spinner) findViewById (R.id.dialog_spinner_type);
-        mTypeArray = this.getArrayFromJSON(this.mTypeJson,"type_name","type_id");
-        ArrayAdapter<String> mTypeAdapter = new ArrayAdapter<String> (mContext, android.R.layout.simple_spinner_dropdown_item, this.getArrayListNameValueFromArray(mTypeArray));
-        mTypeSpinner.setAdapter(mTypeAdapter);
+                            @Override
+                            public void onTaskCompleted(Boolean result) {
+                                if (result) {
+                                    onTaskCompleted();
+                                } else {
+                                    String resultStr = mContext.getString(R.string.dialog_error_text);
+                                    onTaskCompleted(resultStr);
+                                }
+                            }
+                        });
+                        getAllTypeTask.execute(mContext.getString(R.string.animal_type_request), mKindArray[position][1], mContext.getString(R.string.all_type_json));
+                    } else {
+                        mTypeSpinner.setClickable(false);
+                        mTypeSpinner.setVerticalScrollbarPosition(0);
+                    }
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {  }
+            });
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.d(TAG,e.toString());
+        }
 
-        Button buttonOK = (Button) findViewById(R.id.dialogOK);
-        Button buttonCancel = (Button) findViewById(R.id.dialogCancel);
+        Button buttonOK = findViewById(R.id.dialogOK);
+        Button buttonCancel = findViewById(R.id.dialogCancel);
         buttonOK.setOnClickListener(new android.view.View.OnClickListener(){
             public void onClick(View v) {
                 int mGenderPosition = mGenderSpinner.getSelectedItemPosition();
@@ -77,7 +132,12 @@ public class SpinnerDialog extends Dialog {
                 int mTypePosition = mTypeSpinner.getSelectedItemPosition();
                 String mGender  = mGenderArray.get(mGenderPosition);
                 String mKind  = mKindArray[mKindPosition][1];
-                String mType  = mTypeArray[mTypePosition][1];
+                String mType;
+                if (mTypeArray!=null) {
+                    mType = mTypeArray[mTypePosition][1];
+                }else{
+                    mType = "";
+                }
                 mReadyListener.ready(mGender,mKind,mType);
                 SpinnerDialog.this.dismiss();
             }

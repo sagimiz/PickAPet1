@@ -7,6 +7,7 @@ import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
@@ -20,6 +21,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,7 +35,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.pet.att.pickapet.AuxiliaryClasses.OnTaskCompleted;
 import com.pet.att.pickapet.HTTP.HttpRequestsURLConnection;
+import com.pet.att.pickapet.HTTP.UserLoginTask;
 import com.pet.att.pickapet.R;
 
 import org.json.JSONException;
@@ -45,7 +49,7 @@ import java.util.List;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
- * A login screen that offers login via email/password.
+ * A login screen that offers login via email/mPassword.
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
     /**
@@ -53,36 +57,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     private static final String TAG = "LoginActivity";
-
-
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-
-
-
-    private UserLoginTask mAuthTask = null;
-
-    // UI references.
+//    private UserLoginTask mAuthTask = null;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-
-//    public LoginActivity(AppCompatActivity activity, Context context, SharedPreferences sp1,String userEmail, String password) {
-//        new UserLoginTask(activity,this ,sp1)
-//                .execute(context.getString(R.string.user_request), userEmail,password,context.getString(R.string.curent_user_details_json));
-//    }
-
-    public LoginActivity() {
-    }
+    protected Context mContext;
+    protected TextView mInvalidData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext=this;
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = findViewById(R.id.email);
+
+        View focusView = mEmailView;
+        focusView.requestFocus();
+
+        mLoginFormView = findViewById(R.id.login_form);
+        mInvalidData = findViewById(R.id.invalid_data_input);
+        mProgressView = findViewById(R.id.login_progress);
 //        populateAutoComplete();
         isStoragePermissionGranted();
 
@@ -98,7 +94,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,7 +102,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mRegistationButton = (Button) findViewById(R.id.register_button);
+        Button mRegistationButton = findViewById(R.id.register_button);
         mRegistationButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,8 +112,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+
     }
 
     private void populateAutoComplete() {
@@ -177,11 +172,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-//        if (requestCode == REQUEST_READ_CONTACTS) {
-//            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                populateAutoComplete();
-//            }
-//        }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
             Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
@@ -196,23 +186,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
+//        if (mAuthTask != null) {
+//            return;
+//        }
 
         // Reset errors.
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        final String email = mEmailView.getText().toString();
+        final String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        // Check for a valid mPassword, if the user entered one.
+        if (TextUtils.isEmpty(password))  {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
+            cancel = true;
+        }
+        if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -237,19 +232,65 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(LoginActivity.this,this,null);
 
-            mAuthTask.execute(getString(R.string.user_request_login),email,password,getString(R.string.current_user_details_json));
+            UserLoginTask userLoginTask = new UserLoginTask(LoginActivity.this,mContext , new OnTaskCompleted() {
+                @Override
+                public void onTaskCompleted() {
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    showProgress(false);
+                                    mInvalidData.setVisibility(View.VISIBLE);
+                                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                                    mEmailView.setError(getString(R.string.error_invalid_email));
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    finish();
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setMessage(R.string.dialog_error_text).setPositiveButton("חזור", dialogClickListener)
+                            .setNegativeButton("ביטול", dialogClickListener).show();
+                }
+
+                @Override
+                public void onTaskCompleted(String result) {
+                    if(result!=null) {
+                        SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("UserEmail", email);
+                        editor.putString("Password", password);
+                        editor.apply();
+                        Intent intent = new Intent(mContext, MainActivity.class);
+                        intent.putExtra(getString(R.string.current_user_details_json), result);
+                        showProgress(false);
+                        finish();
+                        startActivity(intent);
+
+
+                    }
+                }
+
+                @Override
+                public void onTaskCompleted(Boolean result) {  }
+            });
+            userLoginTask.execute(getString(R.string.user_request_login),email,password);
+//            mAuthTask = new UserLoginTask(LoginActivity.this,this,null);
+////            mAuthTask.execute(getString(R.string.user_request_login),email,password,getString(R.string.current_user_details_json));
         }
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
@@ -314,7 +355,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             emails.add(cursor.getString(ProfileQuery.ADDRESS));
             cursor.moveToNext();
         }
-
         addEmailsToAutoComplete(emails);
     }
 
@@ -341,165 +381,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
-        private static final String TAG = "UserLoginTask";
-        private final AppCompatActivity mActivity;
-        private final SharedPreferences mSpl;
-        private final String baseURL;
-        private Context mContext;
-        private String mPutText;
-        private String mPassword;
-        private String mUserDetailsJson;
-        private String mEmail;
-
-        public UserLoginTask(AppCompatActivity activity, Context context, SharedPreferences sp1){
-            this.mContext = context;
-            this.baseURL =   mContext.getString(R.string.base_url);
-            this.mActivity = activity;
-            this.mSpl = sp1;
-        }
-
-//        @Override
-//        protected Boolean doInBackground(Void... params) {
-//            // TODO: attempt authentication against a network service.
-//
-//            try {
-//                // Simulate network access.
-//                Thread.sleep(2000);
-//            } catch (InterruptedException e) {
-//                return false;
-//            }
-//
-//
-//            boolean isCorrect = false;
-////            for (String credential : DUMMY_CREDENTIALS) {
-////                String[] pieces = credential.split(":");
-////                if (pieces[0].equalsIgnoreCase(mEmail)&& pieces[1].equalsIgnoreCase(mPassword)) {
-////                    SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
-////                    SharedPreferences.Editor editor=sharedPreferences.edit();
-////                    editor.putString("UserName",mEmail );
-////                    editor.putString("Password",mPassword);
-////                    editor.commit();
-////                    isCorrect=true;
-////                    break;
-////                }
-////            }
-////            // TODO: register the new account here.
-//            return isCorrect;
-//
-//        }
-
-                                                                                      /*The First arg is  request name
-                                                                                       The Second arg is  email for json
-                                                                                       The Third arg is entered password for json
-                                                                                       The Forth arg is the putString value
-                                                                                      */
-
-
-        @Override
-        protected Boolean doInBackground(String... strings) {
-
-            String requestName = strings[0];
-            this.setEmail(strings[1]);
-            this.setPassword(strings[2]);
-
-            boolean isCorrect = false;
-            try {
-                Log.d(TAG, "Fetching data for "+ requestName);
-                String  jsonStr = HttpRequestsURLConnection.SendHttpPost(baseURL + "/"+ requestName,"email="+mEmail);
-                if (jsonStr != null) {
-                    Log.d(TAG, "JSON data for " + requestName  +" is "+ jsonStr);
-                    jsonStr = this.setStringToJsonFormat(jsonStr);
-
-                    JSONObject jsonObject = new JSONObject(jsonStr);
-
-                    if (jsonObject.getString("password").equals(this.getPassword())){
-                        jsonStr = HttpRequestsURLConnection.SendHttpPost(baseURL + "/"+ mContext.getString(R.string.user_request),"email="+mEmail);
-                        if (jsonStr != null) {
-                            this.setUserDetailsJson(this.setStringToJsonFormat(jsonStr));
-                            setPutText(strings[3]);
-                            isCorrect =true;
-                        }
-                    }
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            return isCorrect;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                if(mSpl==null) {
-                    SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("UserEmail", this.getEmail());
-                    editor.putString("Password", this.getPassword());
-                    editor.commit();
-                }
-
-                Intent intent = new Intent(mContext, MainActivity.class);
-                intent.putExtra(getPutText(),this.getUserDetailsJson());
-                startActivity(intent);
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-
-        private String getEmail() {
-            return mEmail;
-        }
-
-        private void setEmail(String mEmail) {
-            this.mEmail = mEmail;
-        }
-
-        private String getPassword() {
-            return mPassword;
-        }
-
-        private void setPassword(String mPassword) {
-            this.mPassword = mPassword;
-        }
-
-        private String setStringToJsonFormat (String currentJsonString){
-            return currentJsonString.substring(1,currentJsonString.length());
-        }
-
-        private String getUserDetailsJson() {
-            return mUserDetailsJson;
-        }
-
-        private void setUserDetailsJson(String ownerDetailsJson) {
-            this.mUserDetailsJson = ownerDetailsJson;
-        }
-
-        private String getPutText() {
-            return mPutText;
-        }
-
-        private void setPutText(String putText) {
-            this.mPutText = putText;
-        }
     }
 }
 

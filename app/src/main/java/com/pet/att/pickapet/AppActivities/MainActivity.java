@@ -14,22 +14,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.pet.att.pickapet.AuxiliaryClasses.AnimalsPics;
 import com.pet.att.pickapet.AuxiliaryClasses.CustomAdapter;
 import com.pet.att.pickapet.AuxiliaryClasses.OnTaskCompleted;
 import com.pet.att.pickapet.AuxiliaryClasses.RecyclerViewFragment;
 import com.pet.att.pickapet.AuxiliaryClasses.SpinnerDialog;
-import com.pet.att.pickapet.HTTP.GetAnimalPreLoadPageTask;
-import com.pet.att.pickapet.HTTP.GetPetsDetailsTask;
+import com.pet.att.pickapet.HTTP.GetAllKindsTask;
 import com.pet.att.pickapet.HTTP.UserActiveAnimalsTask;
 import com.pet.att.pickapet.HTTP.PetsImagesTask;
 import com.pet.att.pickapet.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import static com.android.volley.Request.Method.POST;
 import static com.android.volley.Request.Method.PUT;
 
@@ -61,12 +57,12 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GetPetsDetailsTask getPetsDetailsTask = new GetPetsDetailsTask(MainActivity.this, mContext, new OnTaskCompleted() {
+                GetAllKindsTask getAllKindsTask = new GetAllKindsTask(MainActivity.this, mContext, new OnTaskCompleted() {
+
                     @Override
                     public void onTaskCompleted() {
                         String mKindJson = getIntent().getStringExtra(getString(R.string.all_kind_json));
-                        String mTypeJson = getIntent().getStringExtra(getString(R.string.all_type_json));
-                        showSpinnerDialog( mKindJson, mTypeJson);
+                        showSpinnerDialog(mKindJson);
                     }
 
                     @Override
@@ -93,10 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
-                getPetsDetailsTask.execute(getString(R.string.animal_type_request),
-                                            getString(R.string.animal_kind_request),
-                                                getString(R.string.all_type_json),
-                                                    getString(R.string.all_kind_json));
+                getAllKindsTask.execute(getString(R.string.animal_kind_request),getString(R.string.all_kind_json));
             }
         });
     }
@@ -123,13 +116,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_add_pet) {
-//            Intent intent = new Intent(this, AddNewPetActivity.class);
-//            startActivity(intent);
-            new GetAnimalPreLoadPageTask(MainActivity.this,this)
-                    .execute(getString(R.string.animal_type_request),
-                            getString(R.string.animal_kind_request),
-                            getString(R.string.all_type_json),
-                            getString(R.string.all_kind_json));
+
+            try {
+                Intent intent = new Intent (this, AddNewPetActivity.class);
+                if (mCurrentUserJsonData != null ){
+                    intent.putExtra(mContext.getString(R.string.current_user_details_json),mCurrentUserJsonData);
+                    if (getString(R.string.all_kind_json) != null){
+                        intent.putExtra(mContext.getString(R.string.all_kind_json),getString(R.string.all_kind_json));
+                    }
+                }
+                startActivity(intent);
+            }catch (Exception e){
+                 e.printStackTrace();
+            }
+//            new GetAnimalPreLoadPageTask(MainActivity.this,this)
+//                    .execute(getString(R.string.animal_type_request),
+//                            getString(R.string.animal_kind_request),
+//                            getString(R.string.all_type_json),
+//                            getString(R.string.all_kind_json));
             return true;
         }
 
@@ -209,13 +213,9 @@ public class MainActivity extends AppCompatActivity {
                     builder.show();
                 }
                 @Override
-                public void onTaskCompleted(String result) {
-
-                }
+                public void onTaskCompleted(String result) { }
                 @Override
-                public void onTaskCompleted(Boolean result) {
-
-                }
+                public void onTaskCompleted(Boolean result) {  }
             });
             getUserActiveAnimalsTask
                     .execute(this.getString(R.string.animals_owner_all_active_animals_request),
@@ -318,9 +318,9 @@ public class MainActivity extends AppCompatActivity {
                 this.getString(R.string.all_active_animal_pic_json));
     }
 
-    public void showSpinnerDialog(String mKindJson,String mTypeJson){
+    public void showSpinnerDialog(String mKindJson){
 
-        SpinnerDialog mSpinnerDialog = new SpinnerDialog(mContext,mKindJson,mTypeJson , new SpinnerDialog.DialogListener() {
+        SpinnerDialog mSpinnerDialog = new SpinnerDialog(mContext,MainActivity.this,mKindJson, new SpinnerDialog.DialogListener() {
             @Override
             public void ready(String mGender, String mKind, String mType) {
                 if (mGender.equals("זכר")){

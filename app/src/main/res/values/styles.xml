@@ -21,4 +21,11 @@
         <item name="android:windowBackground">@drawable/background</item>
     </style>
 
+    <style name="Margins">
+        <item name="android:layout_marginTop">@dimen/details_user_margins</item>
+        <item name="android:layout_marginRight">@dimen/details_user_margins</item>
+        <item name="android:layout_marginBottom">@dimen/details_user_margins</item>
+        <item name="android:layout_marginLeft">@dimen/details_user_margins</item>
+    </style>
+
 </resources>

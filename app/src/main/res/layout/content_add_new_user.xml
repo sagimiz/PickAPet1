@@ -28,7 +28,9 @@
             android:layout_width="match_parent"
             android:layout_height="31dp"
             android:text="@string/add_user_title"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="22dp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/details_user_layout_horizontal"
@@ -126,6 +128,7 @@
                 android:gravity="left"
                 android:text="@string/add_user_lname" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/details_user_layout_horizontal"
@@ -136,42 +139,16 @@
             tools:layout_editor_absoluteX="5dp"
             android:orientation="horizontal">
 
-            <AutoCompleteTextView
-                android:id="@+id/user_text_email"
-                android:layout_width="273dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="textEmailAddress"
-                android:textDirection="anyRtl"
-                android:gravity="right"
-                android:hint="@string/add_user_hint_email" />
-
-            <TextView
-                android:layout_width="@dimen/details_user_textview_width"
+            <Spinner
+                android:id="@+id/user_area_code"
+                android:layout_width="73dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/details_user_margins"
-                android:layout_marginRight="@dimen/details_user_margins"
-                android:layout_marginBottom="@dimen/details_user_margins"
-                android:layout_marginLeft="@dimen/details_user_margins"
-                tools:layout_editor_absoluteX="5dp"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="@string/add_user_email" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/details_user_layout_horizontal"
-            android:layout_marginTop="@dimen/details_user_margins"
-            android:layout_marginRight="@dimen/details_user_margins"
-            android:layout_marginBottom="@dimen/details_user_margins"
-            android:layout_marginLeft="@dimen/details_user_margins"
-            tools:layout_editor_absoluteX="5dp"
-            android:orientation="horizontal">
+                android:gravity="right"
+                android:textAlignment="gravity"/>
 
             <EditText
                 android:id="@+id/user_text_phone"
-                android:layout_width="273dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:inputType="number"
@@ -256,6 +233,65 @@
                 android:gravity="left"
                 android:text="@string/add_user_city" />
         </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/details_user_margins"
+            android:layout_marginRight="@dimen/details_user_margins"
+            android:layout_marginBottom="@dimen/details_user_margins"
+            android:layout_marginLeft="@dimen/details_user_margins"
+            tools:layout_editor_absoluteX="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/details_user_margins"
+                android:layout_marginRight="@dimen/details_user_margins"
+                android:layout_marginBottom="@dimen/details_user_margins"
+                android:layout_marginLeft="@dimen/details_user_margins"
+                tools:layout_editor_absoluteX="5dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/add_user_login_data"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/details_user_layout_horizontal"
+            android:layout_marginTop="@dimen/details_user_margins"
+            android:layout_marginRight="@dimen/details_user_margins"
+            android:layout_marginBottom="@dimen/details_user_margins"
+            android:layout_marginLeft="@dimen/details_user_margins"
+            tools:layout_editor_absoluteX="5dp"
+            android:orientation="horizontal">
+
+            <AutoCompleteTextView
+                android:id="@+id/user_text_email"
+                android:layout_width="273dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="textEmailAddress"
+                android:textDirection="anyRtl"
+                android:gravity="right"
+                android:hint="@string/add_user_hint_email" />
+
+            <TextView
+                android:layout_width="@dimen/details_user_textview_width"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/details_user_margins"
+                android:layout_marginRight="@dimen/details_user_margins"
+                android:layout_marginBottom="@dimen/details_user_margins"
+                android:layout_marginLeft="@dimen/details_user_margins"
+                tools:layout_editor_absoluteX="5dp"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="@string/add_user_email" />
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/details_user_layout_horizontal"

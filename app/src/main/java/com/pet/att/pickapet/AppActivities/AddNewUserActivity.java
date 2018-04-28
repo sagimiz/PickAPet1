@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.pet.att.pickapet.HTTP.AddNewUserTask;
 import com.pet.att.pickapet.R;
@@ -25,6 +27,8 @@ public class AddNewUserActivity extends AppCompatActivity {
     private EditText mPassword;
     private EditText mPasswordConfirm;
     protected Context mContex;
+    Spinner mAreaCodeSpiner;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,13 @@ public class AddNewUserActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContex=this;
+
+        String[] arraySpinner = new String[] {"05", "02","03", "04","08", "09"};
+        mAreaCodeSpiner = (Spinner) findViewById(R.id.user_area_code);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, arraySpinner);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mAreaCodeSpiner.setAdapter(adapter);
 
 
         mId = findViewById(R.id.user_text_id);
@@ -52,6 +63,7 @@ public class AddNewUserActivity extends AppCompatActivity {
         mRegistationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String mAreaCodeText= mAreaCodeSpiner.getSelectedItem().toString();
                 if(attemptLogin()) {
                     new AddNewUserTask(AddNewUserActivity.this, mContex).execute(
                             getString(R.string.user_request),
@@ -60,7 +72,7 @@ public class AddNewUserActivity extends AppCompatActivity {
                             mFirstName.getText().toString(),
                             mLastName.getText().toString(),
                             mEmail.getText().toString(),
-                            mPhone.getText().toString(),
+                            mAreaCodeText + mPhone.getText().toString(),
                             mAddress.getText().toString(),
                             mCity.getText().toString(),
                             mPassword.getText().toString(),
@@ -111,22 +123,6 @@ public class AddNewUserActivity extends AppCompatActivity {
             return false;
         }
 
-
-        mEmail.setError(null);
-        String email = mEmail.getText().toString();
-
-        if (TextUtils.isEmpty(email)){
-            mEmail.setError(getString(R.string.error_field_required));
-            focusView = mEmail;
-            focusView.requestFocus();
-            return  false;
-        }else if (!isEmailValid(email)){
-            mEmail.setError(getString(R.string.error_invalid_email));
-            focusView = mEmail;
-            focusView.requestFocus();
-            return  false;
-        }
-
         mPhone.setError(null);
         String phone = mPhone.getText().toString();
 
@@ -163,6 +159,21 @@ public class AddNewUserActivity extends AppCompatActivity {
             return false;
         }
 
+        mEmail.setError(null);
+        String email = mEmail.getText().toString();
+
+        if (TextUtils.isEmpty(email)){
+            mEmail.setError(getString(R.string.error_field_required));
+            focusView = mEmail;
+            focusView.requestFocus();
+            return  false;
+        }else if (!isEmailValid(email)){
+            mEmail.setError(getString(R.string.error_invalid_email));
+            focusView = mEmail;
+            focusView.requestFocus();
+            return  false;
+        }
+
         mPassword.setError(null);
         String password = mPassword.getText().toString();
 
@@ -197,9 +208,8 @@ public class AddNewUserActivity extends AppCompatActivity {
     }
 
 
-
     private boolean isEmailValid(String email) {
-        return email.contains("@");
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     private boolean isIdValid(String id) {
@@ -215,7 +225,14 @@ public class AddNewUserActivity extends AppCompatActivity {
     }
 
     private boolean isPhoneValid(String phone) {
-        return phone.length() == 10;
+        if (mAreaCodeSpiner.getSelectedItem().toString().equals("05")) {
+            if (phone.length() == 8 && phone.charAt(0) != '0')
+                return true;
+            else
+                return false;
+        }else{
+            return ( phone.length() == 7 &&  phone.charAt(0)!= '0' );
+        }
     }
 
 

@@ -18,6 +18,7 @@ public abstract class MainStringTask extends AsyncTask<String, Void, Boolean>  {
     protected Context mContext;
     protected AppCompatActivity  mActivity;
     protected final String baseURL;
+    protected String mFirstJSONResult;
 
     public MainStringTask(Context mContext,AppCompatActivity mActivity) {
         this.mContext = mContext;
@@ -97,6 +98,14 @@ public abstract class MainStringTask extends AsyncTask<String, Void, Boolean>  {
 
     protected void setSecondPutString(String mSecondPutString) {
         this.mSecondPutString = mSecondPutString;
+    }
+
+    public String getFirstJSONResult() {
+        return mFirstJSONResult;
+    }
+
+    public void setFirstJSONResult(String mFirstJSONResult) {
+        this.mFirstJSONResult = mFirstJSONResult;
     }
 
 }

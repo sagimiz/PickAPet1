@@ -18,9 +18,6 @@ import java.util.Date;
 
 public class AddNewPetTask extends MainObjectTask {
     private static final String TAG = "AddNewPetTask";
-    private final AppCompatActivity mActivity;
-    private final String baseURL;
-    private Context mContext;
     private String mAnimalId;
     private String mOwnerId;
     private String mAnimalName;
@@ -29,31 +26,31 @@ public class AddNewPetTask extends MainObjectTask {
     private String mAnimalGender;
     private File mAnimalImage;
     private String mAnimalBirthDate;
-
+    private String mAnimalDescription;
     private ArrayList<String> jsonBodyArrayForAnimals;
     private ArrayList<String> jsonBodyArrayForAnimalsOwner;
     private ArrayList<String> jsonBodyArrayForAnimalsPic;
 
 
-    public AddNewPetTask(AppCompatActivity activity, Context context){
-        this.mContext = context;
-        this.baseURL =   mContext.getString(R.string.base_url);
-        this.mActivity = activity;
+    public AddNewPetTask(AppCompatActivity mActivity, Context mContext){
+        super(mContext,mActivity);
         jsonBodyArrayForAnimals = new ArrayList<String>();
         jsonBodyArrayForAnimalsOwner = new ArrayList<String>();
         jsonBodyArrayForAnimalsPic = new ArrayList<String>();
 
     }
     /*
-       The First arg is animals request name
-       The Second arg is animal_pic request name
-       The Second arg is animal_Owner request name
-       The Third arg is animal_name for json
-       The Third arg is animal_type for json
-       The Forth arg is image_file name for json
-       The Fifth arg is animal_birth_date name for json
-       The Sixth arg is owner_id for json
-    */
+     * The First arg is animals request name
+     * The Second arg is animal_pic request name
+     * The Third arg is animal_Owner request name
+     * The Forth arg is owner_id for json
+     * The Fifth arg is animal_name for json
+     * The Sixth arg is animal_type  for json
+     * The Seventh arg is animal_birth_date name for json
+     * The Eighth arg is animal_gender for json
+     * The Ninth arg is animal_ind for json
+     * The Tenth arg is animal_pic for json
+     * */
     @Override
     protected Boolean doInBackground(Object... objects) {
         this.initStringsItems(objects);
@@ -100,6 +97,7 @@ public class AddNewPetTask extends MainObjectTask {
     * The Eighth arg is animal_gender for json
     * The Ninth arg is animal_ind for json
     * The Tenth arg is animal_pic for json
+    * The Eleventh arg is animal Description for json
     * */
     private void initStringsItems(Object[] objects) {
 
@@ -149,6 +147,8 @@ public class AddNewPetTask extends MainObjectTask {
 
         jsonBodyArrayForAnimalsPic.add("pic="+base64Image);
 
+        this.setAnimalDescription((String)objects[10]);
+        jsonBodyArrayForAnimals.add("description="+this.getAnimalDescription());
     }
 
     private String getId() {
@@ -213,5 +213,13 @@ public class AddNewPetTask extends MainObjectTask {
 
     private void setAnimalKind(String mAnimalKind) {
         this.mAnimalKind = mAnimalKind;
+    }
+
+    public String getAnimalDescription() {
+        return mAnimalDescription;
+    }
+
+    public void setAnimalDescription(String mAnimalDescription) {
+        this.mAnimalDescription = mAnimalDescription;
     }
 }
