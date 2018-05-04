@@ -4,11 +4,6 @@
     tools:context="com.pet.att.pickapet.AppActivities.MainActivity">
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/action_add_pet"
         android:orderInCategory="100"
         android:title="@string/action_add_pet"
@@ -17,6 +12,12 @@
         android:id="@+id/action_remove_pet"
         android:orderInCategory="100"
         android:title="@string/action_remove_pet"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action__edit_details"
+        android:orderInCategory="100"
+        android:title="@string/action_edit_deatils"
         app:showAsAction="never" />
 
     <item

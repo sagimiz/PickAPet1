@@ -1,5 +1,6 @@
 package com.pet.att.pickapet.AppActivities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -108,13 +110,19 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            Intent intent = new Intent(this, SettingsActivity.class);
+//            startActivity(intent);
+//            return true;
+//        }
+
+        if (id == R.id.action__edit_details) {
+            Intent intent = new Intent(this, EditUserDetailsActivity.class);
+            intent.putExtra(mContext.getString(R.string.current_user_details_json),mCurrentUserJsonData);
+            startActivityForResult(intent,1);
             return true;
         }
-
         if (id == R.id.action_add_pet) {
 
             try {
@@ -339,6 +347,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mSpinnerDialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                mCurrentUserJsonData = data.getStringExtra(getString(R.string.current_user_details_result_json));
+                Log.d(TAG,"The returned value from the EditUserDetailsActivity Json is " + mCurrentUserJsonData);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 
 }

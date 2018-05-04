@@ -262,7 +262,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:hint="@string/add_hint_name"
+                    android:hint="@string/add_hint_description"
                     android:inputType="textMultiLine"
                     android:textDirection="anyRtl" />
 
@@ -303,11 +303,10 @@
                     android:layout_weight="1"
                     android:gravity="end"
                     android:inputType="date"
+                    android:freezesText="true"
                     android:hint="@string/add_hint_bdate"
                     android:textDirection="anyRtl" />
             </LinearLayout>
-
-
 
             <Button
                 android:id="@+id/animal_add_all"

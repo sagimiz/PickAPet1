@@ -11,12 +11,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-
 import com.pet.att.pickapet.HTTP.AddNewUserTask;
 import com.pet.att.pickapet.R;
 
 public class AddNewUserActivity extends AppCompatActivity {
 
+    private static final String TAG = "AddNewUserActivity";
     private EditText mId;
     private EditText mFirstName;
     private EditText mLastName;
@@ -27,7 +27,7 @@ public class AddNewUserActivity extends AppCompatActivity {
     private EditText mPassword;
     private EditText mPasswordConfirm;
     protected Context mContex;
-    Spinner mAreaCodeSpiner;
+    protected Spinner mAreaCodeSpiner;
 
 
     @Override
@@ -234,9 +234,4 @@ public class AddNewUserActivity extends AppCompatActivity {
             return ( phone.length() == 7 &&  phone.charAt(0)!= '0' );
         }
     }
-
-
-
-
-
 }

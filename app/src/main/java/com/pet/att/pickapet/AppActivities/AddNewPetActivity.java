@@ -1,15 +1,20 @@
 package com.pet.att.pickapet.AppActivities;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -67,12 +72,12 @@ public class AddNewPetActivity extends AppCompatActivity{
     private Spinner mGenderSpinner;
     private TextView mBirthDateText;
     private TextView mDescriptionText;
-    Button imgButton;
-    Calendar myCalendar;
-    String [] mTypeNameArray;
-    String [] mTypeIdArray;
-    String [] mKindNameArray;
-    String [] mKindIdArray;
+    private Button imgButton;
+    private Calendar myCalendar;
+    private String [] mTypeNameArray;
+    private String [] mTypeIdArray;
+    private String [] mKindNameArray;
+    private String [] mKindIdArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,28 +89,12 @@ public class AddNewPetActivity extends AppCompatActivity{
         imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
-                startActivityForResult(intent, PICK_IMAGE);
+                if(isStoragePermissionGranted()){
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, PICK_IMAGE);
+                }
             }
         });
-
-
-
-//        mAnimalTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-//        {
-//            @Override
-//            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-//                // TODO Auto-generated method stub
-//                Toast.makeText(getBaseContext(), mTypeNameArray[position], Toast.LENGTH_SHORT).show();
-//                mTypeSpinnerPosition =position;
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> arg0) {
-//                // TODO Auto-generated method stub
-//            }
-//        });
-
 
         mAnimalKindSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
@@ -331,8 +320,7 @@ public class AddNewPetActivity extends AppCompatActivity{
             return false;
         }
 
-
-        if (mImageSelected==false){
+        if (!mImageSelected){
             TextView mNoImage = findViewById(R.id.no_image_error);
             mNoImage.setVisibility(View.VISIBLE);
             return false;
@@ -482,6 +470,42 @@ public class AddNewPetActivity extends AppCompatActivity{
     public void showError(String errorMessage) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
     }
+
+
+
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v(TAG,"Permission is granted");
+                return true;
+            } else {
+
+                Log.v(TAG,"Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG,"Permission is granted");
+            return true;
+        }
+    }
+
+    /**
+     * Callback received when a permissions request has been completed.
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+            Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
+            //resume tasks needing this permission
+        }
+    }
+
+
 }
 
 

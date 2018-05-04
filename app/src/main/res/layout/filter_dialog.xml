@@ -41,6 +41,7 @@
                 android:id="@+id/dialog_spinner_kind"
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
+                android:gravity="end"
                 android:layout_marginRight="5dp"
                 />
             <TextView
@@ -66,7 +67,8 @@
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:layout_marginRight="5dp"
-                android:gravity="bottom"
+                android:textAlignment="viewEnd"
+                android:gravity="end"
                 android:clickable="false"
                 />
             <TextView
@@ -92,6 +94,7 @@
                     android:id="@+id/dialog_spinner_gender"
                     android:layout_height="match_parent"
                     android:layout_width="wrap_content"
+                    android:gravity="end"
                     android:layout_marginRight="5dp"
                     />
 

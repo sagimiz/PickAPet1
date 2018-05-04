@@ -81,7 +81,7 @@ public abstract class MainStringTask extends AsyncTask<String, Void, Boolean>  {
     }
 
     protected String setStringToJsonFormat (String currentJsonString){
-        return currentJsonString.substring(1,currentJsonString.length());
+        return currentJsonString.substring(currentJsonString.indexOf('{'),currentJsonString.lastIndexOf('}')+1);
     }
 
     protected String getFirstPutString() {

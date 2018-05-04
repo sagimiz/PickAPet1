@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">PickAPet</string>
-    <string name="action_settings">הגדרות</string>
+    <string name="action_edit_deatils">ערוך פרטי משתמש</string>
     <string name="action_add_pet">הוסף חיה חדשה</string>
     <string name="action_remove_pet">הסר את החיות שלי</string>
     <string name="action_refresh">רענן</string>
@@ -38,7 +38,7 @@
 
     <string name="add_animal_all">הוסף חיה</string>
     <string name="add_hint_name">מה השם שלי</string>
-    <string name="add_hint_description">מה יש לך להגיד עלי</string>
+    <string name="add_hint_description">תיאור החיה בקצרה</string>
     <string name="add_hint_bdate">01/01/1990</string>
 
     <string name="error_invalid_name">השם אינו תקין</string>
@@ -59,7 +59,6 @@
     <string name="animal_details_owner_name">שם בעלים: </string>
     <string name="animal_details_owner_address">כתובת: </string>
     <string name="animal_details_owner_phone">טלפון לפרטים: </string>
-
 
 
     <!-- Strings related to Add User -->
@@ -91,6 +90,13 @@
     <string name="error_invalid_phone">מס הטלפון אינו תקין</string>
     <string name="error_incorrect_password_match">אין התאמה בין הסיסמאות</string>
     <string name="error_put_data">כנראה קרתה טעות, נסה שוב בבקשה</string>
+    <string name="success_update_data">הנתונים עודכנו בהצלחה</string>
+
+
+    <!-- Strings related to Update User -->
+    <string name="update_user_title">עדכון פרטי משתמש</string>
+    <string name="update_user_all">עדכן פרטים</string>
+
 
     <!-- Strings related to Dialogs -->
     <string name="dialog_remove_animals_message_text">בחר את החיה אשר ברצונך למחוק</string>
@@ -184,7 +190,7 @@
 
 
     <!-- Connections URL-->
-    <string name="base_url">http://10.0.0.11:3000</string>
+    <string name="base_url">http://10.0.0.4:3000</string>
     <string name="animals_request">animals</string>
     <string name="animals_pic_request">animalpic</string>
     <string name="animals_owner_request_id">animalownerid</string>
@@ -195,13 +201,15 @@
     <string name="animals_owner_deactivate_animals_request">user_deactivate_animal</string>
     <string name="animals_owner_request_aid">animalowneraid</string>
     <string name="user_request">user</string>
-    <string name="user_request_id">userid</string>animaltype
+    <string name="user_request_id">userid</string>
+    <string name="user_request_update">userupdate</string>
     <string name="user_request_login">userlogin</string>
     <string name="animal_type_request">animaltype</string>
     <string name="animal_kind_request">animalkind</string>
 
     <!-- Put/Get extra values strings-->
     <string name="current_user_details_json">current_user_details</string>
+    <string name="current_user_details_result_json">current_user_result_details</string>
     <string name="animal_image_json">animal_data</string>
     <string name="current_user_active_animals_json">current_user_details</string>
     <string name="current_user_login_json">current_user_login</string>
@@ -224,9 +232,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_add_new_pet">PickAPet</string>
     <string name="title_activity_add_new_user">הוספת משתמש חדש</string>
-
-
-
 
 
 </resources>

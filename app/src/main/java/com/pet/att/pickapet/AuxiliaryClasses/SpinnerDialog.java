@@ -25,7 +25,6 @@ import java.util.ArrayList;
 public class SpinnerDialog extends Dialog {
     private static final String TAG = "SpinnerDialog";
     private final String mKindJson;
-//    private final String mTypeJson;
     private Context mContext;
     private Spinner mGenderSpinner;
     private Spinner mKindSpinner;
@@ -37,8 +36,8 @@ public class SpinnerDialog extends Dialog {
 
 
     public interface DialogListener {
-        public void ready(String mGender,String mKind,String mType);
-        public void cancelled();
+        void ready(String mGender,String mKind,String mType);
+        void cancelled();
     }
 
     private DialogListener mReadyListener;
@@ -55,26 +54,13 @@ public class SpinnerDialog extends Dialog {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.filter_dialog);
-        mGenderSpinner = (Spinner) findViewById (R.id.dialog_spinner_gender);
-        mGenderArray = new ArrayList<String>();
-        mGenderArray.add("");
-        mGenderArray.add("זכר");
-        mGenderArray.add("נקבה");
-        ArrayAdapter<String> mGenderAdapter = new ArrayAdapter<String> (mContext, android.R.layout.simple_spinner_dropdown_item,mGenderArray);
-        mGenderSpinner.setAdapter(mGenderAdapter);
-
-
-        mKindSpinner = findViewById (R.id.dialog_spinner_kind);
-        mKindArray = this.getArrayFromJSON(this.mKindJson,"kind","kind_id");
-        ArrayAdapter<String> mKindAdapter = new ArrayAdapter<String> (mContext, android.R.layout.simple_spinner_dropdown_item, this.getArrayListNameValueFromArray(mKindArray));
-        mKindSpinner.setAdapter(mKindAdapter);
-
+        this.initSpinners();
         try {
             mKindSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    mTypeSpinner = (Spinner) findViewById(R.id.dialog_spinner_type);
-                    if (!mKindSpinner.getSelectedItem().toString().equals("")) {
+
+                    if (!mKindSpinner.getSelectedItem().toString().equals("הכל")) {
                         GetAllTypeTask getAllTypeTask = new GetAllTypeTask((AppCompatActivity) mActivity, mContext, new OnTaskCompleted() {
                             @Override
                             public void onTaskCompleted() {
@@ -82,7 +68,7 @@ public class SpinnerDialog extends Dialog {
                                 mTypeArray = getArrayFromJSON(mTypeJson, "type_name", "type_id");
                                 ArrayAdapter<String> mTypeAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_dropdown_item, getArrayListNameValueFromArray(mTypeArray));
                                 mTypeSpinner.setAdapter(mTypeAdapter);
-                                mTypeSpinner.setClickable(true);
+                                mTypeSpinner.setEnabled(true);
                             }
 
                             @Override
@@ -111,8 +97,8 @@ public class SpinnerDialog extends Dialog {
                         });
                         getAllTypeTask.execute(mContext.getString(R.string.animal_type_request), mKindArray[position][1], mContext.getString(R.string.all_type_json));
                     } else {
-                        mTypeSpinner.setClickable(false);
-                        mTypeSpinner.setVerticalScrollbarPosition(0);
+                        mTypeSpinner.setEnabled(false);
+                        mTypeSpinner.setSelection(0);
                     }
                 }
                 @Override
@@ -130,14 +116,13 @@ public class SpinnerDialog extends Dialog {
                 int mGenderPosition = mGenderSpinner.getSelectedItemPosition();
                 int mKindPosition = mKindSpinner.getSelectedItemPosition();
                 int mTypePosition = mTypeSpinner.getSelectedItemPosition();
-                String mGender  = mGenderArray.get(mGenderPosition);
-                String mKind  = mKindArray[mKindPosition][1];
+                String mGender  = (mGenderArray.get(mGenderPosition).equals("הכל")) ? "" : mGenderArray.get(mGenderPosition);
+                String mKind  = (mKindArray[mKindPosition][1].equals("הכל")) ? "": mKindArray[mKindPosition][1];
                 String mType;
-                if (mTypeArray!=null) {
-                    mType = mTypeArray[mTypePosition][1];
-                }else{
-                    mType = "";
-                }
+                if (mTypeArray != null)
+                    mType = (mTypeArray[mTypePosition][1].equals("הכל")) ? "" : mTypeArray[mTypePosition][1];
+                else
+                    mType ="";
                 mReadyListener.ready(mGender,mKind,mType);
                 SpinnerDialog.this.dismiss();
             }
@@ -157,7 +142,7 @@ public class SpinnerDialog extends Dialog {
             jsonArray = new JSONArray(JSONString);
             int size = jsonArray.length();
             array = new String[size+1][size+1];
-            array[0][0]="";
+            array[0][0]="הכל";
             array[0][1]="";
             for(int i=1; i<size+1;i++){
                 String jsonStr = jsonArray.get(i-1).toString();
@@ -180,4 +165,26 @@ public class SpinnerDialog extends Dialog {
         return arrayList;
     }
 
+    private void initSpinners(){
+
+        mGenderSpinner = (Spinner) findViewById (R.id.dialog_spinner_gender);
+        mGenderArray = new ArrayList<String>();
+        mGenderArray.add("הכל");
+        mGenderArray.add("זכר");
+        mGenderArray.add("נקבה");
+        ArrayAdapter<String> mGenderAdapter = new ArrayAdapter<String> (mContext, android.R.layout.simple_spinner_dropdown_item,mGenderArray);
+        mGenderSpinner.setAdapter(mGenderAdapter);
+
+
+        mKindSpinner = findViewById (R.id.dialog_spinner_kind);
+        mKindArray = this.getArrayFromJSON(this.mKindJson,"kind","kind_id");
+        ArrayAdapter<String> mKindAdapter = new ArrayAdapter<String> (mContext, android.R.layout.simple_spinner_dropdown_item, this.getArrayListNameValueFromArray(mKindArray));
+        mKindSpinner.setAdapter(mKindAdapter);
+
+        mTypeSpinner = findViewById(R.id.dialog_spinner_type);
+        ArrayList<String> mTypeAll = new ArrayList<String>();
+        mTypeAll.add("הכל");
+        ArrayAdapter<String> mTypeAdapter = new ArrayAdapter<String> (mContext, android.R.layout.simple_spinner_dropdown_item,mTypeAll);
+        mTypeSpinner.setAdapter(mTypeAdapter);
+    }
 }
