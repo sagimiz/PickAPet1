@@ -15,7 +15,7 @@
     <!-- Add User Activity dimens-->
     <dimen name="details_user_layout_horizontal">40dp</dimen>
     <dimen name="details_user_textview_width">85dp</dimen>
-    <dimen name="details_user_margins">4dp</dimen>
+    <dimen name="details_user_margins">3dp</dimen>
 
 
 

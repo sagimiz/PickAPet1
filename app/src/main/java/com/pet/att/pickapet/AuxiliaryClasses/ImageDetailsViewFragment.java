@@ -3,101 +3,59 @@ package com.pet.att.pickapet.AuxiliaryClasses;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.pet.att.pickapet.R;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Period;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 
-///**
-// * A simple {@link Fragment} subclass.
-// * Activities that contain this fragment must implement the
-// * {@link ImageDetailsViewFragment.OnFragmentInteractionListener} interface
-// * to handle interaction events.
-// * Use the {@link ImageDetailsViewFragment#newInstance} factory method to
-// * create an instance of this fragment.
-// */
 public class ImageDetailsViewFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ANIMAL_DATA = "animal_details_json";
-//    private static final String USER_DATA = "user_json";
-//    private static final String IMAGE_DATA = "animal_data";
-    private static Context mContext;
-    private static AppCompatActivity mActivity;
-    TextView mNameTextView=null;
-    TextView mStartDateTextView=null;
-    TextView mDescriptionTextView=null;
-    TextView mBirthDateTextView=null;
-    TextView mDataTextView=null;
-    TextView mOwnerNameTextView=null;
-    TextView mOwnerAddressTextView=null;
-    TextView mOwnerPhoneTextView=null;
-    String mCallNumber=null;
 
-
-    // TODO: Rename and change types of parameters
+    private Context mContext;
+    private TextView mNameTextView=null;
+    private TextView mStartDateTextView=null;
+    private TextView mDescriptionTextView=null;
+    private TextView mBirthDateTextView=null;
+    private TextView mDataTextView=null;
+    private TextView mOwnerNameTextView=null;
+    private TextView mOwnerAddressTextView=null;
+    private TextView mOwnerPhoneTextView=null;
+    private String mCallNumber=null;
     private String mImageJson;
     private String mAnimalFullDetailsJson;
-
-//    private OnFragmentInteractionListener mListener;
-
-    public ImageDetailsViewFragment() {
-        // Required empty public constructor
-    }
-
-//    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment ImageDetailsViewFragment.
-//     */
-//    // TODO: Rename and change types and number of parameters
-//    public static ImageDetailsViewFragment newInstance(Context context) {
-//        ImageDetailsViewFragment fragment = new ImageDetailsViewFragment();
-//        Bundle args = new Bundle();
-//        mContext = context;
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContext =getContext();
-        mAnimalFullDetailsJson = getActivity().getIntent().getStringExtra(mContext.getString(R.string.animals_image_all_data_json));
-        mImageJson = getActivity().getIntent().getStringExtra(mContext.getString(R.string.animal_image_json));
+        this.mContext =getContext();
+        this.mAnimalFullDetailsJson = getActivity().getIntent().getStringExtra(mContext.getString(R.string.animals_image_all_data_json));
+        this.mImageJson = getActivity().getIntent().getStringExtra(mContext.getString(R.string.animal_image_json));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_details_view, container, false);
-
-        Button mCallBtm = (Button) view.findViewById(R.id.call_btn);
-        mCallBtm.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = (FloatingActionButton)  getActivity().findViewById(R.id.call_user_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 intent.setData(Uri.parse("tel:"+mCallNumber));
                 startActivity(intent);
@@ -146,7 +104,6 @@ public class ImageDetailsViewFragment extends Fragment {
 
             ImageView mImageView = (ImageView) view.findViewById(R.id.animal_big_image);
             Bitmap mFinalImage = animalsPics.getMyImage();
-//            mFinalImage = this.getResizedBitmap(mFinalImage,mImageView.getHeight(),mImageView.getWidth());
             mImageView.setImageBitmap(mFinalImage);
 
         } catch (JSONException e) {
@@ -158,9 +115,8 @@ public class ImageDetailsViewFragment extends Fragment {
 
 
     private TextView setTextInTextView(View view, TextView mTextView, int mTextId, String inputStr){
-        mTextView = (TextView) view.findViewById(mTextId);
-        String mAnimalNameStr = inputStr;
-        mTextView.setText(mAnimalNameStr);
+        mTextView = view.findViewById(mTextId);
+        mTextView.setText(inputStr);
         return mTextView;
     }
 
@@ -186,7 +142,7 @@ public class ImageDetailsViewFragment extends Fragment {
             if (month2 > month1) {
                 month = month2-month1;
                 year--;
-            } else if (month1 == month2) {
+            } else if (month1 == month2 ) {
                 int day1 = now.get(Calendar.DAY_OF_MONTH);
                 int day2 = dob.get(Calendar.DAY_OF_MONTH);
                 if (day2 > day1) {
@@ -214,64 +170,4 @@ public class ImageDetailsViewFragment extends Fragment {
         }
         return finalAge ;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    // TODO: Rename method, update argument and hook method into UI event
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
-//
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-//     */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
 }

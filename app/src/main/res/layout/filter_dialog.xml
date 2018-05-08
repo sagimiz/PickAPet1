@@ -87,7 +87,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
                 android:orientation="horizontal"
-                android:gravity="right"
+                android:gravity="end"
                 android:layout_below="@id/type_layout" >
 
                 <Spinner
@@ -95,7 +95,7 @@
                     android:layout_height="match_parent"
                     android:layout_width="wrap_content"
                     android:gravity="end"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginEnd="5dp"
                     />
 
                 <TextView
@@ -114,14 +114,14 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:orientation="horizontal"
-            android:gravity="right" >
+            android:gravity="end" >
             <Button
                 android:id="@+id/dialogOK"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
-                android:text="OK"
+                android:text="@string/dialog_filter_animals_ok_button"
                 android:layout_below="@id/gender_layout"
-                android:background="@color/colorButton"
+                android:background="@null"
                 android:textColor="@color/colorAccent"
                 android:elevation="2dp"
                 />
@@ -135,10 +135,10 @@
                 android:id="@+id/dialogCancel"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:text="Cancel"
+                android:text="@string/dialog_filter_animals_cancel_button"
                 android:layout_below="@id/gender_layout"
                 android:layout_toRightOf="@id/dialogOK"
-                android:background="@color/colorButton"
+                android:background="@null"
                 android:textColor="@color/colorAccent"
                 android:elevation="2dp"
                 />

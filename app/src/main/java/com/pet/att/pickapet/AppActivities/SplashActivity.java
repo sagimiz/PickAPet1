@@ -7,22 +7,22 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-
 import com.pet.att.pickapet.AuxiliaryClasses.OnTaskCompleted;
 import com.pet.att.pickapet.HTTP.UserLoginTask;
 import com.pet.att.pickapet.R;
 
 public class SplashActivity extends AppCompatActivity {
-    String mUserEmail;
-    String mPassword;
-    Context mContext;
+    private String mUserEmail;
+    private String mPassword;
+    private Context mContext;
+
     @Override
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-        final SharedPreferences sp1=this.getSharedPreferences("Login", MODE_PRIVATE);
-        mUserEmail =sp1.getString("UserEmail", null);
-        mPassword = sp1.getString("Password", null);
+        final SharedPreferences sharedPreferences = this.getSharedPreferences("Login", MODE_PRIVATE);
+        mUserEmail =sharedPreferences.getString("UserEmail", null);
+        mPassword = sharedPreferences.getString("Password", null);
          if (mUserEmail ==null || mPassword == null){
              Intent intent = new Intent(this, LoginActivity.class);
              startActivity(intent);
@@ -56,22 +56,16 @@ public class SplashActivity extends AppCompatActivity {
                  @Override
                  public void onTaskCompleted(String result) {
                      if(result != null){
-                         if(sp1==null) {
-                             SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
-                             SharedPreferences.Editor editor = sharedPreferences.edit();
-                             editor.putString("UserEmail", mUserEmail);
-                             editor.putString("Password", mPassword);
-                             editor.apply();
-                         }
                          Intent intent = new Intent(mContext, MainActivity.class);
                          intent.putExtra(mContext.getString(R.string.current_user_details_json),result);
                          startActivity(intent);
                          finish();
+                     }else{
+                         onTaskCompleted();
                      }
                  }
                  @Override
                  public void onTaskCompleted(Boolean result) { }
-
              }).execute(this.getString(R.string.user_request_login), mUserEmail, mPassword);
          }
     }

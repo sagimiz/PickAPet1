@@ -33,6 +33,7 @@ public class SpinnerDialog extends Dialog {
     private ArrayList<String> mGenderArray=null;
     private String[][] mKindArray=null;
     private String[][] mTypeArray=null;
+    String mBlanckText;
 
 
     public interface DialogListener {
@@ -60,7 +61,7 @@ public class SpinnerDialog extends Dialog {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                    if (!mKindSpinner.getSelectedItem().toString().equals("הכל")) {
+                    if (!mKindSpinner.getSelectedItem().toString().equals(mBlanckText)) {
                         GetAllTypeTask getAllTypeTask = new GetAllTypeTask((AppCompatActivity) mActivity, mContext, new OnTaskCompleted() {
                             @Override
                             public void onTaskCompleted() {
@@ -116,11 +117,11 @@ public class SpinnerDialog extends Dialog {
                 int mGenderPosition = mGenderSpinner.getSelectedItemPosition();
                 int mKindPosition = mKindSpinner.getSelectedItemPosition();
                 int mTypePosition = mTypeSpinner.getSelectedItemPosition();
-                String mGender  = (mGenderArray.get(mGenderPosition).equals("הכל")) ? "" : mGenderArray.get(mGenderPosition);
-                String mKind  = (mKindArray[mKindPosition][1].equals("הכל")) ? "": mKindArray[mKindPosition][1];
+                String mGender  = (mGenderArray.get(mGenderPosition).equals(mBlanckText)) ? "" : mGenderArray.get(mGenderPosition);
+                String mKind  = (mKindArray[mKindPosition][1].equals(mBlanckText)) ? "": mKindArray[mKindPosition][1];
                 String mType;
                 if (mTypeArray != null)
-                    mType = (mTypeArray[mTypePosition][1].equals("הכל")) ? "" : mTypeArray[mTypePosition][1];
+                    mType = (mTypeArray[mTypePosition][1].equals(mBlanckText)) ? "" : mTypeArray[mTypePosition][1];
                 else
                     mType ="";
                 mReadyListener.ready(mGender,mKind,mType);
@@ -167,9 +168,10 @@ public class SpinnerDialog extends Dialog {
 
     private void initSpinners(){
 
+        mBlanckText = mContext.getString(R.string.dialog_filter_all_option);
         mGenderSpinner = (Spinner) findViewById (R.id.dialog_spinner_gender);
         mGenderArray = new ArrayList<String>();
-        mGenderArray.add("הכל");
+        mGenderArray.add(mBlanckText);
         mGenderArray.add("זכר");
         mGenderArray.add("נקבה");
         ArrayAdapter<String> mGenderAdapter = new ArrayAdapter<String> (mContext, android.R.layout.simple_spinner_dropdown_item,mGenderArray);
@@ -183,7 +185,7 @@ public class SpinnerDialog extends Dialog {
 
         mTypeSpinner = findViewById(R.id.dialog_spinner_type);
         ArrayList<String> mTypeAll = new ArrayList<String>();
-        mTypeAll.add("הכל");
+        mTypeAll.add(mBlanckText);
         ArrayAdapter<String> mTypeAdapter = new ArrayAdapter<String> (mContext, android.R.layout.simple_spinner_dropdown_item,mTypeAll);
         mTypeSpinner.setAdapter(mTypeAdapter);
     }

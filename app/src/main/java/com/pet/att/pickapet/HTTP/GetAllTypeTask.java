@@ -45,11 +45,11 @@ public class GetAllTypeTask extends MainStringTask {
     }
 
 
-    public String getKind() {
+    private String getKind() {
         return mKind;
     }
 
-    public void setKind(String mKind) {
+    private void setKind(String mKind) {
         this.mKind = mKind;
     }
 }

@@ -109,14 +109,6 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            Intent intent = new Intent(this, SettingsActivity.class);
-//            startActivity(intent);
-//            return true;
-//        }
-
         if (id == R.id.action__edit_details) {
             Intent intent = new Intent(this, EditUserDetailsActivity.class);
             intent.putExtra(mContext.getString(R.string.current_user_details_json),mCurrentUserJsonData);
@@ -124,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_add_pet) {
-
             try {
                 Intent intent = new Intent (this, AddNewPetActivity.class);
                 if (mCurrentUserJsonData != null ){
@@ -137,11 +128,6 @@ public class MainActivity extends AppCompatActivity {
             }catch (Exception e){
                  e.printStackTrace();
             }
-//            new GetAnimalPreLoadPageTask(MainActivity.this,this)
-//                    .execute(getString(R.string.animal_type_request),
-//                            getString(R.string.animal_kind_request),
-//                            getString(R.string.all_type_json),
-//                            getString(R.string.all_kind_json));
             return true;
         }
 
@@ -178,10 +164,7 @@ public class MainActivity extends AppCompatActivity {
                             dialog.dismiss();
                             UserActiveAnimalsTask setUserActiveAnimalsTask = new UserActiveAnimalsTask(MainActivity.this, mContext, PUT, new OnTaskCompleted() {
                                 @Override
-                                public void onTaskCompleted() {
-
-                                }
-
+                                public void onTaskCompleted() {     }
                                 @Override
                                 public void onTaskCompleted(String result) {
                                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
@@ -204,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
                                         String resultStr = getString(R.string.dialog_error_text);
                                         onTaskCompleted(resultStr);
                                     }
-
                                 }
                             });
 
@@ -213,11 +195,9 @@ public class MainActivity extends AppCompatActivity {
                                             currentUserId,
                                             mAllUserAnimalsId[position],
                                             mContext.getString(R.string.current_user_active_animals_json));
-
                         }
 
                     });
-
                     builder.show();
                 }
                 @Override
@@ -258,18 +238,12 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setMessage(mContext.getString(R.string.action_sign_out_dialog)).setPositiveButton("כן", dialogClickListener)
                     .setNegativeButton("ביטול", dialogClickListener).show();
-
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void getPetsImageTask(final boolean isReload, String mGender, String mKind, String mType){
-        mDialog = new ProgressDialog(mContext);
-        mDialog.setMessage("Please wait...");
-        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mDialog.setIndeterminate(true);
-        mDialog.setCancelable(false);
-        mDialog.show();
+        this.showProgressDialog();
         new PetsImagesTask(MainActivity.this, this, new OnTaskCompleted() {
             @Override
             public void onTaskCompleted() {
@@ -304,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                 }else{
                     CustomAdapter customAdapter = fragment.getAdapter();
-                    AnimalsPics[] animalsPics = fragment.getAnimalsPicsDataset(result);
+                    AnimalsPics[] animalsPics = fragment.getAnimalsPicsDataSet(result);
                     customAdapter.refreshPics(animalsPics);
                     mDialog.dismiss();
                 }
@@ -327,7 +301,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showSpinnerDialog(String mKindJson){
-
         SpinnerDialog mSpinnerDialog = new SpinnerDialog(mContext,MainActivity.this,mKindJson, new SpinnerDialog.DialogListener() {
             @Override
             public void ready(String mGender, String mKind, String mType) {
@@ -342,9 +315,7 @@ public class MainActivity extends AppCompatActivity {
                 getPetsImageTask( true,mGender,  mKind,  mType);
             }
 
-            public void cancelled() {
-                // do your code here
-            }
+            public void cancelled() {  }
         });
         mSpinnerDialog.show();
     }
@@ -356,10 +327,16 @@ public class MainActivity extends AppCompatActivity {
                 mCurrentUserJsonData = data.getStringExtra(getString(R.string.current_user_details_result_json));
                 Log.d(TAG,"The returned value from the EditUserDetailsActivity Json is " + mCurrentUserJsonData);
             }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
         }
+    }
+
+    private void showProgressDialog(){
+        mDialog = new ProgressDialog(mContext);
+        mDialog.setMessage("Please wait...");
+        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mDialog.setIndeterminate(true);
+        mDialog.setCancelable(false);
+        mDialog.show();
     }
 
 }

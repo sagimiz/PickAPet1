@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.pet.att.pickapet.AuxiliaryClasses.MainStringTask;
 import com.pet.att.pickapet.AuxiliaryClasses.OnTaskCompleted;
 import com.pet.att.pickapet.R;
 
@@ -14,11 +15,8 @@ import java.util.ArrayList;
 import static com.android.volley.Request.Method.POST;
 import static com.android.volley.Request.Method.PUT;
 
-public class UserActiveAnimalsTask extends AsyncTask<String, Void, Boolean> {
+public class UserActiveAnimalsTask extends MainStringTask {
     private static final String TAG = "PetsImagesCallRequest";
-    private String baseURL;
-    private final Context mContext;
-    private final AppCompatActivity mActivity;
     private int method;
     private String mUserId;
     private String mAnimalId;
@@ -30,9 +28,7 @@ public class UserActiveAnimalsTask extends AsyncTask<String, Void, Boolean> {
     private OnTaskCompleted listener;
 
     public UserActiveAnimalsTask(AppCompatActivity activity, Context context,int method, OnTaskCompleted listener) {
-            this.mContext = context;
-        this.baseURL = mContext.getString(R.string.base_url);
-        mActivity = activity;
+        super(context,activity);
         this.listener=listener;
         this.method=method;
     }
@@ -51,7 +47,7 @@ public class UserActiveAnimalsTask extends AsyncTask<String, Void, Boolean> {
             //Need to send request to get all active animals for user
             String json = HttpRequestsURLConnection.SendHttpPost(baseURL + "/" + this.getFirstRequestName(), "id=" + this.getUserId());
             if (isValidJsonResult(json)) {
-                Log.d(TAG, "JSON data for active animals for the user request" + this.getFirstRequestName() + " is " + json.toString());
+                Log.d(TAG, "JSON data for active animals for the user request" + this.getFirstRequestName() + " is " + json);
                 this.setUserActiveAnimalJsonResult(json);
                 isCorrect = true;
 
@@ -61,7 +57,7 @@ public class UserActiveAnimalsTask extends AsyncTask<String, Void, Boolean> {
             //Need to send request to get all active animals for user
             String json = HttpRequestsURLConnection.SendObjectsHttpPut(baseURL + "/" + this.getFirstRequestName(), this.getJsonBodyString(this.jsonBodyArrayForAnimalsCheckout));
             if (isValidJsonResult(json)) {
-                Log.d(TAG, "JSON data for Checking out animal for user in the request" + this.getFirstRequestName() + " is " + json.toString());
+                Log.d(TAG, "JSON data for Checking out animal for user in the request" + this.getFirstRequestName() + " is " + json);
                 this.setUserActiveAnimalJsonResult(json);
                 isCorrect = true;
 
@@ -76,6 +72,8 @@ public class UserActiveAnimalsTask extends AsyncTask<String, Void, Boolean> {
             mActivity.getIntent().putExtra(this.getPutExtraString(), this.getUserActiveAnimalJsonResult());
             listener.onTaskCompleted();
         }else if (result && method==PUT){
+            listener.onTaskCompleted(true);
+        }else{
             listener.onTaskCompleted(result);
         }
     }
@@ -109,28 +107,6 @@ public class UserActiveAnimalsTask extends AsyncTask<String, Void, Boolean> {
 
     }
 
-    private boolean isValidJsonResult(String jsonStr) {
-        if (jsonStr == null) {
-            return false;
-        }
-        if (jsonStr.contains("Error")) {
-            return false;
-        }
-        if (jsonStr.contains("something")) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private String getFirstRequestName() {
-        return mFirstRequestName;
-    }
-
-    private void setFirstRequestName(String mFirstRequestName) {
-        this.mFirstRequestName = mFirstRequestName;
-    }
-
     private String getPutExtraString() {
         return mPutExtraString;
     }
@@ -147,26 +123,19 @@ public class UserActiveAnimalsTask extends AsyncTask<String, Void, Boolean> {
         this.mUserActiveAnimalJsonResult = mActiveAnimalPicsJsonResult;
     }
 
-    public String getUserId() {
+    private String getUserId() {
         return mUserId;
     }
 
-    public void setUserId(String mUserId) {
+    private void setUserId(String mUserId) {
         this.mUserId = mUserId;
     }
-    private String getJsonBodyString(ArrayList<String> jsonArray){
-        String jsonString="";
-        for (int i =0;i<jsonArray.size();i++){
-            jsonString=jsonString +"&"+jsonArray.get(i);
-        }
-        return (jsonString.length()>0)? jsonString.substring(1,jsonString.length()):"";
-    }
 
-    public String getAnimalId() {
+    private String getAnimalId() {
         return mAnimalId;
     }
 
-    public void setAnimalId(String mAnimalId) {
+    private void setAnimalId(String mAnimalId) {
         this.mAnimalId = mAnimalId;
     }
 }

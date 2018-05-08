@@ -27,53 +27,6 @@ public class UserLoginTask extends MainStringTask {
         this.listner=listner;
     }
 
-//        @Override
-//        protected Boolean doInBackground(Void... params) {
-//            // TODO: attempt authentication against a network service.
-//
-//            try {
-//                // Simulate network access.
-//                Thread.sleep(2000);
-//            } catch (InterruptedException e) {
-//                return false;
-//            }
-//
-//
-//            boolean isCorrect = false;
-////            for (String credential : DUMMY_CREDENTIALS) {
-////                String[] pieces = credential.split(":");
-////                if (pieces[0].equalsIgnoreCase(mEmail)&& pieces[1].equalsIgnoreCase(mPassword)) {
-////                    SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
-////                    SharedPreferences.Editor editor=sharedPreferences.edit();
-////                    editor.putString("UserName",mEmail );
-////                    editor.putString("Password",mPassword);
-////                    editor.commit();
-////                    isCorrect=true;
-////                    break;
-////                }
-////            }
-////            // TODO: register the new account here.
-//            return isCorrect;
-//
-//        }
-
-                                                                                      /*The First arg is  request name
-                                                                                       The Second arg is  email for json
-                                                                                       The Third arg is entered password for json
-                                                                                       The Forth arg is the putString value
-                                                                                      */
-
-
-//    @Override
-//    protected void onPreExecute() {
-//        mDialog = new ProgressDialog(mContext);
-//        mDialog.setMessage("Please wait...");
-//        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-//        mDialog.setIndeterminate(true);
-//        mDialog.setCancelable(false);
-//        mDialog.show();
-//    }
-
     @Override
     protected Boolean doInBackground(String... strings) {
 
@@ -85,9 +38,7 @@ public class UserLoginTask extends MainStringTask {
             if (isValidJsonResult(jsonStr)) {
                 Log.d(TAG, "JSON data for " + super.getFirstRequestName()  +" is "+ jsonStr);
                 jsonStr = this.setStringToJsonFormat(jsonStr);
-
                 JSONObject jsonObject = new JSONObject(jsonStr);
-
                 if (jsonObject.getString("password").equals(this.getPassword())){
                     jsonStr = HttpRequestsURLConnection.SendHttpPost(baseURL + "/"+ mContext.getString(R.string.user_request),"email="+this.getEmail());
                     if (isValidJsonResult(jsonStr)) {
@@ -108,39 +59,6 @@ public class UserLoginTask extends MainStringTask {
         this.setEmail(strings[1]);
         this.setPassword(strings[2]);
     }
-
-//    @Override
-//    protected void onPostExecute(final Boolean success) {
-////        mAuthTask = null;
-////        showProgress(false);
-//
-//        if (success) {
-//            if(mSpl==null) {
-//                SharedPreferences sharedPreferences = mActivity.getSharedPreferences("Login", MODE_PRIVATE);
-//                SharedPreferences.Editor editor = sharedPreferences.edit();
-//                editor.putString("UserEmail", this.getEmail());
-//                editor.putString("Password", this.getPassword());
-//                editor.commit();
-//            }
-//            Bundle bundle = mActivity.getIntent().getExtras();
-//            Intent intent = new Intent(mContext, MainActivity.class);
-//            intent.putExtra(getPutText(),this.getUserDetailsJson());
-//            mActivity.startActivity(intent);
-//            mActivity.finish();
-//        } else {
-//            Intent intent = new Intent(mContext, LoginActivity.class);
-//            mActivity.startActivity(intent);
-//            mActivity.finish();
-//        }
-////        mDialog.dismiss();
-//    }
-
-//    @Override
-//    protected void onCancelled() {
-////        mAuthTask = null;
-////       showProgress(false);
-//        mDialog.dismiss();
-//    }
 
     @Override
     protected void onPostExecute(final Boolean success) {
@@ -173,14 +91,6 @@ public class UserLoginTask extends MainStringTask {
 
     private void setUserDetailsJson(String ownerDetailsJson) {
         this.mUserDetailsJson = ownerDetailsJson;
-    }
-
-    private String getPutText() {
-        return mPutText;
-    }
-
-    private void setPutText(String putText) {
-        this.mPutText = putText;
     }
 
 }

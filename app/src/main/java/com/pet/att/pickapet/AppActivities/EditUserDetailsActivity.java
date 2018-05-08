@@ -25,7 +25,6 @@ public class EditUserDetailsActivity extends AppCompatActivity {
 
     private String mCurrentUserJson;
     private Context mContext;
-    private Activity mParentActivity;
     private Spinner mAreaCodeSpinner;
     private TextView mId;
     private TextView mFirstName;
@@ -34,7 +33,6 @@ public class EditUserDetailsActivity extends AppCompatActivity {
     private TextView mAddress;
     private TextView mCity;
     private Button mButton;
-    private Intent mParentActivityIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,73 +40,75 @@ public class EditUserDetailsActivity extends AppCompatActivity {
         mContext = this;
         setContentView(R.layout.activity_edit_user_details);
         mCurrentUserJson = getIntent().getStringExtra(getString(R.string.current_user_details_json));
-//        mParentActivityIntent = mContext.
-        initViews();
+
+        this.initViews();
         mButton = findViewById(R.id.user_update_all_button);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpdateUserDetailsTask updateUserDetailsTask = new UpdateUserDetailsTask(EditUserDetailsActivity.this, mContext, new OnTaskCompleted() {
-                    @Override
-                    public void onTaskCompleted() {
-                        String mUpdatedUserJson = getIntent().getStringExtra(getString(R.string.current_user_details_json));
-                        Intent returnIntent = new Intent();
-                        returnIntent.putExtra(getString(R.string.current_user_details_result_json),mUpdatedUserJson);
-                        setResult(Activity.RESULT_OK,returnIntent);
+                if (onEditDetails()) {
+                    UpdateUserDetailsTask updateUserDetailsTask = new UpdateUserDetailsTask(EditUserDetailsActivity.this, mContext, new OnTaskCompleted() {
+                        @Override
+                        public void onTaskCompleted() {
+                            String mUpdatedUserJson = getIntent().getStringExtra(getString(R.string.current_user_details_json));
+                            Intent returnIntent = new Intent();
+                            returnIntent.putExtra(getString(R.string.current_user_details_result_json), mUpdatedUserJson);
+                            setResult(Activity.RESULT_OK, returnIntent);
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                        builder.setMessage(mContext.getString(R.string.success_update_data))
-                                .setCancelable(false)
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                            builder.setMessage(mContext.getString(R.string.success_update_data))
+                                    .setCancelable(false)
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
 
-                                    }
-                                });
-                        AlertDialog alert = builder.create();
-                        alert.show();
-                        finish();
-                    }
-
-                    @Override
-                    public void onTaskCompleted(String result) {
-                        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
-                        builder.setMessage(result)
-                                .setCancelable(false)
-                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                        android.app.AlertDialog alert = builder.create();
-                        alert.show();
-                    }
-
-                    @Override
-                    public void onTaskCompleted(Boolean result) {
-                        if(result){
-                            onTaskCompleted();
-                        }else{
-                            onTaskCompleted(mContext.getString(R.string.prompt_invalid_data));
+                                        }
+                                    });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                            finish();
                         }
-                    }
-                });
-                updateUserDetailsTask
-                        .execute(mContext.getString(R.string.user_request_update),
-                                mId.getText().toString(),
-                                mFirstName.getText().toString(),
-                                mLastName.getText().toString(),
-                                mAreaCodeSpinner.getSelectedItem().toString() + mPhone.getText().toString(),
-                                mAddress.getText().toString(),
-                                mCity.getText().toString(),
-                                getString(R.string.current_user_details_json));
+
+                        @Override
+                        public void onTaskCompleted(String result) {
+                            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(mContext);
+                            builder.setMessage(result)
+                                    .setCancelable(false)
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            android.app.AlertDialog alert = builder.create();
+                            alert.show();
+                        }
+
+                        @Override
+                        public void onTaskCompleted(Boolean result) {
+                            if (result) {
+                                onTaskCompleted();
+                            } else {
+                                onTaskCompleted(mContext.getString(R.string.prompt_invalid_data));
+                            }
+                        }
+                    });
+                    updateUserDetailsTask
+                            .execute(mContext.getString(R.string.user_request_update),
+                                    mId.getText().toString(),
+                                    mFirstName.getText().toString(),
+                                    mLastName.getText().toString(),
+                                    mAreaCodeSpinner.getSelectedItem().toString().trim() + mPhone.getText().toString(),
+                                    mAddress.getText().toString(),
+                                    mCity.getText().toString(),
+                                    getString(R.string.current_user_details_json));
+                }
             }
         });
     }
 
     private void initViews(){
         mContext =this;
-        String[] arraySpinner = new String[] {"05", "02","03", "04","08", "09"};
-        mAreaCodeSpinner = (Spinner) findViewById(R.id.user_area_code);
+        String[] arraySpinner = new String[] {" 05 ", " 02 "," 03 ", " 04 "," 08 ", " 09 "};
+        mAreaCodeSpinner = findViewById(R.id.user_area_code);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, arraySpinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -143,31 +143,17 @@ public class EditUserDetailsActivity extends AppCompatActivity {
         boolean isFound=false;
         int index=0;
         while (index<arraySpinner.length && !isFound ){
-            if (arraySpinner[index].equals(value)){
+            if (arraySpinner[index].trim().equals(value)){
                 isFound=true;
             }else{
                 index++;
             }
         }
-        return index;
+        return (index>arraySpinner.length) ? 0 : index;
     }
 
-    private boolean attemptLogin() {
+    private boolean onEditDetails() {
         View focusView = null;
-        mId.setError(null);
-        String id = mId.getText().toString();
-
-        if (TextUtils.isEmpty(id)){
-            mId.setError(getString(R.string.error_field_required));
-            focusView = mId;
-            focusView.requestFocus();
-            return false;
-        }else if (!isIdValid(id)){
-            mId.setError(getString(R.string.error_invalid_id));
-            focusView = mId;
-            focusView.requestFocus();
-            return false;
-        }
 
         mFirstName.setError(null);
         String firstName = mFirstName.getText().toString();
@@ -228,22 +214,12 @@ public class EditUserDetailsActivity extends AppCompatActivity {
     }
 
 
-    private boolean isIdValid(String id) {
-        return id.length() == 9;
-    }
-
-
     private boolean isPhoneValid(String phone) {
-        if (mAreaCodeSpinner.getSelectedItem().toString().equals("05")) {
-            if (phone.length() == 8 && phone.charAt(0) != '0')
-                return true;
-            else
-                return false;
+        if (mAreaCodeSpinner.getSelectedItem().toString().equals(" 05 ")) {
+            return (phone.length() == 8);
         }else{
             return ( phone.length() == 7 &&  phone.charAt(0)!= '0' );
         }
     }
-
-
 
 }

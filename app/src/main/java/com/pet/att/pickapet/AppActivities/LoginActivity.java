@@ -57,7 +57,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
     private static final String TAG = "LoginActivity";
-//    private UserLoginTask mAuthTask = null;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
@@ -72,9 +71,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = findViewById(R.id.email);
-
-        View focusView = mEmailView;
-        focusView.requestFocus();
+//
+//        View focusView = mEmailView;
+//        focusView.requestFocus();
 
         mLoginFormView = findViewById(R.id.login_form);
         mInvalidData = findViewById(R.id.invalid_data_input);
@@ -102,8 +101,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mRegistationButton = findViewById(R.id.register_button);
-        mRegistationButton.setOnClickListener(new OnClickListener() {
+        Button mRegistrationButton = findViewById(R.id.register_button);
+        mRegistrationButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, AddNewUserActivity.class);
@@ -186,22 +185,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-//        if (mAuthTask != null) {
-//            return;
-//        }
-
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
-        final String email = mEmailView.getText().toString();
-        final String password = mPasswordView.getText().toString();
-
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid mPassword, if the user entered one.
+        mPasswordView.setError(null);
+        final String password = mPasswordView.getText().toString();
         if (TextUtils.isEmpty(password))  {
             mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
@@ -213,7 +201,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             cancel = true;
         }
 
-        // Check for a valid email address.
+        mEmailView.setError(null);
+        final String email = mEmailView.getText().toString();
+
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
@@ -246,14 +236,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                                     mPasswordView.setError(getString(R.string.error_incorrect_password));
                                     mEmailView.setError(getString(R.string.error_invalid_email));
                                     break;
-
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     finish();
                                     break;
                             }
                         }
                     };
-
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setMessage(R.string.dialog_error_text).setPositiveButton("חזור", dialogClickListener)
                             .setNegativeButton("ביטול", dialogClickListener).show();
@@ -272,8 +260,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                         showProgress(false);
                         finish();
                         startActivity(intent);
-
-
                     }
                 }
 
@@ -281,8 +267,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 public void onTaskCompleted(Boolean result) {  }
             });
             userLoginTask.execute(getString(R.string.user_request_login),email,password);
-//            mAuthTask = new UserLoginTask(LoginActivity.this,this,null);
-////            mAuthTask.execute(getString(R.string.user_request_login),email,password,getString(R.string.current_user_details_json));
         }
     }
 
@@ -299,9 +283,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -359,9 +340,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {   }
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
@@ -380,7 +359,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         };
 
         int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 }
 

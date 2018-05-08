@@ -18,26 +18,6 @@ public class ImageDetailsDataTask extends MainStringTask {
         this.listener=listener;
     }
 
-
-//    @Override
-//    protected Boolean doInBackground(String... strings) {
-//        String requestName = strings[0];
-//        String jsonStr = null;
-//        Log.d(TAG, "Fetching data for "+ requestName);
-//        if (mMethod == GET){
-//            jsonStr = HttpRequestsURLConnection.SendHttpGet(baseURL + "/"+ requestName);
-//        }else{
-//            jsonStr = HttpRequestsURLConnection.SendHttpPost(baseURL + "/"+ requestName,strings[1]);
-//        }
-//        if (jsonStr != null) {
-//            Log.d(TAG, "JSON data for " + requestName + jsonStr);
-//
-//            this.setAnimalDetailsJson(jsonStr);
-//        }
-//        setPutText(strings[2]);
-//        return jsonStr;
-//    }
-
     @Override
     protected Boolean doInBackground(String... strings) {
         boolean isCorrect=false;
@@ -63,24 +43,6 @@ public class ImageDetailsDataTask extends MainStringTask {
         super.setFirstPutString(strings[2]);
 
     }
-//
-//    @Override
-//    protected void onPostExecute(boolean jsonObject) {
-//        super.onPostExecute(jsonObject);
-//
-//        String animalDetailsJson = this.getAnimalDetailsJson();
-//        this.setAnimalDetailsJson(animalDetailsJson.substring(1,animalDetailsJson.length()));
-//        mArgs.putString(getPutText(), this.getAnimalDetailsJson());
-//
-//        try {
-//            JSONObject animalJson = new JSONObject(this.getAnimalDetailsJson());
-//            String animalIdJson = "aid=" + animalJson.getString("aid");
-//            new OwnerDataTask(mActivity, mContext,mArgs, POST).execute(mContext.getString(R.string.animals_owner_request_aid), animalIdJson, "animal_owner_json");
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     @Override
     protected void onPostExecute(final Boolean success) {

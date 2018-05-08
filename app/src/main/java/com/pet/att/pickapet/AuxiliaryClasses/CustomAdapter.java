@@ -5,38 +5,27 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.pet.att.pickapet.AppActivities.AnimalDetailsActivity;
 import com.pet.att.pickapet.HTTP.ImageDetailsDataTask;
 import com.pet.att.pickapet.R;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
     private static final String TAG = "RecyclerAdapter";
-    private static AnimalsPics[] mAnimalsPics;
+    private AnimalsPics[] mAnimalsPics;
     protected Activity mActivity;
     protected Context mContext;
-
-
 
     public void refreshPics(AnimalsPics[] mNewAnimalsPics) {
         this.mAnimalsPics = mNewAnimalsPics;
         notifyDataSetChanged();
-    }
-
-
-    public CustomAdapter(AnimalsPics[] mAnimalsPics) {
-        this.mAnimalsPics = mAnimalsPics;
     }
 
     public CustomAdapter(AnimalsPics[] mAnimalsPics,Activity mActivity) {
@@ -74,12 +63,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         private final ImageView imageView;
         private String imageJson=null ;
         private String mAnimalInImageId;
-
         private Activity mViewActivity=null;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
-            imageView = (ImageView) v.findViewById(R.id.imageView);
+            imageView = v.findViewById(R.id.imageView);
             imageView.setOnClickListener(this);
         }
 
@@ -124,58 +112,32 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
                     }else{
                         onTaskCompleted();
                     }
-
                 }
             }).execute(mContext.getString(R.string.animals_image_all_data_request),
                     this.getAnimalInImageId(),
                     mContext.getString(R.string.animals_image_all_data_json));
 
             Log.d(TAG,"Recycle Click on item " + getAdapterPosition());
-
-
-//            String animalJson=this.getImageJson();
-//
-//            Intent intent = new Intent (v.getContext(), AnimalDetailsActivity.class);
-//            intent.putExtra("animal_data", animalJson);
-//            v.getContext().startActivity(intent);
-//            Log.d(TAG,"Recycle Click on item " + getAdapterPosition());
-
-
         }
-        public String getAnimalInImageId() {
+        private String getAnimalInImageId() {
             return mAnimalInImageId;
         }
 
-        public void setAnimalInImageId(String mAnimalInImageId) {
+        private void setAnimalInImageId(String mAnimalInImageId) {
             this.mAnimalInImageId = mAnimalInImageId;
         }
 
-        public String getImageJson() {
+        private String getImageJson() {
             return imageJson;
         }
 
-        public void setImageJson( String imageJson) {
+        private void setImageJson( String imageJson) {
             this.imageJson = imageJson;
         }
 
-
-        public Activity getViewActivity() {
-            return mViewActivity;
-        }
-
-        public void setViewActivity(Activity mViewActivity) {
+        private void setViewActivity(Activity mViewActivity) {
             this.mViewActivity = mViewActivity;
         }
     }
 
-
-
-//    protected static String getAnimalsToString(){
-//        String result="";
-//        for (int i=0; i<1;i++){
-//            String s= mAnimalsPics[i].toString();
-//            result = result + "," + s;
-//        }
-//        return result;
-//    }
 }

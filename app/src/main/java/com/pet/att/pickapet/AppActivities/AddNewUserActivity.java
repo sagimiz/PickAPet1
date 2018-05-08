@@ -26,9 +26,8 @@ public class AddNewUserActivity extends AppCompatActivity {
     private EditText mCity;
     private EditText mPassword;
     private EditText mPasswordConfirm;
-    protected Context mContex;
-    protected Spinner mAreaCodeSpiner;
-
+    protected Context mContext;
+    protected Spinner mAreaCodeSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +35,15 @@ public class AddNewUserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_new_user);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mContex=this;
+        mContext =this;
 
-        String[] arraySpinner = new String[] {"05", "02","03", "04","08", "09"};
-        mAreaCodeSpiner = (Spinner) findViewById(R.id.user_area_code);
+        String[] arraySpinner = new String[] {" 05 ", " 02 "," 03 ", " 04 "," 08 ", " 09 "};
+        mAreaCodeSpinner = (Spinner) findViewById(R.id.user_area_code);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, arraySpinner);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mAreaCodeSpiner.setAdapter(adapter);
-
+        mAreaCodeSpinner.setAdapter(adapter);
+        mAreaCodeSpinner.setSelection(0);
 
         mId = findViewById(R.id.user_text_id);
         mFirstName = findViewById(R.id.user_text_fname);
@@ -58,14 +57,13 @@ public class AddNewUserActivity extends AppCompatActivity {
         View focusView = mId;
         focusView.requestFocus();
 
-
-        Button mRegistationButton = (Button) findViewById(R.id.user_add_all_button);
-        mRegistationButton.setOnClickListener(new View.OnClickListener() {
+        Button mRegistrationButton = (Button) findViewById(R.id.user_add_all_button);
+        mRegistrationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String mAreaCodeText= mAreaCodeSpiner.getSelectedItem().toString();
+                String mAreaCodeText= mAreaCodeSpinner.getSelectedItem().toString().trim();
                 if(attemptLogin()) {
-                    new AddNewUserTask(AddNewUserActivity.this, mContex).execute(
+                    new AddNewUserTask(AddNewUserActivity.this, mContext).execute(
                             getString(R.string.user_request),
                             getString(R.string.user_request_login),
                             mId.getText().toString(),
@@ -76,17 +74,15 @@ public class AddNewUserActivity extends AppCompatActivity {
                             mAddress.getText().toString(),
                             mCity.getText().toString(),
                             mPassword.getText().toString(),
-                            mContex.getString(R.string.current_user_details_json),
-                            mContex.getString(R.string.current_user_login_json)
+                            mContext.getString(R.string.current_user_details_json),
+                            mContext.getString(R.string.current_user_login_json)
                     );
                 }
             }
         });
-
     }
 
     private boolean attemptLogin() {
-        // Reset errors.
         View focusView = null;
         mId.setError(null);
         String id = mId.getText().toString();
@@ -96,7 +92,7 @@ public class AddNewUserActivity extends AppCompatActivity {
             focusView = mId;
             focusView.requestFocus();
             return false;
-        }else if (!isIdValid(id)){
+        }else if (!isValidId(id)){
             mId.setError(getString(R.string.error_invalid_id));
             focusView = mId;
             focusView.requestFocus();
@@ -212,8 +208,39 @@ public class AddNewUserActivity extends AppCompatActivity {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    private boolean isIdValid(String id) {
-        return id.length() == 9;
+    public static boolean isValidId(String id) {
+        int sum, checkDigit;
+        if(id.length()==9) {
+            sum = idSummary(id);
+            checkDigit = Character.getNumericValue(id.charAt(8));
+            return ((sum+checkDigit)%10==0) ? true : false;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public static int idSummary(String id) {
+        String bigNumber;
+        int sum=0, num;
+        for(int i=0; i<8; i++){
+            if(i%2==0){
+                num = Character.getNumericValue(id.charAt(i));
+                sum = sum+num;
+            }
+            else{
+                num = Character.getNumericValue(id.charAt(i));
+                if((num*2)>=10){
+                    bigNumber = Integer.toString(num*2);
+                    for(int j=0; j<2; j++){
+                        num = Character.getNumericValue(bigNumber.charAt(j));
+                        sum = sum+num;
+                    }
+                }else
+                    sum = sum+(num*2);
+            }
+        }
+        return sum;
     }
 
     private boolean isPasswordValid(String password) {
@@ -225,11 +252,8 @@ public class AddNewUserActivity extends AppCompatActivity {
     }
 
     private boolean isPhoneValid(String phone) {
-        if (mAreaCodeSpiner.getSelectedItem().toString().equals("05")) {
-            if (phone.length() == 8 && phone.charAt(0) != '0')
-                return true;
-            else
-                return false;
+        if (mAreaCodeSpinner.getSelectedItem().toString().equals(" 05 ")) {
+            return (phone.length() == 8);
         }else{
             return ( phone.length() == 7 &&  phone.charAt(0)!= '0' );
         }

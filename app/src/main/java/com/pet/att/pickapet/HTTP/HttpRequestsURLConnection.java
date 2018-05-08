@@ -71,17 +71,10 @@ public class HttpRequestsURLConnection {
 
                 String resultString= convertStreamToString(instream);
                 instream.close();
-//                resultString = resultString.substring(1,resultString.length()-2);
-
-//                JSONObject jsonObjRecv = new JSONObject(resultString);
-//                Log.i(TAG,"<JSONObject>\n"+jsonObjRecv.toString()+"\n</JSONObject>");
-
                 return resultString;
             }
-
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -117,17 +110,10 @@ public class HttpRequestsURLConnection {
 
                 String resultString= convertStreamToString(instream);
                 instream.close();
-//                resultString = resultString.substring(0,resultString.length()-1);
-//
-//                JSONObject jsonObjRecv = new JSONObject(resultString);
-//                Log.i(TAG,"<JSONObject>\n"+jsonObjRecv.toString()+"\n</JSONObject>");
-
                 return resultString;
             }
-
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -146,7 +132,6 @@ public class HttpRequestsURLConnection {
             httpPutRequest.setHeader("Accept", "*/*");
             httpPutRequest.setHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
             httpPutRequest.setHeader("Accept-Encoding", "gzip, deflate, br");
-//            httpPutRequest.setHeader("Accept-Charset", "UTF-8");
             httpPutRequest.setHeader("Accept-Language","he-IL,he;q=0.9,en-US;q=0.8,en;q=0.7");
 
             long t = System.currentTimeMillis();
@@ -164,23 +149,15 @@ public class HttpRequestsURLConnection {
 
                 String resultString= convertStreamToString(instream);
                 instream.close();
-//                resultString = resultString.substring(0,resultString.length()-1);
-//
-//                JSONObject jsonObjRecv = new JSONObject(resultString);
-//                Log.i(TAG,"<JSONObject>\n"+jsonObjRecv.toString()+"\n</JSONObject>");
-
                 return resultString;
             }
             if (response.getStatusLine().getStatusCode()==EMPTY_CONTENT){
                 return "Empty";
             }
-
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
             Log.d(TAG,e.toString());
-
         }
         return null;
     }
@@ -194,30 +171,9 @@ public class HttpRequestsURLConnection {
         try {
             DefaultHttpClient httpclient = new DefaultHttpClient();
             HttpPut httpPutRequest = new HttpPut(URL);
-
-//            File compressedImage = (File) objects[1];
-//            InputStreamEntity reqEntity = new InputStreamEntity(
-//                    new FileInputStream(compressedImage), -1);
-//            reqEntity.setContentType("binary/octet-stream");
-//            httpPutRequest.setEntity(reqEntity);
-
-//
-//            Bitmap bm = BitmapFactory.decodeFile(objects[1].toString());
-//            ByteArrayOutputStream output = new ByteArrayOutputStream();
-//            bm.compress(Bitmap.CompressFormat.JPEG, 100, output); //bm is the bitmap object
-//            byte[] bytes = output.toByteArray();
-//
-//            String base64Image = Base64.encodeToString(bytes, Base64.DEFAULT);
-//            nameValuePairs.add(new BasicNameValuePair("pic", base64Image));
-//            nameValuePairs.add(new BasicNameValuePair("aid",(String)objects[0]));
-//            StringEntity stringEntity = new StringEntity("pic="+base64Image, HTTP.UTF_8);
-//            httpPutRequest.setEntity(stringEntity);
-
             StringEntity se;
             se = new StringEntity((String)objects[0], HTTP.UTF_8);
             httpPutRequest.setEntity(se);
-//            httpPutRequest.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
             httpPutRequest.setHeader("Accept", "text/javascript, */*; q=0.01");
             httpPutRequest.setHeader("Content-type", "application/x-www-form-urlencoded; charset=utf-8");
             httpPutRequest.setHeader("Accept-Encoding", "gzip, deflate, br");
@@ -239,11 +195,6 @@ public class HttpRequestsURLConnection {
 
                 String resultString= convertStreamToString(instream);
                 instream.close();
-//                resultString = resultString.substring(0,resultString.length()-1);
-//
-//                JSONObject jsonObjRecv = new JSONObject(resultString);
-//                Log.i(TAG,"<JSONObject>\n"+jsonObjRecv.toString()+"\n</JSONObject>");
-
                 return resultString;
             }
             if (response.getStatusLine().getStatusCode()==EMPTY_CONTENT){
@@ -251,11 +202,9 @@ public class HttpRequestsURLConnection {
             }
 
         }
-        catch (Exception e)
-        {
+        catch (Exception e){
             e.printStackTrace();
             Log.d(TAG,e.toString());
-
         }
         return null;
     }

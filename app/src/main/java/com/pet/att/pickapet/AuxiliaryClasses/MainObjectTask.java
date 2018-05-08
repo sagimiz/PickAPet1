@@ -59,14 +59,6 @@ public abstract class MainObjectTask extends AsyncTask<Object, Void, Boolean>  {
         return (jsonString.length()>0)? jsonString.substring(1,jsonString.length()):"";
     }
 
-    protected String getStringJsonBody(ArrayList<String> jsonArray){
-        String jsonString="";
-        for (int i =0;i<jsonArray.size();i++){
-            jsonString=jsonString +","+jsonArray.get(i);
-        }
-        return (jsonString.length()>0)? "{"+jsonString.substring(1,jsonString.length())+"}":"";
-    }
-
     protected boolean isValidJsonResult(String jsonStr){
         if (jsonStr == null){
             return false;
@@ -79,25 +71,4 @@ public abstract class MainObjectTask extends AsyncTask<Object, Void, Boolean>  {
         }
         return true;
     }
-
-    protected String setStringToJsonFormat (String currentJsonString){
-        return currentJsonString.substring(1,currentJsonString.length());
-    }
-
-    protected String getFirstPutString() {
-        return mFirstPutString;
-    }
-
-    protected void setFirstPutString(String mFirstPutString) {
-        this.mFirstPutString = mFirstPutString;
-    }
-
-    protected String getSecondPutString() {
-        return mSecondPutString;
-    }
-
-    protected void setSecondPutString(String mSecondPutString) {
-        this.mSecondPutString = mSecondPutString;
-    }
-
 }

@@ -135,13 +135,11 @@ public class AddNewUserTask extends MainStringTask {
             mActivity.finish();
 
         }else{
-
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             builder.setMessage(mContext.getString(R.string.error_put_data))
                     .setCancelable(false)
                     .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            //do things
                         }
                     });
             AlertDialog alert = builder.create();

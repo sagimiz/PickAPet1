@@ -43,8 +43,11 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import id.zelory.compressor.Compressor;
@@ -79,6 +82,7 @@ public class AddNewPetActivity extends AppCompatActivity{
     private String [] mKindNameArray;
     private String [] mKindIdArray;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,15 +104,11 @@ public class AddNewPetActivity extends AppCompatActivity{
         {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-                // TODO Auto-generated method stub
-                Toast.makeText(getBaseContext(), mKindNameArray[position], Toast.LENGTH_SHORT).show();
                 mKindSpinnerPosition =position;
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-            }
+            public void onNothingSelected(AdapterView<?> arg0) {   }
         });
 
         String[] arraySpinner = new String[] {"זכר", "נקבה"};
@@ -119,11 +119,9 @@ public class AddNewPetActivity extends AppCompatActivity{
         mGenderSpinner.setAdapter(adapter);
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                // TODO Auto-generated method stub
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -131,19 +129,17 @@ public class AddNewPetActivity extends AppCompatActivity{
             }
 
             private void updateLabel() {
-                String myFormat = "yyyy/dd/MM"; //In which you need put here
+                String myFormat = "yyyy/MM/dd";
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
                 mBirthDateText.setText(sdf.format(myCalendar.getTime()));
             }
-
         };
 
         mBirthDateText.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 new DatePickerDialog(mContext, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -170,11 +166,9 @@ public class AddNewPetActivity extends AppCompatActivity{
                     String mFirstRequest = mContext.getString(R.string.animals_request);
                     String mSecondRequest = mContext.getString(R.string.animals_owner_request_id);
                     String mThirdRequest = mContext.getString(R.string.animals_pic_request);
-
                     String mAnimalGender = mGenderSpinner.getSelectedItem().toString();
                     String mAnimalBirthDate =mBirthDateText.getText().toString();
                     String mAnimalDescription =mDescriptionText.getText().toString();
-
                     new AddNewPetTask(AddNewPetActivity.this, mContext).execute(
                             mFirstRequest,
                             mSecondRequest,
@@ -191,18 +185,12 @@ public class AddNewPetActivity extends AppCompatActivity{
                 }
             }
         });
-
     }
-
-
 
     public void initItems(){
         mContext = this;
-
         mAnimalTypeSpinner = findViewById(R.id.animal_type_spinner);
         mAnimalKindSpinner = findViewById(R.id.animal_kind_spinner);
-//        this.setSpinnerWithAnimalsTypes();
-
         mKindStringJson = getIntent().getStringExtra(getString(R.string.all_kind_json));
         if (mKindStringJson!=null){
             GetAllKindsTask getAllKindsTask = new GetAllKindsTask(AddNewPetActivity.this,mContext, new OnTaskCompleted() {
@@ -251,10 +239,8 @@ public class AddNewPetActivity extends AppCompatActivity{
         focusView.requestFocus();
 
         mDescriptionText = findViewById(R.id.animal_text_description);
-
         myCalendar = Calendar.getInstance();
         mBirthDateText = findViewById(R.id.animal_text_birth_date);
-
         Bundle bundle = getIntent().getExtras();
         mUserJsonString = bundle.getString(mContext.getString(R.string.current_user_details_json));
 
@@ -269,7 +255,6 @@ public class AddNewPetActivity extends AppCompatActivity{
     }
 
     private boolean attemptPutData() {
-        // Reset errors.
         View focusView;
         mAnimalName.setError(null);
         String name = mAnimalName.getText().toString();
@@ -286,7 +271,6 @@ public class AddNewPetActivity extends AppCompatActivity{
             focusView.requestFocus();
             return false;
         }
-
 
         mDescriptionText.setError(null);
         String description = mDescriptionText.getText().toString();
@@ -319,13 +303,18 @@ public class AddNewPetActivity extends AppCompatActivity{
             focusView.requestFocus();
             return false;
         }
+        if (!isDateValid(birthDate)) {
+            mBirthDateText.setError(getString(R.string.error_invalid_birth_date));
+            focusView = mBirthDateText;
+            focusView.requestFocus();
+            return false;
+        }
 
         if (!mImageSelected){
             TextView mNoImage = findViewById(R.id.no_image_error);
             mNoImage.setVisibility(View.VISIBLE);
             return false;
         }
-
         return true;
     }
 
@@ -341,7 +330,6 @@ public class AddNewPetActivity extends AppCompatActivity{
                 mTypeNameArray[i]= jsonObject.getString("type_name");
                 mTypeIdArray[i] = jsonObject.getString("type_id");
             }
-
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_spinner_item, mTypeNameArray);
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -350,7 +338,6 @@ public class AddNewPetActivity extends AppCompatActivity{
             e.printStackTrace();
         }
     }
-
 
     private void setSpinnerWithAnimalsKinds() {
         try {
@@ -409,7 +396,6 @@ public class AddNewPetActivity extends AppCompatActivity{
                         mAnimalTypeSpinner.setVerticalScrollbarPosition(0);
                     }
                 }
-
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
 
@@ -471,6 +457,19 @@ public class AddNewPetActivity extends AppCompatActivity{
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
     }
 
+    private boolean isDateValid(String date) {
+        try {
+            Date current = new Date();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
+            Date givenDate = df.parse(date);
+            if(givenDate.after(current))
+                return false;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
 
     public  boolean isStoragePermissionGranted() {
@@ -501,7 +500,6 @@ public class AddNewPetActivity extends AppCompatActivity{
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
             Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
-            //resume tasks needing this permission
         }
     }
 

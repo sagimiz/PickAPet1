@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -63,7 +62,7 @@ public class RecyclerViewFragment extends Fragment {
                             @Override
                             public void onTaskCompleted(String result) {
                                 Log.d (TAG,"The JSON String is " + result);
-                                mAnimalsPics=getAnimalsPicsDataset(result);
+                                mAnimalsPics= getAnimalsPicsDataSet(result);
                                 mAdapter.refreshPics(mAnimalsPics);
                                 mSwipeLayout.setRefreshing(false);
                             }
@@ -124,7 +123,6 @@ public class RecyclerViewFragment extends Fragment {
                     .getSerializable(KEY_LAYOUT_MANAGER);
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-
         mAdapter = new CustomAdapter(mAnimalsPics,mCurrentActivity);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
@@ -177,7 +175,7 @@ public class RecyclerViewFragment extends Fragment {
         }
     }
 
-    public AnimalsPics[] getAnimalsPicsDataset(String mAnimalJsonString) {
+    public AnimalsPics[] getAnimalsPicsDataSet(String mAnimalJsonString) {
         JSONArray jsonArray = null;
         AnimalsPics[] animalsPics=null;
         try {
@@ -194,16 +192,6 @@ public class RecyclerViewFragment extends Fragment {
         }
         return animalsPics;
     }
-
-
-    public AnimalsPics[] getAnimalsPics() {
-        return mAnimalsPics;
-    }
-
-    public void setAnimalsPics(AnimalsPics[] mAnimalsPics) {
-        this.mAnimalsPics = mAnimalsPics;
-    }
-
     public CustomAdapter getAdapter() {
         return mAdapter;
     }

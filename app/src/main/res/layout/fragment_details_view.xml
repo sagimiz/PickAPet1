@@ -28,39 +28,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/details_animal_text_vertical_margin"
-                    android:id="@+id/animal_details_title"
-                    android:text="@string/animal_details_title"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="20dp"/>
+                <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="@dimen/details_animal_text_vertical_margin"-->
+                    <!--android:id="@+id/animal_details_title"-->
+                    <!--android:text="@string/animal_details_title"-->
+                    <!--android:gravity="center"-->
+                    <!--android:textStyle="bold"-->
+                    <!--android:textSize="20dp"/>-->
                 <LinearLayout
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
                     android:layout_height="match_parent"
                     android:gravity="end">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/details_animal_text_vertical_margin"
-                        android:id="@+id/animal_start_date_text"
-                        android:gravity="end"
-                        android:textStyle="bold"
-                        android:textSize="16dp"/>
-
-                    <TextView
-                        android:layout_width="20dp"
-                        android:layout_height="@dimen/details_animal_text_vertical_margin" />
+                    <!--<TextView-->
+                        <!--android:layout_width="20dp"-->
+                        <!--android:layout_height="@dimen/details_animal_text_vertical_margin" />-->
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/details_animal_text_vertical_margin"
                         android:id="@+id/animal_name_text"
-                        android:gravity="left"
+                        android:gravity="end"
                         android:textStyle="bold"
-                        android:textSize="16dp"/>
+                        android:textSize="20sp"/>
 
                 </LinearLayout>
 
@@ -73,7 +66,8 @@
                     android:layout_marginLeft="@dimen/details_user_margins"
                     android:layout_marginRight="@dimen/details_user_margins"
                     android:layout_marginTop="@dimen/details_user_margins"
-                    android:scaleType="fitXY"/>
+                    android:scaleType="fitXY"
+                    android:background="@color/colorBackground"/>
 
                 <!--<include layout="@layout/content_main" />-->
                 <LinearLayout
@@ -89,7 +83,7 @@
                         android:gravity="right">
 
                         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/details_user_margins"
                             android:layout_marginLeft="@dimen/details_user_margins"
@@ -99,15 +93,17 @@
                             android:orientation="vertical">
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:gravity="right"
                                 android:layout_marginBottom="@dimen/details_user_margins"
                                 android:layout_marginLeft="@dimen/details_user_margins"
                                 android:layout_marginRight="@dimen/details_user_margins"
                                 android:layout_marginTop="@dimen/details_user_margins"
+                                android:background="@color/colorBackground"
+                                android:gravity="right"
                                 android:text="@string/animal_details_description"
-                                android:textStyle="bold"/>
+                                android:textStyle="bold" />
+
                             <TextView
                                 android:id="@+id/animal_description_text"
                                 android:layout_width="wrap_content"
@@ -116,7 +112,7 @@
                                 android:layout_marginLeft="@dimen/details_user_margins"
                                 android:layout_marginRight="@dimen/details_user_margins"
                                 android:layout_marginTop="@dimen/details_user_margins"
-                                android:gravity="right"/>
+                                android:gravity="right" />
 
                             <TextView
                                 android:id="@+id/animal_bdate_text"
@@ -139,15 +135,16 @@
                                 android:gravity="right" />
 
                             <TextView
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:gravity="right"
                                 android:layout_marginBottom="@dimen/details_user_margins"
                                 android:layout_marginLeft="@dimen/details_user_margins"
                                 android:layout_marginRight="@dimen/details_user_margins"
                                 android:layout_marginTop="@dimen/details_user_margins"
+                                android:background="@color/colorBackground"
+                                android:gravity="right"
                                 android:text="@string/animal_details_owner_details"
-                                android:textStyle="bold"/>
+                                android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/owner_name_text"
@@ -176,11 +173,6 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <Button
-                                android:id="@+id/call_btn"
-                                android:layout_width="90dp"
-                                android:layout_height="wrap_content"
-                                android:text="@string/call_button_text" />
 
                             <TextView
                                 android:id="@+id/owner_phone_text"
@@ -192,6 +184,22 @@
                                 android:layout_marginTop="@dimen/details_user_margins"
                                 android:gravity="center_vertical" />
                         </LinearLayout>
+
+                        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/activity_vertical_margin"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/details_animal_text_vertical_margin"
+                                android:id="@+id/animal_start_date_text"
+                                android:gravity="end"
+                                android:textStyle="bold"
+                                android:textSize="12sp"/>
+                        </LinearLayout>
+
                     </LinearLayout>
 
 

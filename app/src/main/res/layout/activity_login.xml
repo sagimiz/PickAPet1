@@ -42,7 +42,7 @@
                 <ImageView
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@drawable/pick_a_pet_paw"/>
 
             </LinearLayout>
 
@@ -70,10 +70,11 @@
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
+                    android:hint="דוא&quot;ל"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:gravity="end"
+                    android:textDirection="anyRtl"
+                    android:gravity="right"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
@@ -113,11 +114,13 @@
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="4dp"
                 android:text="@string/action_register"
                 android:textStyle="bold"
-                android:background="@color/colorButton"
-                android:textColor="@color/colorAccent"/>
+                android:gravity="top|center"
+                android:background="@null"
+                android:textSize="14sp"
+                android:textColor="@color/colorTextRegisterLink"/>
 
         </LinearLayout>
     </ScrollView>

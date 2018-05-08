@@ -6,7 +6,6 @@ import android.util.Log;
 import com.pet.att.pickapet.AuxiliaryClasses.MainStringTask;
 import com.pet.att.pickapet.AuxiliaryClasses.OnTaskCompleted;
 import com.pet.att.pickapet.R;
-
 import java.util.ArrayList;
 
 
@@ -79,34 +78,6 @@ public class UpdateUserDetailsTask extends MainStringTask {
 
     @Override
     protected void onPostExecute(final Boolean success) {
-//        if (success) {
-//            SharedPreferences sharedPreferences = mActivity.getSharedPreferences("Login", MODE_PRIVATE);
-//            SharedPreferences.Editor editor = sharedPreferences.edit();
-//            editor.putString("UserEmail", this.getEmail());
-//            editor.putString("Password", this.getPassword());
-//            editor.commit();
-//
-//            Intent intent = new Intent(mContext, MainActivity.class);
-//            intent.putExtra(super.getFirstPutString(),super.getStringJsonBody(this.jsonBodyArrayForUser));
-//            intent.putExtra(super.getSecondRequestName(),super.getStringJsonBody(this.jsonBodyArrayForUserLogin));
-//            mDialog.dismiss();
-//            mActivity.startActivity(intent);
-//            mActivity.finish();
-//
-//        }else{
-//            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-//            builder.setMessage(mContext.getString(R.string.error_put_data))
-//                    .setCancelable(false)
-//                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int id) {
-//                            //do things
-//                        }
-//                    });
-//            AlertDialog alert = builder.create();
-//            alert.show();
-//            mDialog.dismiss();
-//        }
-
         if (success) {
             mActivity.getIntent().putExtra(getFirstPutString(),super.setStringToJsonFormat(getFirstJSONResult()));
             listener.onTaskCompleted(success);
