@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PickAPet</string>
+    <string name="app_name">Pick-a-Pet</string>
     <string name="action_edit_deatils">ערוך פרטי משתמש</string>
     <string name="action_add_pet">הוסף חיה חדשה</string>
     <string name="action_remove_pet">הסר את החיות שלי</string>

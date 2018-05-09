@@ -1,26 +1,15 @@
 package com.pet.att.pickapet.HTTP;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
-import com.pet.att.pickapet.AppActivities.MainActivity;
 import com.pet.att.pickapet.AuxiliaryClasses.MainStringTask;
+import com.pet.att.pickapet.AuxiliaryClasses.OnTaskCompleted;
 import com.pet.att.pickapet.R;
-
 import java.util.ArrayList;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class AddNewUserTask extends MainStringTask {
     private static final String TAG = "AddNewUserTask";
-    private ProgressDialog mDialog;
     private String mId;
     private String mFirstName;
     private String mLastName;
@@ -31,22 +20,13 @@ public class AddNewUserTask extends MainStringTask {
     private String mPassword;
     private ArrayList<String> jsonBodyArrayForUser;
     private ArrayList<String> jsonBodyArrayForUserLogin;
+    private OnTaskCompleted listener;
 
-    public AddNewUserTask(AppCompatActivity mActivity, Context mContext){
+    public AddNewUserTask(AppCompatActivity mActivity, Context mContext, OnTaskCompleted listener){
         super(mContext,mActivity);
+        this.listener = listener;
     }
 
-
-
-    @Override
-    protected void onPreExecute() {
-        mDialog = new ProgressDialog(mContext);
-        mDialog.setMessage("Please wait...");
-        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mDialog.setIndeterminate(true);
-        mDialog.setCancelable(false);
-        mDialog.show();
-    }
 
   /*
    The First arg is  user request name
@@ -76,7 +56,11 @@ public class AddNewUserTask extends MainStringTask {
         if (super.isValidJsonResult(resultStr) && (resultStr.equals("Empty")) ) {
            resultStr = HttpRequestsURLConnection.SendHttpPut(baseURL + "/"+ super.getSecondRequestName(), getJsonBodyString(jsonBodyArrayForUserLogin));
            if (super.isValidJsonResult(resultStr) && resultStr.equals("Empty")) {
-               isCorrect = true;
+               resultStr = HttpRequestsURLConnection.SendHttpPost(baseURL + "/"+ mContext.getString(R.string.user_request),"email="+this.getEmail());
+               if (super.isValidJsonResult(resultStr)) {
+                   super.setFirstJSONResult(resultStr);
+                   isCorrect = true;
+               }
            }
         }
         return isCorrect;
@@ -120,39 +104,13 @@ public class AddNewUserTask extends MainStringTask {
 
     @Override
     protected void onPostExecute(final Boolean success) {
-        if (success) {
-            SharedPreferences sharedPreferences = mActivity.getSharedPreferences("Login", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("UserEmail", this.getEmail());
-            editor.putString("Password", this.getPassword());
-            editor.commit();
-
-            Intent intent = new Intent(mContext, MainActivity.class);
-            intent.putExtra(super.getFirstPutString(),super.getStringJsonBody(this.jsonBodyArrayForUser));
-            intent.putExtra(super.getSecondRequestName(),super.getStringJsonBody(this.jsonBodyArrayForUserLogin));
-            mDialog.dismiss();
-            mActivity.startActivity(intent);
-            mActivity.finish();
-
-        }else{
-            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setMessage(mContext.getString(R.string.error_put_data))
-                    .setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                        }
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
-            mDialog.dismiss();
+        if (success){
+            mActivity.getIntent().putExtra(super.getFirstPutString(),super.setStringToJsonFormat(super.getFirstJSONResult()));
+            mActivity.getIntent().putExtra(super.getSecondRequestName(),super.getStringJsonBody(this.jsonBodyArrayForUserLogin));
         }
-
+        listener.onTaskCompleted(success);
     }
 
-    @Override
-    protected void onCancelled() {
-        mDialog.dismiss();
-    }
 
     private String getEmail() {
         return mEmail;

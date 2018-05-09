@@ -149,7 +149,7 @@ public class EditUserDetailsActivity extends AppCompatActivity {
                 index++;
             }
         }
-        return (index>arraySpinner.length) ? 0 : index;
+        return (index>=arraySpinner.length) ? 0 : index;
     }
 
     private boolean onEditDetails() {

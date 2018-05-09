@@ -77,13 +77,9 @@ public class AddNewPetTask extends MainObjectTask {
 
     @Override
     protected void onPostExecute(final Boolean success) {
-
         if (success){
             mActivity.finish();
-        }else{
-
         }
-
     }
 
     /*

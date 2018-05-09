@@ -1,6 +1,11 @@
 package com.pet.att.pickapet.AppActivities;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +16,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import com.pet.att.pickapet.AuxiliaryClasses.OnTaskCompleted;
 import com.pet.att.pickapet.HTTP.AddNewUserTask;
 import com.pet.att.pickapet.R;
 
@@ -28,6 +35,7 @@ public class AddNewUserActivity extends AppCompatActivity {
     private EditText mPasswordConfirm;
     protected Context mContext;
     protected Spinner mAreaCodeSpinner;
+    private ProgressDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +70,53 @@ public class AddNewUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String mAreaCodeText= mAreaCodeSpinner.getSelectedItem().toString().trim();
+
                 if(attemptLogin()) {
-                    new AddNewUserTask(AddNewUserActivity.this, mContext).execute(
+                    showDialog();
+                    new AddNewUserTask(AddNewUserActivity.this, mContext, new OnTaskCompleted() {
+                        @Override
+                        public void onTaskCompleted() {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                            builder.setMessage(mContext.getString(R.string.error_put_data))
+                                    .setCancelable(false)
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                        }
+                                    });
+                            AlertDialog alert = builder.create();
+                            alert.show();
+                            mDialog.dismiss();
+                        }
+
+                        @Override
+                        public void onTaskCompleted(String result) {
+
+                        }
+
+                        @Override
+                        public void onTaskCompleted(Boolean result) {
+                            if (result) {
+                                SharedPreferences sharedPreferences = getSharedPreferences("Login", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("UserEmail", mEmail.getText().toString());
+                                editor.putString("Password", mPassword.getText().toString());
+                                editor.apply();
+
+                                String currentUserDetailsJson = getIntent().getStringExtra(mContext.getString(R.string.current_user_details_json));
+                                String currentUserLoginJson = getIntent().getStringExtra(mContext.getString(R.string.current_user_login_json));
+                                Intent intent = new Intent(mContext, MainActivity.class);
+
+                                intent.putExtra(mContext.getString(R.string.current_user_details_json),currentUserDetailsJson);
+                                intent.putExtra(mContext.getString(R.string.current_user_login_json),currentUserLoginJson);
+                                mDialog.dismiss();
+                                startActivity(intent);
+                                finish();
+
+                            }else{
+                                onTaskCompleted();
+                            }
+                        }
+                    }).execute(
                             getString(R.string.user_request),
                             getString(R.string.user_request_login),
                             mId.getText().toString(),
@@ -257,5 +310,13 @@ public class AddNewUserActivity extends AppCompatActivity {
         }else{
             return ( phone.length() == 7 &&  phone.charAt(0)!= '0' );
         }
+    }
+    private void showDialog(){
+        mDialog = new ProgressDialog(mContext);
+        mDialog.setMessage("Please wait...");
+        mDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mDialog.setIndeterminate(true);
+        mDialog.setCancelable(false);
+        mDialog.show();
     }
 }

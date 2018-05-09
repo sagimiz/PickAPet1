@@ -78,7 +78,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(v.getContext(), "Recycle Click on item " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
             final Context  mContext =v.getContext();
             new ImageDetailsDataTask((AppCompatActivity) mViewActivity, mContext, new OnTaskCompleted() {
                 @Override
